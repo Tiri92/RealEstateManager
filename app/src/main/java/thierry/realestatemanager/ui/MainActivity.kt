@@ -2,6 +2,7 @@ package thierry.realestatemanager.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -30,8 +31,8 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        val test = viewModel.allProperty.value?.size
-        print(test)
+        viewModel.allProperty.observe(this){list ->
+            Log.i("[THOMAS]","recup : ${list.size}")}
     }
 
     override fun onSupportNavigateUp(): Boolean {
