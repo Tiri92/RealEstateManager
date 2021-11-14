@@ -23,9 +23,9 @@ object AppModule {
         @ApplicationContext app: Context,
         callback: PropertyDatabase.Callback
     ) = Room.databaseBuilder(app, PropertyDatabase::class.java, "property_database")
-            .fallbackToDestructiveMigration()
-            .addCallback(callback)
-            .build()
+        .fallbackToDestructiveMigration()
+        .addCallback(callback)
+        .build()
 
     @Provides
     @Singleton

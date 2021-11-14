@@ -31,8 +31,9 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        viewModel.allProperty.observe(this){list ->
-            Log.i("[THOMAS]","recup : ${list.size}")}
+        viewModel.allProperty.observe(this) { list ->
+            Log.i("[THOMAS]", "recup : ${list.size}")
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -40,4 +41,5 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
     }
+
 }
