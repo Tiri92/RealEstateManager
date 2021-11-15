@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
 
         viewModel.allProperty.observe(this) { list ->
-            Log.i("[THOMAS]", "recup : ${list.size}")
+            Log.i("[THIERRY]", "recup : ${list.size}")
         }
     }
 

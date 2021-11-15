@@ -1,17 +1,16 @@
 package thierry.realestatemanager.ui
 
-import android.content.ClipData
 import android.os.Bundle
-import android.view.DragEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import dagger.hilt.android.AndroidEntryPoint
-import thierry.realestatemanager.PlaceholderContent
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
+import thierry.realestatemanager.model.Property
 
 /**
  * A fragment representing a single Item detail screen.
@@ -22,12 +21,15 @@ import thierry.realestatemanager.databinding.FragmentItemDetailBinding
 @AndroidEntryPoint
 class ItemDetailFragment : Fragment() {
 
+    private val viewModel: ItemDetailViewModel by viewModels()
+
     /**
      * The placeholder content this fragment is presenting.
      */
-    private var item: PlaceholderContent.PlaceholderItem? = null
 
-    lateinit var itemDetailTextView: TextView
+    private var item: String? = null
+
+    private lateinit var itemDetailTextView: TextView
     private var toolbarLayout: CollapsingToolbarLayout? = null
 
     private var _binding: FragmentItemDetailBinding? = null
@@ -36,15 +38,6 @@ class ItemDetailFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    private val dragListener = View.OnDragListener { v, event ->
-        if (event.action == DragEvent.ACTION_DROP) {
-            val clipDataItem: ClipData.Item = event.clipData.getItemAt(0)
-            val dragData = clipDataItem.text
-            item = PlaceholderContent.ITEM_MAP[dragData]
-            updateContent()
-        }
-        true
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +47,7 @@ class ItemDetailFragment : Fragment() {
                 // Load the placeholder content specified by the fragment
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
-                item = PlaceholderContent.ITEM_MAP[it.getString(ARG_ITEM_ID)]
+                item = it.getString(ARG_ITEM_ID)
             }
         }
     }
@@ -62,26 +55,32 @@ class ItemDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
-        toolbarLayout = binding.toolbarLayout
-        itemDetailTextView = binding.itemDetail
+        viewModel.allProperty.observe(viewLifecycleOwner) { listOfProperty ->
 
-        updateContent()
-        rootView.setOnDragListener(dragListener)
+            val property: Property? = listOfProperty.find { it.id == item?.toInt() }
+
+            if (property != null) {
+                toolbarLayout = binding.toolbarLayout
+                itemDetailTextView = binding.itemDetail
+                updateContent(property.price.toString())
+            }
+
+        }
 
         return rootView
     }
 
-    private fun updateContent() {
-        toolbarLayout?.title = item?.content
+    private fun updateContent(text: String) {
+        toolbarLayout?.title = item
 
         // Show the placeholder content as text in a TextView.
         item?.let {
-            itemDetailTextView.text = it.details
+            itemDetailTextView.text = text
         }
     }
 
