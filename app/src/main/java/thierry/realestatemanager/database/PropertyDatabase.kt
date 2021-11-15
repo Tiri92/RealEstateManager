@@ -26,9 +26,9 @@ abstract class PropertyDatabase : RoomDatabase() {
             val dao = database.get().propertyDao()
 
             applicationScope.launch {
-                dao.insert(Property(price = "$17,870,000"))
-                dao.insert(Property(price = "$8,430,000"))
-                dao.insert(Property(price = "$41,650,000"))
+                dao.insert(Property(price = 17870000))
+                dao.insert(Property(price = 8430000))
+                dao.insert(Property(price = 41650000))
             }
         }
     }

@@ -1,4 +1,4 @@
-package thierry.realestatemanager
+package thierry.realestatemanager.repositories
 
 import thierry.realestatemanager.database.dao.PropertyDao
 import javax.inject.Inject
