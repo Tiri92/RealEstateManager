@@ -1,24 +1,21 @@
 package thierry.realestatemanager.ui
 
-import android.content.ClipData
-import android.content.ClipDescription
 import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.view.ViewCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
-import thierry.realestatemanager.PlaceholderContent
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentItemListBinding
 import thierry.realestatemanager.databinding.ItemListContentBinding
+import thierry.realestatemanager.model.Property
 
 /**
  * A Fragment representing a list of Pings. This fragment
@@ -32,32 +29,7 @@ import thierry.realestatemanager.databinding.ItemListContentBinding
 @AndroidEntryPoint
 class ItemListFragment : Fragment() {
 
-    /**
-     * Method to intercept global key events in the
-     * item list fragment to trigger keyboard shortcuts
-     * Currently provides a toast when Ctrl + Z and Ctrl + F
-     * are triggered
-     */
-    private val unhandledKeyEventListenerCompat =
-        ViewCompat.OnUnhandledKeyEventListenerCompat { v, event ->
-            if (event.keyCode == KeyEvent.KEYCODE_Z && event.isCtrlPressed) {
-                Toast.makeText(
-                    v.context,
-                    "Undo (Ctrl + Z) shortcut triggered",
-                    Toast.LENGTH_LONG
-                ).show()
-                true
-            } else if (event.keyCode == KeyEvent.KEYCODE_F && event.isCtrlPressed) {
-                Toast.makeText(
-                    v.context,
-                    "Find (Ctrl + F) shortcut triggered",
-                    Toast.LENGTH_LONG
-                ).show()
-                true
-            }
-            false
-        }
-
+    private val viewModel: ItemListViewModel by viewModels()
     private var _binding: FragmentItemListBinding? = null
 
     // This property is only valid between onCreateView and
@@ -67,7 +39,7 @@ class ItemListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentItemListBinding.inflate(inflater, container, false)
         return binding.root
@@ -76,8 +48,6 @@ class ItemListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        ViewCompat.addOnUnhandledKeyEventListener(view, unhandledKeyEventListenerCompat)
 
         val recyclerView: RecyclerView = binding.itemList
 
@@ -89,11 +59,11 @@ class ItemListFragment : Fragment() {
          * a single pane layout or two pane layout
          */
         val onClickListener = View.OnClickListener { itemView ->
-            val item = itemView.tag as PlaceholderContent.PlaceholderItem
+            val item = itemView.tag
             val bundle = Bundle()
             bundle.putString(
                 ItemDetailFragment.ARG_ITEM_ID,
-                item.id
+                item.toString()
             )
             if (itemDetailFragmentContainer != null) {
                 itemDetailFragmentContainer.findNavController()
@@ -109,32 +79,35 @@ class ItemListFragment : Fragment() {
          * experience on larger screen devices
          */
         val onContextClickListener = View.OnContextClickListener { v ->
-            val item = v.tag as PlaceholderContent.PlaceholderItem
+            val item = v.tag
             Toast.makeText(
                 v.context,
-                "Context click of item " + item.id,
+                "Context click of item $item",
                 Toast.LENGTH_LONG
             ).show()
             true
         }
-        setupRecyclerView(recyclerView, onClickListener, onContextClickListener)
+        viewModel.allProperty.observe(viewLifecycleOwner) { property ->
+            setupRecyclerView(recyclerView, onClickListener, onContextClickListener, property)
+        }
     }
 
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener,
-        onContextClickListener: View.OnContextClickListener
+        onContextClickListener: View.OnContextClickListener,
+        listOfProperty: List<Property>
     ) {
 
         recyclerView.adapter = SimpleItemRecyclerViewAdapter(
-            PlaceholderContent.ITEMS,
+            listOfProperty,
             onClickListener,
             onContextClickListener
         )
     }
 
     class SimpleItemRecyclerViewAdapter(
-        private val values: List<PlaceholderContent.PlaceholderItem>,
+        private val properties: List<Property>,
         private val onClickListener: View.OnClickListener,
         private val onContextClickListener: View.OnContextClickListener
     ) :
@@ -149,47 +122,20 @@ class ItemListFragment : Fragment() {
         }
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = values[position]
-            holder.idView.text = item.id
-            holder.contentView.text = item.content
+            val item = properties[position]
+            holder.idView.text = item.price.toString()
+            holder.contentView.text = item.toString()
 
             with(holder.itemView) {
-                tag = item
+                tag = item.id
                 setOnClickListener(onClickListener)
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     setOnContextClickListener(onContextClickListener)
                 }
-
-                setOnLongClickListener { v ->
-                    // Setting the item id as the clip data so that the drop target is able to
-                    // identify the id of the content
-                    val clipItem = ClipData.Item(item.id)
-                    val dragData = ClipData(
-                        v.tag as? CharSequence,
-                        arrayOf(ClipDescription.MIMETYPE_TEXT_PLAIN),
-                        clipItem
-                    )
-
-                    if (Build.VERSION.SDK_INT >= 24) {
-                        v.startDragAndDrop(
-                            dragData,
-                            View.DragShadowBuilder(v),
-                            null,
-                            0
-                        )
-                    } else {
-                        v.startDrag(
-                            dragData,
-                            View.DragShadowBuilder(v),
-                            null,
-                            0
-                        )
-                    }
-                }
             }
         }
 
-        override fun getItemCount() = values.size
+        override fun getItemCount() = properties.size
 
         inner class ViewHolder(binding: ItemListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {

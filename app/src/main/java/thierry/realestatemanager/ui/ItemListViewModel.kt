@@ -7,8 +7,7 @@ import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class MainActivityViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
+class ItemListViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
     var allProperty = localDatabaseRepository.allProperty().asLiveData()
 }
-
