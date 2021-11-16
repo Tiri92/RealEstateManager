@@ -62,7 +62,7 @@ class ItemDetailFragment : Fragment() {
 
         viewModel.allProperty.observe(viewLifecycleOwner) { listOfProperty ->
 
-            val property: Property? = listOfProperty.find { it.id == item?.toInt() }
+            val property: Property? = listOfProperty.find { it.id.toString() == item }
 
             if (property != null) {
                 toolbarLayout = binding.toolbarLayout
