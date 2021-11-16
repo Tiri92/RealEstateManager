@@ -1,4 +1,4 @@
-package thierry.realestatemanager;
+package thierry.realestatemanager.utils;
 
 import android.content.Context;
 import android.net.wifi.WifiManager;

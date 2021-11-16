@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentItemListBinding
@@ -124,7 +126,12 @@ class ItemListFragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = properties[position]
             holder.idView.text = item.price.toString()
-            holder.contentView.text = item.toString()
+            holder.contentView.text = item.price.toString()
+
+            Glide.with(holder.itemView)
+                .load(R.drawable.property_drawable)
+                .centerCrop()
+                .into(holder.image)
 
             with(holder.itemView) {
                 tag = item.id
@@ -139,8 +146,9 @@ class ItemListFragment : Fragment() {
 
         inner class ViewHolder(binding: ItemListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val idView: TextView = binding.idText
-            val contentView: TextView = binding.content
+            val idView: TextView = binding.propertyPrice
+            val contentView: TextView = binding.propertyType
+            val image: ImageView = binding.propertyPicture
         }
 
     }
