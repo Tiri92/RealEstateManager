@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.CollapsingToolbarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
@@ -48,8 +50,10 @@ class ItemDetailFragment : Fragment() {
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
                 item = it.getString(ARG_ITEM_ID)
+
             }
         }
+
     }
 
     override fun onCreateView(
@@ -59,6 +63,8 @@ class ItemDetailFragment : Fragment() {
 
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
+
+        val recyclerView: RecyclerView? = binding.recyclerviewDetailTablet
 
         viewModel.allProperty.observe(viewLifecycleOwner) { listOfProperty ->
 
@@ -72,7 +78,16 @@ class ItemDetailFragment : Fragment() {
 
         }
 
+        val listOfPhoto = listOf<Property>(Property(price = 12),Property(price = 15))
+        recyclerView?.let { setUpRecyclerView(it, listOfPhoto) }
+
         return rootView
+    }
+
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPhoto: Any) {
+        val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = myLayoutManager
+        recyclerView.adapter = ItemDetailAdapter()
     }
 
     private fun updateContent(text: String) {

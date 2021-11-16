@@ -33,10 +33,12 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         app:defaultNavHost="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/guideline"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:navGraph="@navigation/primary_details_sub_nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
