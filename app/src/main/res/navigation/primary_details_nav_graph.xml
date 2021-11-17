@@ -23,4 +23,9 @@
             android:defaultValue=""
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/addAndUpdateProperty"
+        android:name="thierry.realestatemanager.ui.AddAndUpdateProperty"
+        android:label="fragment_add_and_update_property"
+        tools:layout="@layout/fragment_add_and_update_property" />
 </navigation>
