@@ -51,7 +51,7 @@ class ItemListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView: RecyclerView = binding.itemList
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentList
 
         // Leaving this not using view binding as it relies on if the view is visible the current
         // layout configuration (layout, layout-sw600dp)
@@ -125,13 +125,14 @@ class ItemListFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val item = properties[position]
-            holder.idView.text = item.price.toString()
-            holder.contentView.text = item.price.toString()
+            holder.propertyPrice.text = item.price.toString()
+            holder.propertyType.text = "House"
+            holder.propertyTown.text = "Paris"
 
             Glide.with(holder.itemView)
                 .load(R.drawable.property_drawable)
                 .centerCrop()
-                .into(holder.image)
+                .into(holder.propertyPhoto)
 
             with(holder.itemView) {
                 tag = item.id
@@ -146,9 +147,10 @@ class ItemListFragment : Fragment() {
 
         inner class ViewHolder(binding: ItemListContentBinding) :
             RecyclerView.ViewHolder(binding.root) {
-            val idView: TextView = binding.propertyPrice
-            val contentView: TextView = binding.propertyType
-            val image: ImageView = binding.propertyPicture
+            val propertyPrice: TextView = binding.propertyPrice
+            val propertyType: TextView = binding.propertyType
+            val propertyTown: TextView = binding.propertyTown
+            val propertyPhoto: ImageView = binding.propertyPicture
         }
 
     }

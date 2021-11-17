@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
 import thierry.realestatemanager.model.Property
@@ -31,10 +30,9 @@ class ItemDetailFragment : Fragment() {
 
     private var item: String? = null
 
-    private lateinit var itemDetailTextView: TextView
-    private var toolbarLayout: CollapsingToolbarLayout? = null
 
     private var _binding: FragmentItemDetailBinding? = null
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -64,39 +62,51 @@ class ItemDetailFragment : Fragment() {
         _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
-        val recyclerView: RecyclerView? = binding.recyclerviewDetailTablet
+        val recyclerView: RecyclerView? = binding.recyclerviewFragmentDetail
+
+        val mediaTitle: TextView? = binding.mediaTitle
+        val propertyDescriptionTitle: TextView? = binding.propertyDescriptionTitle
+        val propertyDescription: TextView? = binding.propertyDescription
+        val propertySurface: TextView? = binding.propertySurface
+        val propertySurfaceValue: TextView? = binding.propertySurfaceValue
+        val numberOfRooms: TextView? = binding.numberOfRooms
+        val numberOfRoomsValue: TextView? = binding.numberOfRoomsValue
+        val numberOfBathrooms: TextView? = binding.numberOfBathrooms
+        val numberOfBathroomsValue: TextView? = binding.numberOfBathroomsValue
+        val numberOfBedrooms: TextView? = binding.numberOfBedrooms
+        val numberOfBedroomsValue: TextView? = binding.numberOfBedroomsValue
+
 
         viewModel.allProperty.observe(viewLifecycleOwner) { listOfProperty ->
 
             val property: Property? = listOfProperty.find { it.id.toString() == item }
 
             if (property != null) {
-                toolbarLayout = binding.toolbarLayout
-                itemDetailTextView = binding.itemDetail
-                updateContent(property.price.toString())
+                propertyDescription!!.text = "How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."
+                mediaTitle!!.text = "Media"
+                propertyDescriptionTitle!!.text = "Description"
+                propertySurface!!.text = "Surface"
+                propertySurfaceValue!!.text = "750 sq m"
+                numberOfRooms!!.text = "Number of rooms"
+                numberOfRoomsValue!!.text = "8"
+                numberOfBathrooms!!.text = "Number of bathrooms"
+                numberOfBathroomsValue!!.text = "2"
+                numberOfBedrooms!!.text = "Number of bedrooms"
+                numberOfBedroomsValue!!.text = "4"
             }
 
         }
 
-        val listOfPhoto = listOf<Property>(Property(price = 12),Property(price = 15))
-        recyclerView?.let { setUpRecyclerView(it, listOfPhoto) }
+        val listOfPropertyPhoto = listOf<Property>(Property(price = 12),Property(price = 15))
+        recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
 
         return rootView
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPhoto: Any) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: Any) {
         val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
         recyclerView.adapter = ItemDetailAdapter()
-    }
-
-    private fun updateContent(text: String) {
-        toolbarLayout?.title = item
-
-        // Show the placeholder content as text in a TextView.
-        item?.let {
-            itemDetailTextView.text = text
-        }
     }
 
     companion object {

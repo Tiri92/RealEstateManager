@@ -20,7 +20,7 @@ class ItemDetailAdapter: RecyclerView.Adapter<ItemDetailAdapter.ViewHolder>() {
         Glide.with(holder.itemView)
             .load(R.drawable.property_drawable)
             .centerCrop()
-            .into(holder.image)
+            .into(holder.propertyPictures)
 
     }
 
@@ -30,7 +30,7 @@ class ItemDetailAdapter: RecyclerView.Adapter<ItemDetailAdapter.ViewHolder>() {
 
     class ViewHolder(binding: View):
         RecyclerView.ViewHolder(binding.rootView){
-        val image: ImageView = binding.findViewById(R.id.propertyPictures)
+        val propertyPictures: ImageView = binding.findViewById(R.id.propertyPictures)
     }
 
 }
