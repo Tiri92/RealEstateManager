@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import thierry.realestatemanager.R
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.utils.Utils
 
 class ItemListAdapter(
     private val properties: List<Property>,
@@ -26,7 +27,8 @@ class ItemListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = properties[position]
-        holder.propertyPrice.text = item.price.toString()
+        val formattedPrice: String? = Utils.formatThePrice(item.price)
+        holder.propertyPrice.text = formattedPrice.toString()
         holder.propertyType.text = "House"
         holder.propertyTown.text = "Paris"
 

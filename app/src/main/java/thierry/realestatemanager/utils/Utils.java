@@ -4,14 +4,24 @@ import android.content.Context;
 import android.net.wifi.WifiManager;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.Currency;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Philippe on 21/02/2018.
  */
 
 public class Utils {
+
+    public static String formatThePrice(int price) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance(Locale.FRANCE));
+        return  format.format(price);
+    }
 
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
