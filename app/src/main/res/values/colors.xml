@@ -12,4 +12,6 @@
     <color name="gold">#c8a97e</color>
     <color name="gray">#757575</color>
     <color name="grayTransparent">#E6595c5d</color>
+    <color name="blackTransparent">#80595C5d</color>
+
 </resources>
