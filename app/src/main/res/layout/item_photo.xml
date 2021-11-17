@@ -42,11 +42,13 @@
                     app:srcCompat="@mipmap/ic_launcher" />
 
                 <TextView
+                    android:id="@+id/property_pictures_names"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
+                    android:textSize="16sp"
                     android:padding="16dp"
                     android:text="Bedroom"
+                    android:textColor="@color/white"
                     android:layout_marginStart="8dp"
                     android:background="@color/blackTransparent"
                     android:layout_gravity="bottom">
