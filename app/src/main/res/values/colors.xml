@@ -8,5 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="Transparent">#00000000</color>
-    <color name="Gold">#c8a97e</color>
+
+    <color name="gold">#c8a97e</color>
+    <color name="gray">#757575</color>
+    <color name="grayTransparent">#E6595c5d</color>
 </resources>
