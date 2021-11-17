@@ -1,22 +1,17 @@
 package thierry.realestatemanager.ui
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentItemListBinding
-import thierry.realestatemanager.databinding.ItemListContentBinding
 import thierry.realestatemanager.model.Property
 
 /**
@@ -89,6 +84,7 @@ class ItemListFragment : Fragment() {
             ).show()
             true
         }
+
         viewModel.allProperty.observe(viewLifecycleOwner) { property ->
             setupRecyclerView(recyclerView, onClickListener, onContextClickListener, property)
         }
@@ -101,62 +97,16 @@ class ItemListFragment : Fragment() {
         listOfProperty: List<Property>
     ) {
 
-        recyclerView.adapter = SimpleItemRecyclerViewAdapter(
+        recyclerView.adapter = ItemListAdapter(
             listOfProperty,
             onClickListener,
             onContextClickListener
         )
     }
 
-    class SimpleItemRecyclerViewAdapter(
-        private val properties: List<Property>,
-        private val onClickListener: View.OnClickListener,
-        private val onContextClickListener: View.OnContextClickListener
-    ) :
-        RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-            val binding =
-                ItemListContentBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-            return ViewHolder(binding)
-
-        }
-
-        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-            val item = properties[position]
-            holder.propertyPrice.text = item.price.toString()
-            holder.propertyType.text = "House"
-            holder.propertyTown.text = "Paris"
-
-            Glide.with(holder.itemView)
-                .load(R.drawable.property_drawable)
-                .centerCrop()
-                .into(holder.propertyPhoto)
-
-            with(holder.itemView) {
-                tag = item.id
-                setOnClickListener(onClickListener)
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    setOnContextClickListener(onContextClickListener)
-                }
-            }
-        }
-
-        override fun getItemCount() = properties.size
-
-        inner class ViewHolder(binding: ItemListContentBinding) :
-            RecyclerView.ViewHolder(binding.root) {
-            val propertyPrice: TextView = binding.propertyPrice
-            val propertyType: TextView = binding.propertyType
-            val propertyTown: TextView = binding.propertyTown
-            val propertyPhoto: ImageView = binding.propertyPicture
-        }
-
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
