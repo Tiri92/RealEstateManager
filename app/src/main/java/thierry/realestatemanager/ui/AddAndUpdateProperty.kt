@@ -5,12 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import thierry.realestatemanager.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import thierry.realestatemanager.databinding.FragmentAddAndUpdatePropertyBinding
+import thierry.realestatemanager.databinding.FragmentItemDetailBinding
+import thierry.realestatemanager.model.Property
 
 /**
  * A simple [Fragment] subclass.
@@ -18,43 +18,43 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class AddAndUpdateProperty : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    private var _binding: FragmentAddAndUpdatePropertyBinding? = null
+
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_and_update_property, container, false)
+        _binding = FragmentAddAndUpdatePropertyBinding.inflate(inflater, container, false)
+        val rootView = binding.root
+
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
+        val listOfPropertyPhoto = listOf<Property>(Property(price = 12), Property(price = 15))
+        recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+
+
+        return rootView
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AddAndUpdateProperty.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AddAndUpdateProperty().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: Any) {
+        val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView!!.layoutManager = myLayoutManager
+        recyclerView.adapter = AddAndUpdateAdapter()
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
 }

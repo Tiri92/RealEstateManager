@@ -37,16 +37,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title" />
 
-        <ImageView
-            android:id="@+id/main_photo"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_fragment_add_and_update"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/property_drawable"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/underline_of_title" />
+            app:layout_constraintTop_toBottomOf="@id/underline_of_title"
+            android:orientation="horizontal"
+            android:layout_margin="8dp"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_main_photo"
@@ -57,7 +55,7 @@
             android:text="Add a main photo"
             android:textColor="@color/gold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/main_photo" />
+            app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
 
         <TextView
             android:id="@+id/type_of_property_title"
@@ -104,28 +102,6 @@
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <ImageView
-            android:id="@+id/others_photos"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="40dp"
-            android:background="@drawable/property_drawable"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/button_for_others_photos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
-            android:text="Add others photos"
-            android:textColor="@color/gold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/others_photos" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/rooms"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -135,7 +111,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_for_others_photos">
+            app:layout_constraintTop_toBottomOf="@+id/price">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/rooms_edit_text"
