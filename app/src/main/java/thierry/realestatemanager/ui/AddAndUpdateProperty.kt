@@ -1,15 +1,17 @@
 package thierry.realestatemanager.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.AppCompatButton
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddAndUpdatePropertyBinding
-import thierry.realestatemanager.databinding.FragmentItemDetailBinding
 import thierry.realestatemanager.model.Property
 
 /**
@@ -20,7 +22,6 @@ import thierry.realestatemanager.model.Property
 class AddAndUpdateProperty : Fragment() {
 
     private var _binding: FragmentAddAndUpdatePropertyBinding? = null
-
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -37,6 +38,19 @@ class AddAndUpdateProperty : Fragment() {
     ): View? {
         _binding = FragmentAddAndUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+
+        val imageView: ImageView = binding.imageview
+        val getImage = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback {
+                imageView.setImageURI(it)
+            }
+        )
+
+        val photoButton: AppCompatButton = binding.buttonForMainPhoto
+        photoButton.setOnClickListener(View.OnClickListener {
+            getImage.launch("image/*")
+        })
 
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
         val listOfPropertyPhoto = listOf<Property>(Property(price = 12), Property(price = 15))
