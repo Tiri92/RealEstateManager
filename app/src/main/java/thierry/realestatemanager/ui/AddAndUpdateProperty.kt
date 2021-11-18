@@ -47,7 +47,8 @@ class AddAndUpdateProperty : Fragment() {
     }
 
     private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: Any) {
-        val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val myLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = myLayoutManager
         recyclerView.adapter = AddAndUpdateAdapter()
     }
