@@ -57,12 +57,14 @@ class AddAndUpdateProperty : Fragment() {
             ActivityResultCallback {
                 imageView.setImageURI(it)
                 val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                    context?.applicationContext?.contentResolver,
-                    it
-                )
-                if (bitmap != null) {
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                if (it != null) {
+                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                        context?.applicationContext?.contentResolver,
+                        it
+                    )
+                    if (bitmap != null) {
+                        savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                    }
                 }
             }
         )
