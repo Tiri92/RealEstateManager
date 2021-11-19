@@ -85,6 +85,13 @@ class ItemListFragment : Fragment() {
             true
         }
 
+        //TODO Get list of photos
+        /*viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
+            var test: List<PropertyWithPhoto> = propertyPhoto
+            val testview = binding.test
+            testview!!.text = test[2].Photolist[1].uri
+        }*/
+
         viewModel.allProperty.observe(viewLifecycleOwner) { property ->
             setupRecyclerView(recyclerView, onClickListener, onContextClickListener, property)
         }

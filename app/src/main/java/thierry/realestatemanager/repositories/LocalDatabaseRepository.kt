@@ -9,4 +9,6 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     fun allProperty() = propertyDao.getProperty()
 
+    fun allPropertyPhoto() = propertyDao.getPropertyPhoto()
+
 }

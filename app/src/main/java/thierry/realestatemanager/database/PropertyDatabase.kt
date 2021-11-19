@@ -7,11 +7,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import thierry.realestatemanager.database.dao.PropertyDao
 import thierry.realestatemanager.di.ApplicationScope
+import thierry.realestatemanager.model.Address
+import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
 import javax.inject.Inject
 import javax.inject.Provider
 
-@Database(entities = [Property::class], version = 1, exportSchema = false)
+@Database(entities = [Property::class, Photo::class], version = 1, exportSchema = false)
 abstract class PropertyDatabase : RoomDatabase() {
 
     abstract fun propertyDao(): PropertyDao
@@ -26,9 +28,11 @@ abstract class PropertyDatabase : RoomDatabase() {
             val dao = database.get().propertyDao()
 
             applicationScope.launch {
-                dao.insert(Property(price = 17870000))
-                dao.insert(Property(price = 8430000))
-                dao.insert(Property(price = 41650000))
+                dao.insertProperty(Property(price = 17870000))
+                dao.insertProperty(Property(price = 8430000))
+                dao.insertProperty(Property(price = 41650000, address = Address(street = "31 Avenue André Morizet")))
+                dao.insertPropertyPhoto(Photo(propertyId = 3, uri = "test", photoName = "ça marche!"))
+                dao.insertPropertyPhoto(Photo(propertyId = 3, uri = "test", photoName = "ça marche encore plus!"))
             }
         }
     }
