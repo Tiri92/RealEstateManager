@@ -48,14 +48,23 @@
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_main_photo"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="80dp"
-            android:layout_marginEnd="80dp"
-            android:text="Add a main photo"
+            android:layout_marginStart="16dp"
+            android:text="Photo from Gallery"
             android:textColor="@color/gold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_for_main_photo_Camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:text="Photo from Camera"
+            android:textColor="@color/gold"
+            app:layout_constraintStart_toEndOf="@id/button_for_main_photo"
+            app:layout_constraintTop_toTopOf="@id/button_for_main_photo" />
 
         <TextView
             android:id="@+id/type_of_property_title"
