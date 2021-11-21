@@ -82,17 +82,17 @@ class ItemDetailFragment : Fragment() {
             val property: Property? = listOfProperty.find { it.id.toString() == item }
 
             if (property != null) {
-                propertyDescription!!.text = "How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."
+                propertyDescription!!.text = property.description
                 mediaTitle!!.text = "Media"
                 propertyDescriptionTitle!!.text = "Description"
                 propertySurface!!.text = "Surface"
-                propertySurfaceValue!!.text = "750 sq m"
+                propertySurfaceValue!!.text = property.surface.toString()
                 numberOfRooms!!.text = "Number of rooms"
-                numberOfRoomsValue!!.text = "8"
+                numberOfRoomsValue!!.text = property.numberOfRooms.toString()
                 numberOfBathrooms!!.text = "Number of bathrooms"
-                numberOfBathroomsValue!!.text = "2"
+                numberOfBathroomsValue!!.text = property.numberOfBathrooms.toString()
                 numberOfBedrooms!!.text = "Number of bedrooms"
-                numberOfBedroomsValue!!.text = "4"
+                numberOfBedroomsValue!!.text = property.numberOfBedrooms.toString()
             }
 
         }
