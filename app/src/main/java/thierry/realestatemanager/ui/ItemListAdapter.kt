@@ -29,8 +29,8 @@ class ItemListAdapter(
         val item = properties[position]
         val formattedPrice: String? = Utils.formatThePrice(item.price)
         holder.propertyPrice.text = formattedPrice.toString()
-        holder.propertyType.text = "House"
-        holder.propertyTown.text = "Paris"
+        holder.propertyType.text = item.type
+        holder.propertyTown.text = item.address!!.city
 
         Glide.with(holder.itemView)
             .load(R.drawable.property_drawable)

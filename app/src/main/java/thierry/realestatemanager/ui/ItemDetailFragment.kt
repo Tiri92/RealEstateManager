@@ -97,7 +97,7 @@ class ItemDetailFragment : Fragment() {
 
         }
 
-        val listOfPropertyPhoto = listOf<Property>(Property(price = 12),Property(price = 15))
+        val listOfPropertyPhoto = listOf<Property>(Property(price = 12, type = "Penthouse"),Property(price = 15, type = "Penthouse"))
         recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
 
         return rootView

@@ -9,6 +9,9 @@ data class Property(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val price: Int,
     @Embedded
-    val address: Address? = null
+    val address: Address? = null,
+    val type: String,
+    val isSold: Boolean? = null
+
 
 )

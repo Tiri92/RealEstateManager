@@ -1,6 +1,7 @@
 package thierry.realestatemanager.model
 
 data class Address (
-    val street: String?
+    val street: String?,
+    val city: String
 
 )

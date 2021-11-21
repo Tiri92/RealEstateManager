@@ -91,7 +91,7 @@ class AddAndUpdateProperty : Fragment() {
             }
 
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
-        val listOfPropertyPhoto = listOf<Property>(Property(price = 12), Property(price = 15))
+        val listOfPropertyPhoto = listOf<Property>(Property(price = 12, type = "Penthouse"), Property(price = 15, type = "Flat"))
         recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
 
 
