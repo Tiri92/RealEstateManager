@@ -11,7 +11,13 @@ data class Property(
     @Embedded
     val address: Address? = null,
     val type: String,
-    val isSold: Boolean? = null
+    val isSold: Boolean? = null,
+    val numberOfRooms: Int? = null,
+    val numberOfBedrooms: Int? = null,
+    val numberOfBathrooms: Int? = null,
+    val surface: Int? = null,
+    val description: String? = null
+
 
 
 )
