@@ -15,11 +15,12 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.databinding.FragmentAddAndUpdatePropertyBinding
-import thierry.realestatemanager.model.Property
-import java.io.File
+import thierry.realestatemanager.model.Photo
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,8 +30,10 @@ import java.util.*
  * Use the [AddAndUpdateProperty.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class AddAndUpdateProperty : Fragment() {
 
+    private val viewModel: AddAndUpdateViewModel by viewModels()
     private var _binding: FragmentAddAndUpdatePropertyBinding? = null
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -91,18 +94,20 @@ class AddAndUpdateProperty : Fragment() {
             }
 
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
-        val listOfPropertyPhoto = listOf<Property>(Property(price = 12, type = "Penthouse"), Property(price = 15, type = "Flat"))
-        recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
+            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
 
+            recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+        }
 
         return rootView
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: Any) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = myLayoutManager
-        recyclerView.adapter = AddAndUpdateAdapter()
+        recyclerView.adapter = AddAndUpdateAdapter(listOfPropertyPhoto)
     }
 
     private fun savePhotoToInternalMemory(filename: String, bmp: Bitmap): Boolean {
@@ -113,6 +118,14 @@ class AddAndUpdateProperty : Fragment() {
                 if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
                     throw IOException("erreur compression")
                 }
+                val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
+                viewModel.insertPhoto(
+                    photo = Photo(
+                        propertyId = 1,
+                        uri = uriPhoto,
+                        photoName = "nomdelaphoto"
+                    )
+                )
             }
             true
 
