@@ -6,6 +6,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import thierry.realestatemanager.model.Photo
+import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.PropertyWithPhoto
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
@@ -15,4 +17,6 @@ class AddAndUpdateViewModel @Inject constructor(private val localDatabaseReposit
     var allPropertyPhoto = localDatabaseRepository.allPropertyPhoto().asLiveData()
     fun insertPhoto(photo: Photo) =
         viewModelScope.launch { localDatabaseRepository.insertPropertyPhoto(photo) }
+    fun insertProperty(property: Property) =
+        viewModelScope.launch { localDatabaseRepository.insertProperty(property) }
 }
