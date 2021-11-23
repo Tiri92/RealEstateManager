@@ -1,15 +1,14 @@
 package thierry.realestatemanager.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
@@ -44,6 +43,8 @@ class ItemDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setHasOptionsMenu(true)
+
         arguments?.let {
             if (it.containsKey(ARG_ITEM_ID)) {
                 // Load the placeholder content specified by the fragment
@@ -54,6 +55,15 @@ class ItemDetailFragment : Fragment() {
             }
         }
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        if(item != "") {
+            menu.findItem(R.id.edit).isVisible = true
+        } else {
+            menu.findItem(R.id.edit).isVisible = false
+        }
     }
 
     override fun onCreateView(
@@ -81,7 +91,8 @@ class ItemDetailFragment : Fragment() {
 
         viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { listOfProperty ->
 
-            val property: PropertyWithPhoto? = listOfProperty.find { it.property.id.toString() == item }
+            val property: PropertyWithPhoto? =
+                listOfProperty.find { it.property.id.toString() == item }
 
             if (property != null) {
                 propertyDescription!!.text = property.property.description
@@ -107,7 +118,8 @@ class ItemDetailFragment : Fragment() {
     }
 
     private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
-        val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val myLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
         recyclerView.adapter = ItemDetailAdapter(listOfPropertyPhoto)
     }

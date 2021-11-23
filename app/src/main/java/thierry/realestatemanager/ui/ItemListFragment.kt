@@ -1,9 +1,7 @@
 package thierry.realestatemanager.ui
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -38,9 +36,16 @@ class ItemListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
+        setHasOptionsMenu(true)
+
         _binding = FragmentItemListBinding.inflate(inflater, container, false)
         return binding.root
 
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.edit).isVisible = false
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
