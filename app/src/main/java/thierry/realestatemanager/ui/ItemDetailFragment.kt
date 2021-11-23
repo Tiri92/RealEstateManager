@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
+import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.PropertyWithPhoto
 
 /**
  * A fragment representing a single Item detail screen.
@@ -77,36 +79,37 @@ class ItemDetailFragment : Fragment() {
         val numberOfBedroomsValue: TextView? = binding.numberOfBedroomsValue
 
 
-        viewModel.allProperty.observe(viewLifecycleOwner) { listOfProperty ->
+        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { listOfProperty ->
 
-            val property: Property? = listOfProperty.find { it.id.toString() == item }
+            val property: PropertyWithPhoto? = listOfProperty.find { it.property.id.toString() == item }
 
             if (property != null) {
-                propertyDescription!!.text = property.description
+                propertyDescription!!.text = property.property.description
                 mediaTitle!!.text = "Media"
                 propertyDescriptionTitle!!.text = "Description"
                 propertySurface!!.text = "Surface"
-                propertySurfaceValue!!.text = property.surface.toString()
+                propertySurfaceValue!!.text = property.property.surface.toString()
                 numberOfRooms!!.text = "Number of rooms"
-                numberOfRoomsValue!!.text = property.numberOfRooms.toString()
+                numberOfRoomsValue!!.text = property.property.numberOfRooms.toString()
                 numberOfBathrooms!!.text = "Number of bathrooms"
-                numberOfBathroomsValue!!.text = property.numberOfBathrooms.toString()
+                numberOfBathroomsValue!!.text = property.property.numberOfBathrooms.toString()
                 numberOfBedrooms!!.text = "Number of bedrooms"
-                numberOfBedroomsValue!!.text = property.numberOfBedrooms.toString()
+                numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
+
+                val listOfPropertyPhoto: List<Photo> = property.Photolist
+                recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
             }
 
-        }
 
-        val listOfPropertyPhoto = listOf<Property>(Property(price = 12, type = "Penthouse"),Property(price = 15, type = "Penthouse"))
-        recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+        }
 
         return rootView
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: Any) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
         val myLayoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = ItemDetailAdapter()
+        recyclerView.adapter = ItemDetailAdapter(listOfPropertyPhoto)
     }
 
     companion object {

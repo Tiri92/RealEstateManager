@@ -9,5 +9,5 @@ import javax.inject.Inject
 @HiltViewModel
 class ItemDetailViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
-    var allProperty = localDatabaseRepository.allProperty().asLiveData()
+    var allPropertyPhoto = localDatabaseRepository.allPropertyPhoto().asLiveData()
 }
