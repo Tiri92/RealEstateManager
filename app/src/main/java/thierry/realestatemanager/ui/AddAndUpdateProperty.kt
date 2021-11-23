@@ -5,22 +5,26 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.ImageView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
+import androidx.appcompat.widget.AppCompatSpinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
+import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddAndUpdatePropertyBinding
+import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Photo
+import thierry.realestatemanager.model.Property
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -36,6 +40,9 @@ class AddAndUpdateProperty : Fragment() {
     private val viewModel: AddAndUpdateViewModel by viewModels()
     private var _binding: FragmentAddAndUpdatePropertyBinding? = null
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private var listOfPhotoToSave = mutableListOf<String>()
+    lateinit var textS:String
+    lateinit var textS2:String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -52,6 +59,46 @@ class AddAndUpdateProperty : Fragment() {
     ): View? {
         _binding = FragmentAddAndUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+
+        setHasOptionsMenu(true)
+
+        val spinner: AppCompatSpinner = binding.typeOfPropertySpinner
+        val adapter = ArrayAdapter.createFromResource(requireContext(), R.array.PropertiesTypes, android.R.layout.simple_spinner_item )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = adapter
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                val text: String = parent?.getItemAtPosition(position).toString()
+                textS = text
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
+
+        val spinnerC: AppCompatSpinner = binding.countrySpinner
+        val adapterC = ArrayAdapter.createFromResource(requireContext(), R.array.Countries, android.R.layout.simple_spinner_item )
+        adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinnerC.adapter = adapterC
+        spinnerC.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                val text: String = parent?.getItemAtPosition(position).toString()
+                textS2 = text
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+
+            }
+        }
+
+        var saveButton: AppCompatButton = binding.saveButton
+        saveButton.setOnClickListener(View.OnClickListener {
+            viewModel.insertProperty(Property(price = binding.priceEditText.text.toString().toInt(), type = textS, address = Address(city = textS2, street = "31 Rue de l'égalité")))
+            for(item in listOfPhotoToSave) {
+                viewModel.insertPhoto(Photo(uri = item, propertyId = 2, photoName = "ça marhce"))
+            }
+        })
 
         //GALLERY
         val imageView: ImageView = binding.imageview
@@ -93,14 +140,20 @@ class AddAndUpdateProperty : Fragment() {
                 }
             }
 
-        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
-        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
-            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
-
-            recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
-        }
+//        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
+//        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
+//            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
+//
+//            recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+//        }
 
         return rootView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.findItem(R.id.edit).isVisible = false
+        menu.findItem(R.id.add).isVisible = false
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
@@ -119,6 +172,7 @@ class AddAndUpdateProperty : Fragment() {
                     throw IOException("erreur compression")
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
+                listOfPhotoToSave.add(uriPhoto)
                 viewModel.insertPhoto(
                     photo = Photo(
                         propertyId = 1,
