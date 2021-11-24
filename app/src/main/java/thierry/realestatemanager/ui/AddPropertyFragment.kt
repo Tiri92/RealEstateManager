@@ -148,12 +148,12 @@ class AddPropertyFragment : Fragment() {
                 }
             }
 
-//        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
-//        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
-//            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
-//
-//            recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
-//        }
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
+        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
+            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
+
+            recyclerView?.let { setUpRecyclerView(it, listOfPhotoToSave) }
+        }
 
         return rootView
     }
@@ -164,11 +164,11 @@ class AddPropertyFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: MutableList<String>) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = myLayoutManager
-        recyclerView.adapter = AddAndUpdateAdapter(listOfPropertyPhoto)
+        recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto)
     }
 
     private fun savePhotoToInternalMemory(filename: String, bmp: Bitmap): Boolean {
@@ -181,13 +181,7 @@ class AddPropertyFragment : Fragment() {
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
                 listOfPhotoToSave.add(uriPhoto)
-                viewModel.insertPhoto(
-                    photo = Photo(
-                        propertyId = 1,
-                        uri = uriPhoto,
-                        photoName = "nomdelaphoto"
-                    )
-                )
+
             }
             true
 

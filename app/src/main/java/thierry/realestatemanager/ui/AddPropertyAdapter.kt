@@ -19,7 +19,7 @@ class AddPropertyAdapter(private val listOfPropertyPhoto: MutableList<String>) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         Glide.with(holder.propertyPicturesAU)
-            .load(listOfPropertyPhoto[position].uri)
+            .load(listOfPropertyPhoto[position])
             .centerCrop()
             .into(holder.propertyPicturesAU)
 
