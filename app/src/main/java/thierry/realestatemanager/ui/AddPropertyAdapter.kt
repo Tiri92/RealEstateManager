@@ -3,15 +3,12 @@ package thierry.realestatemanager.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.annotation.NonNull
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.ItemAddAndUpdatePhotoBinding
-import thierry.realestatemanager.model.Photo
 
-class AddAndUpdateAdapter(private val listOfPropertyPhoto: List<Photo>) :
-    RecyclerView.Adapter<AddAndUpdateAdapter.ViewHolder>() {
+class AddPropertyAdapter(private val listOfPropertyPhoto: MutableList<String>) :
+    RecyclerView.Adapter<AddPropertyAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =

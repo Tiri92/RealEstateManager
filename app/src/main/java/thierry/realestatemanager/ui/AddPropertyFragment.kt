@@ -6,9 +6,7 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.ImageView
+import android.widget.*
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -19,9 +17,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
-import thierry.realestatemanager.databinding.FragmentAddAndUpdatePropertyBinding
+import thierry.realestatemanager.databinding.FragmentAddPropertyBinding
 import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
@@ -31,14 +30,14 @@ import java.util.*
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AddAndUpdateProperty.newInstance] factory method to
+ * Use the [AddPropertyFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class AddAndUpdateProperty : Fragment() {
+class AddPropertyFragment : Fragment() {
 
-    private val viewModel: AddAndUpdateViewModel by viewModels()
-    private var _binding: FragmentAddAndUpdatePropertyBinding? = null
+    private val viewModel: AddPropertyViewModel by viewModels()
+    private var _binding: FragmentAddPropertyBinding? = null
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var listOfPhotoToSave = mutableListOf<String>()
     lateinit var textS:String
@@ -57,7 +56,7 @@ class AddAndUpdateProperty : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentAddAndUpdatePropertyBinding.inflate(inflater, container, false)
+        _binding = FragmentAddPropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
         setHasOptionsMenu(true)
@@ -91,6 +90,15 @@ class AddAndUpdateProperty : Fragment() {
 
             }
         }
+
+        val isSoldButton: SwitchMaterial = binding.isSoldSwitch
+        isSoldButton.setOnClickListener(View.OnClickListener {
+            if(isSoldButton.isChecked) {
+                Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
+            }
+        })
 
         var saveButton: AppCompatButton = binding.saveButton
         saveButton.setOnClickListener(View.OnClickListener {

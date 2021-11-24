@@ -12,7 +12,7 @@ import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class AddAndUpdateViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
+class AddPropertyViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
     var allPropertyPhoto = localDatabaseRepository.allPropertyPhoto().asLiveData()
     fun insertPhoto(photo: Photo) =
