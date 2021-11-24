@@ -25,7 +25,13 @@
     </fragment>
     <fragment
         android:id="@+id/add"
-        android:name="thierry.realestatemanager.ui.AddAndUpdateProperty"
+        android:name="thierry.realestatemanager.ui.AddPropertyFragment"
         android:label="fragment_add_and_update_property"
-        tools:layout="@layout/fragment_add_and_update_property" />
+        tools:layout="@layout/fragment_add_property" />
+    <fragment
+        android:id="@+id/edit"
+        android:name="thierry.realestatemanager.ui.UpdatePropertyFragment"
+        android:label="fragment_add_and_update_property"
+        tools:layout="@layout/fragment_update_property" />
+
 </navigation>
