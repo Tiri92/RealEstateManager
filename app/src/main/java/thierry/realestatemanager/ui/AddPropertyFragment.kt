@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.activity.result.ActivityResult
@@ -17,6 +18,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
@@ -100,12 +103,20 @@ class AddPropertyFragment : Fragment() {
             }
         })
 
+        fun chipsTest() {
+        val valChipGroupMulti : ChipGroup? = binding.chipGroupMulti
+        valChipGroupMulti?.checkedChipIds?.forEach {
+            val chip = binding.chipGroupMulti.findViewById<Chip>(it).text.toString()
+            Log.i("[CHIP]", "chip $chip.")
+        }}
+
         var saveButton: AppCompatButton = binding.saveButton
         saveButton.setOnClickListener(View.OnClickListener {
             viewModel.insertProperty(Property(price = binding.priceEditText.text.toString().toInt(), type = textS, address = Address(city = textS2, street = "31 Rue de l'égalité")))
             for(item in listOfPhotoToSave) {
                 viewModel.insertPhoto(Photo(uri = item, propertyId = 2, photoName = "ça marhce"))
             }
+            chipsTest()
         })
 
         //GALLERY
