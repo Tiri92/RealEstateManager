@@ -37,12 +37,12 @@ import java.util.*
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class AddPropertyFragment : Fragment() {
+class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment() {
 
     private val viewModel: AddPropertyViewModel by viewModels()
     private var _binding: FragmentAddPropertyBinding? = null
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    private var listOfPhotoToSave = mutableListOf<String>()
+    private var listOfPhotoToSave = mutableListOf<Photo>()
     lateinit var textS:String
     lateinit var textS2:String
 
@@ -61,6 +61,8 @@ class AddPropertyFragment : Fragment() {
     ): View? {
         _binding = FragmentAddPropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
 
         setHasOptionsMenu(true)
 
@@ -114,7 +116,7 @@ class AddPropertyFragment : Fragment() {
         saveButton.setOnClickListener(View.OnClickListener {
             viewModel.insertProperty(Property(price = binding.priceEditText.text.toString().toInt(), type = textS, address = Address(city = textS2, street = "31 Rue de l'égalité")))
             for(item in listOfPhotoToSave) {
-                viewModel.insertPhoto(Photo(uri = item, propertyId = 2, photoName = "ça marhce"))
+                viewModel.insertPhoto(Photo(uri = item.uri, propertyId = 2, photoName = item.photoName))
             }
             chipsTest()
         })
@@ -132,7 +134,7 @@ class AddPropertyFragment : Fragment() {
                         it
                     )
                     if (bitmap != null) {
-                        savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                        savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
                     }
                 }
             }
@@ -154,12 +156,11 @@ class AddPropertyFragment : Fragment() {
                     var bitmap = result!!.data!!.extras!!.get("data") as Bitmap
                     binding.imageview.setImageBitmap(bitmap)
                     val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                    savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
                 } else {
                 }
             }
 
-        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
         viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
             var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
 
@@ -175,14 +176,14 @@ class AddPropertyFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: MutableList<String>) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: MutableList<Photo>) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = myLayoutManager
-        recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto)
+        recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto, this)
     }
 
-    private fun savePhotoToInternalMemory(filename: String, bmp: Bitmap): Boolean {
+    private fun savePhotoToInternalMemory(filename: String, bmp: Bitmap, recyclerView: RecyclerView): Boolean {
         return try {
             context?.openFileOutput("$filename.jpg", Activity.MODE_PRIVATE).use { stream ->
 
@@ -191,7 +192,8 @@ class AddPropertyFragment : Fragment() {
                     throw IOException("erreur compression")
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
-                listOfPhotoToSave.add(uriPhoto)
+                listOfPhotoToSave.add(Photo(propertyId = 2, uri = uriPhoto, photoName = ""))
+                recyclerView.adapter!!.notifyDataSetChanged()
 
             }
             true
@@ -205,6 +207,10 @@ class AddPropertyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDescriptionPhotoChanged(description: String, uri: String) {
+        listOfPhotoToSave.find { it.uri == uri }?.photoName = description
     }
 
 }

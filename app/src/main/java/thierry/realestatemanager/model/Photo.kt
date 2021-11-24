@@ -8,5 +8,5 @@ data class Photo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val propertyId: Int,
     val uri: String,
-    val photoName: String
+    var photoName: String
 )
