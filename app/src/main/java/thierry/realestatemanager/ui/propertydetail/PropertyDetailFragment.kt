@@ -106,7 +106,7 @@ class PropertyDetailFragment : Fragment() {
                 numberOfBedrooms!!.text = "Number of bedrooms"
                 numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
 
-                val listOfPropertyPhoto: List<Photo> = property.photolist
+                val listOfPropertyPhoto: List<Photo> = property.photoList
                 recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
             }
 

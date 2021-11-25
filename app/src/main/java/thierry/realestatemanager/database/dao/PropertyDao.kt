@@ -21,6 +21,10 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table")
     fun getPropertyVideo(): Flow<List<PropertyWithVideo>>
 
+    @Transaction
+    @Query("SELECT * FROM points_of_interest_table")
+    fun getPropertyPointsOfInterest(): Flow<List<PointsOfInterest>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
 
@@ -29,6 +33,9 @@ interface PropertyDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPropertyVideo(video: Video)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPropertyPointsOfInterest(pointsOfInterest: PointsOfInterest)
 
     @Update
     suspend fun update(property: Property)

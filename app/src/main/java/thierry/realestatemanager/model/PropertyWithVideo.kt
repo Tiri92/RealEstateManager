@@ -9,5 +9,5 @@ data class PropertyWithVideo(
         parentColumn = "id",
         entityColumn = "propertyId"
     )
-    val videolist: List<Video>
+    val videoList: List<Video>
 )
