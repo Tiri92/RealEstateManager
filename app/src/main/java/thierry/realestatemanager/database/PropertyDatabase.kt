@@ -10,10 +10,11 @@ import thierry.realestatemanager.di.ApplicationScope
 import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.Video
 import javax.inject.Inject
 import javax.inject.Provider
 
-@Database(entities = [Property::class, Photo::class], version = 1, exportSchema = false)
+@Database(entities = [Property::class, Photo::class, Video::class], version = 1, exportSchema = false)
 abstract class PropertyDatabase : RoomDatabase() {
 
     abstract fun propertyDao(): PropertyDao
