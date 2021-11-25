@@ -2,9 +2,7 @@ package thierry.realestatemanager.database.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import thierry.realestatemanager.model.Photo
-import thierry.realestatemanager.model.Property
-import thierry.realestatemanager.model.PropertyWithPhoto
+import thierry.realestatemanager.model.*
 
 @Dao
 interface PropertyDao {
@@ -19,11 +17,18 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table")
     fun getPropertyPhoto(): Flow<List<PropertyWithPhoto>>
 
+    @Transaction
+    @Query("SELECT * FROM property_table")
+    fun getPropertyVideo(): Flow<List<PropertyWithVideo>>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPropertyPhoto(photo: Photo)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPropertyVideo(video: Video)
 
     @Update
     suspend fun update(property: Property)

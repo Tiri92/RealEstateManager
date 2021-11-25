@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.Video
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
@@ -17,6 +18,8 @@ class AddPropertyViewModel @Inject constructor(private val localDatabaseReposito
     var getLastIdPropertyTable = localDatabaseRepository.getLastIdPropertyTable().asLiveData()
     fun insertPhoto(photo: Photo) =
         viewModelScope.launch { localDatabaseRepository.insertPropertyPhoto(photo) }
+    fun insertVideo(video: Video) =
+        viewModelScope.launch { localDatabaseRepository.insertPropertyVideo(video) }
     fun insertProperty(property: Property) =
         viewModelScope.launch { localDatabaseRepository.insertProperty(property) }
 }
