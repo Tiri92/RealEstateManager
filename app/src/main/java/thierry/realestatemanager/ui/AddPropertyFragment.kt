@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddPropertyBinding
@@ -31,97 +30,73 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * A simple [Fragment] subclass.
- * Use the [AddPropertyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment() {
 
     private val viewModel: AddPropertyViewModel by viewModels()
     private var _binding: FragmentAddPropertyBinding? = null
-    lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
-    private var listOfPhotoToSave = mutableListOf<Photo>()
-    lateinit var textS: String
-    lateinit var textS2: String
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private var listOfPhotoToSave = mutableListOf<Photo>()
+    lateinit var resultPropertyTypeSpinner: String
+    lateinit var resultPropertyCountrySpinner: String
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddPropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
-
         setHasOptionsMenu(true)
 
-        val spinner: AppCompatSpinner = binding.typeOfPropertySpinner
-        val adapter = ArrayAdapter.createFromResource(
+        val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
+        val propertyTypeAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.PropertiesTypes,
             android.R.layout.simple_spinner_item
         )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.adapter = adapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        propertyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyTypeSpinner.adapter = propertyTypeAdapter
+        propertyTypeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 p1: View?,
                 position: Int,
                 p3: Long
             ) {
-                val text: String = parent?.getItemAtPosition(position).toString()
-                textS = text
+                val tSpinnerResult: String = parent?.getItemAtPosition(position).toString()
+                resultPropertyTypeSpinner = tSpinnerResult
             }
 
             override fun onNothingSelected(p0: AdapterView<*>?) {
-
             }
         }
 
-        val spinnerC: AppCompatSpinner = binding.countrySpinner
-        val adapterC = ArrayAdapter.createFromResource(
+        val propertyCountrySpinner: AppCompatSpinner = binding.countrySpinner
+        val propertyCountryAdapter = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.Countries,
             android.R.layout.simple_spinner_item
         )
-        adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerC.adapter = adapterC
-        spinnerC.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                p1: View?,
-                position: Int,
-                p3: Long
-            ) {
-                val text: String = parent?.getItemAtPosition(position).toString()
-                textS2 = text
-            }
+        propertyCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyCountrySpinner.adapter = propertyCountryAdapter
+        propertyCountrySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long
+                ) {
+                    val cSpinnerResult: String = parent?.getItemAtPosition(position).toString()
+                    resultPropertyCountrySpinner = cSpinnerResult
+                }
 
-            override fun onNothingSelected(p0: AdapterView<*>?) {
-
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
             }
-        }
-
-        val isSoldButton: SwitchMaterial = binding.isSoldSwitch
-        isSoldButton.setOnClickListener(View.OnClickListener {
-            if (isSoldButton.isChecked) {
-                Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
-            }
-        })
 
         fun chipsTest() {
             val valChipGroupMulti: ChipGroup? = binding.chipGroupMulti
@@ -131,16 +106,24 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             }
         }
 
-        viewModel.getLastIdTable.observe(viewLifecycleOwner) {
-            var lastIndex: Int = it
+        viewModel.getLastIdPropertyTable.observe(viewLifecycleOwner) {
+            val lastIndex: Int = it
 
-            var saveButton: AppCompatButton = binding.saveButton
+            val saveButton: AppCompatButton = binding.saveButton
             saveButton.setOnClickListener(View.OnClickListener {
                 viewModel.insertProperty(
                     Property(
                         price = binding.priceEditText.text.toString().toInt(),
-                        type = textS,
-                        address = Address(city = textS2, street = "31 Rue de l'égalité")
+                        type = resultPropertyTypeSpinner,
+                        address = Address(
+                            city = resultPropertyCountrySpinner,
+                            street = binding.streetEditText.text.toString()
+                        ),
+                        numberOfRooms = binding.roomsEditText.text.toString().toInt(),
+                        numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
+                        numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
+                        surface = binding.surfaceEditText.text.toString().toInt(),
+                        description = binding.descriptionEditText.text.toString()
                     )
                 )
                 for (item in listOfPhotoToSave) {
@@ -156,51 +139,41 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             })
         }
 
-        //GALLERY
-        val imageView: ImageView = binding.imageview
-        val getImage = registerForActivityResult(
+        //PHOTO FROM GALLERY
+        val getImageFromGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback {
-                imageView.setImageURI(it)
                 val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                 if (it != null) {
                     val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
                         context?.applicationContext?.contentResolver,
                         it
                     )
-                    if (bitmap != null) {
-                        savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
-                    }
+                    savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
                 }
             }
         )
-        val photoButton: AppCompatButton = binding.buttonForMainPhoto
-        photoButton.setOnClickListener(View.OnClickListener {
-            getImage.launch("image/*")
+        val galleryPhotoButton: AppCompatButton = binding.buttonForGalleryPhoto
+        galleryPhotoButton.setOnClickListener(View.OnClickListener {
+            getImageFromGalleryLauncher.launch("image/*")
         })
 
-        //CAMERA
-        val cameraButton: AppCompatButton = binding.buttonForMainPhotoCamera
-        cameraButton.setOnClickListener(View.OnClickListener {
-            var intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            activityResultLauncher.launch(intent)
+        //PHOTO FROM CAMERA
+        val cameraPhotoButton: AppCompatButton = binding.buttonForCameraPhoto
+        cameraPhotoButton.setOnClickListener(View.OnClickListener {
+            val getImageFromCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            activityResultLauncher.launch(getImageFromCameraIntent)
         })
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
-                    var bitmap = result!!.data!!.extras!!.get("data") as Bitmap
-                    binding.imageview.setImageBitmap(bitmap)
+                    val bitmap = result.data!!.extras!!.get("data") as Bitmap
                     val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                     savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
-                } else {
                 }
             }
 
-        viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
-            var listOfPropertyPhoto: List<Photo> = propertyPhoto[0].Photolist
-
-            recyclerView?.let { setUpRecyclerView(it, listOfPhotoToSave) }
-        }
+        setUpRecyclerView(recyclerView, listOfPhotoToSave)
 
         return rootView
     }
@@ -217,7 +190,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerView!!.layoutManager = myLayoutManager
+        recyclerView.layoutManager = myLayoutManager
         recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto, this)
     }
 

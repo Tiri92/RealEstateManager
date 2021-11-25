@@ -13,7 +13,7 @@ interface PropertyDao {
     fun getProperty(): Flow<List<Property>>
 
     @Query("SELECT MAX(id) + 1 FROM property_table")
-    fun getLastIdTable(): Flow<Int>
+    fun getLastIdPropertyTable(): Flow<Int>
 
     @Transaction
     @Query("SELECT * FROM property_table")

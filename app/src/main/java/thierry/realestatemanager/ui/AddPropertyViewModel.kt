@@ -14,7 +14,7 @@ import javax.inject.Inject
 class AddPropertyViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
     var allPropertyPhoto = localDatabaseRepository.allPropertyPhoto().asLiveData()
-    var getLastIdTable = localDatabaseRepository.getLastIdTable().asLiveData()
+    var getLastIdPropertyTable = localDatabaseRepository.getLastIdPropertyTable().asLiveData()
     fun insertPhoto(photo: Photo) =
         viewModelScope.launch { localDatabaseRepository.insertPropertyPhoto(photo) }
     fun insertProperty(property: Property) =
