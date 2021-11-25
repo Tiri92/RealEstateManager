@@ -3,14 +3,16 @@ package thierry.realestatemanager.ui
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import thierry.realestatemanager.databinding.ItemAddAndUpdatePhotoBinding
 import thierry.realestatemanager.model.Photo
+import thierry.realestatemanager.model.Video
 
-class AddPropertyAdapter(private val listOfPropertyPhoto: MutableList<Photo>, callback: PhotoDescriptionChanged) :
+class AddPropertyAdapter(private val listOfPropertyPhoto: MutableList<Photo>, private val listOfPropertyVideo: MutableList<Video>,callback: PhotoDescriptionChanged) :
     RecyclerView.Adapter<AddPropertyAdapter.ViewHolder>() {
 
     private var callback: PhotoDescriptionChanged? = callback
