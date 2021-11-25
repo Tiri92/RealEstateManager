@@ -7,7 +7,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.*
-import android.widget.*
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.MediaController
+import android.widget.VideoView
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -26,6 +29,7 @@ import thierry.realestatemanager.databinding.FragmentAddPropertyBinding
 import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.Video
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +41,9 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     private var _binding: FragmentAddPropertyBinding? = null
     private val binding get() = _binding!!
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
     private var listOfPhotoToSave = mutableListOf<Photo>()
+    private var listOfVideoToSave = mutableListOf<Video>()
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
 
@@ -135,6 +141,15 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         )
                     )
                 }
+                for (item in listOfVideoToSave) {
+                    viewModel.insertVideo(
+                        Video(
+                            uri = item.uri,
+                            propertyId = lastIndex,
+                            videoDescription = item.videoDescription
+                        )
+                    )
+                }
                 chipsTest()
             })
         }
@@ -173,7 +188,56 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 }
             }
 
-        setUpRecyclerView(recyclerView, listOfPhotoToSave)
+        //VIDEO FROM CAMERA
+        val cameraVideoButton: AppCompatButton = binding.buttonForCameraVideo
+        cameraVideoButton.setOnClickListener(View.OnClickListener {
+            val getVideoFromCameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
+            activityResultLauncherForVideo.launch(getVideoFromCameraIntent)
+        })
+        activityResultLauncherForVideo =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
+                if (result!!.resultCode == Activity.RESULT_OK) {
+                    val videoView: VideoView = binding.videoViewCamera
+                    videoView.setVideoURI(result.data?.data)
+                    videoView.start()
+                    val mediaController = MediaController(requireContext())
+                    mediaController.setAnchorView(videoView)
+                    videoView.setMediaController(mediaController)
+                    listOfVideoToSave.add(
+                        Video(
+                            uri = result.data?.data.toString(),
+                            videoDescription = "ça marche",
+                            propertyId = 2
+                        )
+                    )
+                }
+            }
+
+        //VIDEO FROM GALlERY
+        val galleryVideoButton: AppCompatButton = binding.buttonForGalleryVideo
+        val getVideoFromGalleryLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
+                if (it != null) {
+                    val videoView: VideoView = binding.videoViewCamera
+                    videoView.setVideoURI(it)
+                    videoView.start()
+                    val mediaController = MediaController(requireContext())
+                    mediaController.setAnchorView(videoView)
+                    videoView.setMediaController(mediaController)
+                    listOfVideoToSave.add(
+                        Video(
+                            uri = it.toString(),
+                            videoDescription = "ça marche",
+                            propertyId = 2
+                        )
+                    )
+                }
+            })
+        galleryVideoButton.setOnClickListener(View.OnClickListener {
+            getVideoFromGalleryLauncher.launch("video/*")
+        })
+
+        setUpRecyclerView(recyclerView, listOfPhotoToSave, listOfVideoToSave)
 
         return rootView
     }
@@ -186,12 +250,13 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     private fun setUpRecyclerView(
         recyclerView: RecyclerView,
-        listOfPropertyPhoto: MutableList<Photo>
+        listOfPropertyPhoto: MutableList<Photo>,
+        listOfPropertyVideo: MutableList<Video>
     ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto, this)
+        recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto, listOfPropertyVideo, this)
     }
 
     private fun savePhotoToInternalMemory(
