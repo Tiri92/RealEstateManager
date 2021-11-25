@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentItemDetailBinding
 import thierry.realestatemanager.model.Photo
-import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.model.PropertyWithPhoto
 
 /**
@@ -107,7 +106,7 @@ class ItemDetailFragment : Fragment() {
                 numberOfBedrooms!!.text = "Number of bedrooms"
                 numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
 
-                val listOfPropertyPhoto: List<Photo> = property.Photolist
+                val listOfPropertyPhoto: List<Photo> = property.photolist
                 recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
             }
 
