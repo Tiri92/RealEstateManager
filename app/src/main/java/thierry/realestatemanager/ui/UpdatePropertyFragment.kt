@@ -5,7 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import thierry.realestatemanager.R
+import android.widget.Toast
+import com.google.android.material.switchmaterial.SwitchMaterial
+import thierry.realestatemanager.databinding.FragmentUpdatePropertyBinding
 
 
 /**
@@ -14,6 +16,11 @@ import thierry.realestatemanager.R
  * create an instance of this fragment.
  */
 class UpdatePropertyFragment : Fragment() {
+    private var _binding: FragmentUpdatePropertyBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,8 +31,24 @@ class UpdatePropertyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_property, container, false)
+        _binding = FragmentUpdatePropertyBinding.inflate(inflater, container, false)
+        val rootView = binding.root
+
+        val isSoldButton: SwitchMaterial = binding.isSoldSwitchU
+        isSoldButton.setOnClickListener(View.OnClickListener {
+            if(isSoldButton.isChecked) {
+                Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        return rootView
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
