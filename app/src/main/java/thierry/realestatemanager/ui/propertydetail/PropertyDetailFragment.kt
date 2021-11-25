@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertydetail
 
 import android.os.Bundle
 import android.view.*
@@ -9,20 +9,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
-import thierry.realestatemanager.databinding.FragmentItemDetailBinding
+import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Photo
 import thierry.realestatemanager.model.PropertyWithPhoto
 
 /**
  * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [ItemListFragment]
+ * This fragment is either contained in a [PropertyListFragment]
  * in two-pane mode (on larger screen devices) or self-contained
  * on handsets.
  */
 @AndroidEntryPoint
-class ItemDetailFragment : Fragment() {
+class PropertyDetailFragment : Fragment() {
 
-    private val viewModel: ItemDetailViewModel by viewModels()
+    private val viewModel: PropertyDetailViewModel by viewModels()
 
     /**
      * The placeholder content this fragment is presenting.
@@ -31,7 +31,7 @@ class ItemDetailFragment : Fragment() {
     private var item: String? = null
 
 
-    private var _binding: FragmentItemDetailBinding? = null
+    private var _binding: FragmentPropertyDetailBinding? = null
 
 
     // This property is only valid between onCreateView and
@@ -70,7 +70,7 @@ class ItemDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        _binding = FragmentItemDetailBinding.inflate(inflater, container, false)
+        _binding = FragmentPropertyDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
         val recyclerView: RecyclerView? = binding.recyclerviewFragmentDetail
@@ -120,7 +120,7 @@ class ItemDetailFragment : Fragment() {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = ItemDetailAdapter(listOfPropertyPhoto)
+        recyclerView.adapter = PropertyDetailAdapter(listOfPropertyPhoto)
     }
 
     companion object {

@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertylist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -10,7 +10,7 @@ import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class ItemListViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
+class PropertyListViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
     var allProperty = localDatabaseRepository.allProperty().asLiveData()
 }

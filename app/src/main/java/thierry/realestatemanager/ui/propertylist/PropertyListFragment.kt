@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertylist
 
 import android.os.Bundle
 import android.view.*
@@ -9,8 +9,9 @@ import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
-import thierry.realestatemanager.databinding.FragmentItemListBinding
+import thierry.realestatemanager.databinding.FragmentPropertyListBinding
 import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
 
 /**
  * A Fragment representing a list of Pings. This fragment
@@ -22,10 +23,10 @@ import thierry.realestatemanager.model.Property
  */
 
 @AndroidEntryPoint
-class ItemListFragment : Fragment() {
+class PropertyListFragment : Fragment() {
 
-    private val viewModel: ItemListViewModel by viewModels()
-    private var _binding: FragmentItemListBinding? = null
+    private val viewModel: PropertyListViewModel by viewModels()
+    private var _binding: FragmentPropertyListBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,7 +39,7 @@ class ItemListFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
-        _binding = FragmentItemListBinding.inflate(inflater, container, false)
+        _binding = FragmentPropertyListBinding.inflate(inflater, container, false)
         return binding.root
 
     }
@@ -55,7 +56,7 @@ class ItemListFragment : Fragment() {
 
         // Leaving this not using view binding as it relies on if the view is visible the current
         // layout configuration (layout, layout-sw600dp)
-        val itemDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
+        val propertyDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
 
         /** Click Listener to trigger navigation based on if you have
          * a single pane layout or two pane layout
@@ -64,12 +65,12 @@ class ItemListFragment : Fragment() {
             val item = itemView.tag
             val bundle = Bundle()
             bundle.putString(
-                ItemDetailFragment.ARG_ITEM_ID,
+                PropertyDetailFragment.ARG_ITEM_ID,
                 item.toString()
             )
-            if (itemDetailFragmentContainer != null) {
-                itemDetailFragmentContainer.findNavController()
-                    .navigate(R.id.fragment_item_detail, bundle)
+            if (propertyDetailFragmentContainer != null) {
+                propertyDetailFragmentContainer.findNavController()
+                    .navigate(R.id.fragment_property_detail, bundle)
             } else {
                 itemView.findNavController().navigate(R.id.show_item_detail, bundle)
             }
@@ -109,7 +110,7 @@ class ItemListFragment : Fragment() {
         listOfProperty: List<Property>
     ) {
 
-        recyclerView.adapter = ItemListAdapter(
+        recyclerView.adapter = PropertyListAdapter(
             listOfProperty,
             onClickListener,
             onContextClickListener

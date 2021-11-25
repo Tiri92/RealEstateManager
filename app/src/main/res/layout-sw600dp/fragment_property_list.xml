@@ -18,7 +18,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:context="com.example.masterdetail.ItemDetailHostActivity"
-        tools:listitem="@layout/item_list_content" />
+        tools:listitem="@layout/item_property_list_content" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

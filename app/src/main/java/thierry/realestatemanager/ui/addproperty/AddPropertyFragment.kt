@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.addproperty
 
 import android.app.Activity
 import android.content.Intent

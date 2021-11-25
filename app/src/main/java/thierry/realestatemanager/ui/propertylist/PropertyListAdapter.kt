@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertylist
 
 import android.os.Build
 import android.view.LayoutInflater
@@ -12,16 +12,16 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.utils.Utils
 
-class ItemListAdapter(
+class PropertyListAdapter(
     private val properties: List<Property>,
     private val onClickListener: View.OnClickListener,
     private val onContextClickListener: View.OnContextClickListener
 ) :
-    RecyclerView.Adapter<ItemListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<PropertyListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_list_content, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_property_list_content, parent, false)
         return ViewHolder(binding)
     }
 

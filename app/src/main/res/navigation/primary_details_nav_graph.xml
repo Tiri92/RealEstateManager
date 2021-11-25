@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/item_list_fragment">
+    app:startDestination="@id/property_list_fragment">
 
     <fragment
-        android:id="@+id/item_list_fragment"
-        android:name="thierry.realestatemanager.ui.ItemListFragment"
+        android:id="@+id/property_list_fragment"
+        android:name="thierry.realestatemanager.ui.propertylist.PropertyListFragment"
         android:label="@string/app_title">
         <action
             android:id="@+id/show_item_detail"
-            app:destination="@id/item_detail_fragment" />
+            app:destination="@id/property_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/item_detail_fragment"
-        android:name="thierry.realestatemanager.ui.ItemDetailFragment"
+        android:id="@+id/property_detail_fragment"
+        android:name="thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment"
         android:label="@string/app_title"
-        tools:layout="@layout/fragment_item_detail">
+        tools:layout="@layout/fragment_property_detail">
         <argument
             android:name="item_id"
             android:defaultValue=""
@@ -25,12 +25,12 @@
     </fragment>
     <fragment
         android:id="@+id/add"
-        android:name="thierry.realestatemanager.ui.AddPropertyFragment"
+        android:name="thierry.realestatemanager.ui.addproperty.AddPropertyFragment"
         android:label="fragment_add_and_update_property"
         tools:layout="@layout/fragment_add_property" />
     <fragment
         android:id="@+id/edit"
-        android:name="thierry.realestatemanager.ui.UpdatePropertyFragment"
+        android:name="thierry.realestatemanager.ui.updateproperty.UpdatePropertyFragment"
         android:label="fragment_add_and_update_property"
         tools:layout="@layout/fragment_update_property" />
 

@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.updateproperty
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

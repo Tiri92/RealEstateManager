@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertydetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -7,7 +7,7 @@ import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class ItemDetailViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
+class PropertyDetailViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
     var allPropertyPhoto = localDatabaseRepository.allPropertyPhoto().asLiveData()
 }

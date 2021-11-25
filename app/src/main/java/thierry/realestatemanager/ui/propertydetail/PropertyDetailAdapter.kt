@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.propertydetail
 
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +10,7 @@ import com.bumptech.glide.Glide
 import thierry.realestatemanager.R
 import thierry.realestatemanager.model.Photo
 
-class ItemDetailAdapter(private val listOfPropertyPhoto: List<Photo>): RecyclerView.Adapter<ItemDetailAdapter.ViewHolder>() {
+class PropertyDetailAdapter(private val listOfPropertyPhoto: List<Photo>): RecyclerView.Adapter<PropertyDetailAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)

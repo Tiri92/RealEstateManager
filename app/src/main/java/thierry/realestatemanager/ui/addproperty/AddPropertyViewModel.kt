@@ -1,4 +1,4 @@
-package thierry.realestatemanager.ui
+package thierry.realestatemanager.ui.addproperty
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
