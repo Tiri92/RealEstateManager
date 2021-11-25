@@ -37,14 +37,14 @@ import java.util.*
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment() {
+class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment() {
 
     private val viewModel: AddPropertyViewModel by viewModels()
     private var _binding: FragmentAddPropertyBinding? = null
     lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private var listOfPhotoToSave = mutableListOf<Photo>()
-    lateinit var textS:String
-    lateinit var textS2:String
+    lateinit var textS: String
+    lateinit var textS2: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -67,11 +67,20 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
         setHasOptionsMenu(true)
 
         val spinner: AppCompatSpinner = binding.typeOfPropertySpinner
-        val adapter = ArrayAdapter.createFromResource(requireContext(), R.array.PropertiesTypes, android.R.layout.simple_spinner_item )
+        val adapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.PropertiesTypes,
+            android.R.layout.simple_spinner_item
+        )
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinner.adapter = adapter
-        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
                 val text: String = parent?.getItemAtPosition(position).toString()
                 textS = text
             }
@@ -82,11 +91,20 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
         }
 
         val spinnerC: AppCompatSpinner = binding.countrySpinner
-        val adapterC = ArrayAdapter.createFromResource(requireContext(), R.array.Countries, android.R.layout.simple_spinner_item )
+        val adapterC = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Countries,
+            android.R.layout.simple_spinner_item
+        )
         adapterC.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerC.adapter = adapterC
-        spinnerC.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onItemSelected(parent: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+        spinnerC.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>?,
+                p1: View?,
+                position: Int,
+                p3: Long
+            ) {
                 val text: String = parent?.getItemAtPosition(position).toString()
                 textS2 = text
             }
@@ -98,7 +116,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
 
         val isSoldButton: SwitchMaterial = binding.isSoldSwitch
         isSoldButton.setOnClickListener(View.OnClickListener {
-            if(isSoldButton.isChecked) {
+            if (isSoldButton.isChecked) {
                 Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
@@ -106,20 +124,37 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
         })
 
         fun chipsTest() {
-        val valChipGroupMulti : ChipGroup? = binding.chipGroupMulti
-        valChipGroupMulti?.checkedChipIds?.forEach {
-            val chip = binding.chipGroupMulti.findViewById<Chip>(it).text.toString()
-            Log.i("[CHIP]", "chip $chip.")
-        }}
-
-        var saveButton: AppCompatButton = binding.saveButton
-        saveButton.setOnClickListener(View.OnClickListener {
-            viewModel.insertProperty(Property(price = binding.priceEditText.text.toString().toInt(), type = textS, address = Address(city = textS2, street = "31 Rue de l'égalité")))
-            for(item in listOfPhotoToSave) {
-                viewModel.insertPhoto(Photo(uri = item.uri, propertyId = 2, photoDescription = item.photoDescription))
+            val valChipGroupMulti: ChipGroup? = binding.chipGroupMulti
+            valChipGroupMulti?.checkedChipIds?.forEach {
+                val chip = binding.chipGroupMulti.findViewById<Chip>(it).text.toString()
+                Log.i("[CHIP]", "chip $chip.")
             }
-            chipsTest()
-        })
+        }
+
+        viewModel.getLastIdTable.observe(viewLifecycleOwner) {
+            var lastIndex: Int = it
+
+            var saveButton: AppCompatButton = binding.saveButton
+            saveButton.setOnClickListener(View.OnClickListener {
+                viewModel.insertProperty(
+                    Property(
+                        price = binding.priceEditText.text.toString().toInt(),
+                        type = textS,
+                        address = Address(city = textS2, street = "31 Rue de l'égalité")
+                    )
+                )
+                for (item in listOfPhotoToSave) {
+                    viewModel.insertPhoto(
+                        Photo(
+                            uri = item.uri,
+                            propertyId = lastIndex,
+                            photoDescription = item.photoDescription
+                        )
+                    )
+                }
+                chipsTest()
+            })
+        }
 
         //GALLERY
         val imageView: ImageView = binding.imageview
@@ -176,14 +211,21 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: MutableList<Photo>) {
+    private fun setUpRecyclerView(
+        recyclerView: RecyclerView,
+        listOfPropertyPhoto: MutableList<Photo>
+    ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView!!.layoutManager = myLayoutManager
         recyclerView.adapter = AddPropertyAdapter(listOfPropertyPhoto, this)
     }
 
-    private fun savePhotoToInternalMemory(filename: String, bmp: Bitmap, recyclerView: RecyclerView): Boolean {
+    private fun savePhotoToInternalMemory(
+        filename: String,
+        bmp: Bitmap,
+        recyclerView: RecyclerView
+    ): Boolean {
         return try {
             context?.openFileOutput("$filename.jpg", Activity.MODE_PRIVATE).use { stream ->
 

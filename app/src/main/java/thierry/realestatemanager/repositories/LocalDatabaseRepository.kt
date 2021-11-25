@@ -13,6 +13,8 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     fun allPropertyPhoto() = propertyDao.getPropertyPhoto()
 
+    fun getLastIdTable() = propertyDao.getLastIdTable()
+
     suspend fun insertPropertyPhoto(photo: Photo) = propertyDao.insertPropertyPhoto(photo)
 
     suspend fun insertProperty(property: Property) = propertyDao.insertProperty(property)
