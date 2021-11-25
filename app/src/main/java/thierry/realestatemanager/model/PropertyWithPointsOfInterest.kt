@@ -3,7 +3,7 @@ package thierry.realestatemanager.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
-data class PropertyWithPointOfInterest(
+data class PropertyWithPointsOfInterest(
     @Embedded val property: Property,
     @Relation(
         parentColumn = "id",

@@ -23,7 +23,7 @@ interface PropertyDao {
 
     @Transaction
     @Query("SELECT * FROM points_of_interest_table")
-    fun getPropertyPointsOfInterest(): Flow<List<PointsOfInterest>>
+    fun getPropertyPointsOfInterest(): Flow<List<PropertyWithPointsOfInterest>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
