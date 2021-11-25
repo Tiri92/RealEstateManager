@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import thierry.realestatemanager.R
@@ -23,6 +24,8 @@ class ItemDetailAdapter(private val listOfPropertyPhoto: List<Photo>): RecyclerV
             .centerCrop()
             .into(holder.propertyPictures)
 
+        holder.propertyPicturesDescription.text = listOfPropertyPhoto[position].photoDescription
+
     }
 
     override fun getItemCount(): Int {
@@ -32,6 +35,7 @@ class ItemDetailAdapter(private val listOfPropertyPhoto: List<Photo>): RecyclerV
     class ViewHolder(binding: View):
         RecyclerView.ViewHolder(binding.rootView){
         val propertyPictures: ImageView = binding.findViewById(R.id.propertyPictures)
+        val propertyPicturesDescription: TextView = binding.findViewById(R.id.property_pictures_description)
     }
 
 }

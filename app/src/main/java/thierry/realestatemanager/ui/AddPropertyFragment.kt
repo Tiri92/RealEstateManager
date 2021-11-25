@@ -116,7 +116,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
         saveButton.setOnClickListener(View.OnClickListener {
             viewModel.insertProperty(Property(price = binding.priceEditText.text.toString().toInt(), type = textS, address = Address(city = textS2, street = "31 Rue de l'égalité")))
             for(item in listOfPhotoToSave) {
-                viewModel.insertPhoto(Photo(uri = item.uri, propertyId = 2, photoName = item.photoName))
+                viewModel.insertPhoto(Photo(uri = item.uri, propertyId = 2, photoDescription = item.photoDescription))
             }
             chipsTest()
         })
@@ -192,7 +192,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
                     throw IOException("erreur compression")
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
-                listOfPhotoToSave.add(Photo(propertyId = 2, uri = uriPhoto, photoName = ""))
+                listOfPhotoToSave.add(Photo(propertyId = 2, uri = uriPhoto, photoDescription = ""))
                 recyclerView.adapter!!.notifyDataSetChanged()
 
             }
@@ -210,7 +210,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged ,Fragment
     }
 
     override fun onDescriptionPhotoChanged(description: String, uri: String) {
-        listOfPhotoToSave.find { it.uri == uri }?.photoName = description
+        listOfPhotoToSave.find { it.uri == uri }?.photoDescription = description
     }
 
 }
