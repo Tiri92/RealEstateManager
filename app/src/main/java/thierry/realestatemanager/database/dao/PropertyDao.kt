@@ -15,24 +15,17 @@ interface PropertyDao {
 
     @Transaction
     @Query("SELECT * FROM property_table")
-    fun getPropertyPhoto(): Flow<List<PropertyWithPhoto>>
+    fun getPropertyMedia(): Flow<List<PropertyWithMedia>>
 
-    @Transaction
-    @Query("SELECT * FROM property_table")
-    fun getPropertyVideo(): Flow<List<PropertyWithVideo>>
-
-    @Transaction
-    @Query("SELECT * FROM points_of_interest_table")
-    fun getPropertyPointsOfInterest(): Flow<List<PropertyWithPointsOfInterest>>
+//    @Transaction
+//    @Query("SELECT * FROM points_of_interest_table")
+//    fun getPropertyPointsOfInterest(): Flow<List<PropertyWithPointsOfInterest>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPropertyPhoto(photo: Photo)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertPropertyVideo(video: Video)
+    suspend fun insertPropertyMedia(media: Media)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPropertyPointsOfInterest(pointsOfInterest: PointsOfInterest)

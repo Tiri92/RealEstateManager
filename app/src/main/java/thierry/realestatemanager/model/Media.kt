@@ -3,10 +3,10 @@ package thierry.realestatemanager.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "photo_table")
-data class Photo(
+@Entity(tableName = "media_table")
+data class Media(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val propertyId: Int,
     val uri: String,
-    var photoDescription: String
+    var description: String
 )

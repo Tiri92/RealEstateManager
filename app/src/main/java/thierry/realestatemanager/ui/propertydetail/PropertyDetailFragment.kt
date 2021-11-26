@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
-import thierry.realestatemanager.model.Photo
-import thierry.realestatemanager.model.PropertyWithPhoto
+import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.PropertyWithMedia
 
 /**
  * A fragment representing a single Item detail screen.
@@ -90,7 +90,7 @@ class PropertyDetailFragment : Fragment() {
 
         viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { listOfProperty ->
 
-            val property: PropertyWithPhoto? =
+            val property: PropertyWithMedia? =
                 listOfProperty.find { it.property.id.toString() == item }
 
             if (property != null) {
@@ -106,8 +106,8 @@ class PropertyDetailFragment : Fragment() {
                 numberOfBedrooms!!.text = "Number of bedrooms"
                 numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
 
-                val listOfPropertyPhoto: List<Photo> = property.photoList
-                recyclerView?.let { setUpRecyclerView(it, listOfPropertyPhoto) }
+                val listOfPropertyMedia: List<Media> = property.mediaList
+                recyclerView?.let { setUpRecyclerView(it, listOfPropertyMedia) }
             }
 
 
@@ -116,11 +116,11 @@ class PropertyDetailFragment : Fragment() {
         return rootView
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyPhoto: List<Photo>) {
+    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyMedia: List<Media>) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = PropertyDetailAdapter(listOfPropertyPhoto)
+        recyclerView.adapter = PropertyDetailAdapter(listOfPropertyMedia)
     }
 
     companion object {
