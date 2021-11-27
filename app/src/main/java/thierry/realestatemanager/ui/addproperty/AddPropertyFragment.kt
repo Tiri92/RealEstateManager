@@ -39,7 +39,6 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     private val binding get() = _binding!!
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
-    private var listOfMediaToSave = mutableListOf<Media>()
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
 
@@ -128,7 +127,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         description = binding.descriptionEditText.text.toString()
                     )
                 )
-                for (item in listOfMediaToSave) {
+                for (item in viewModel.getListOfMedia().value!!) {
                     viewModel.insertMedia(
                         Media(
                             uri = item.uri,
@@ -184,14 +183,13 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         activityResultLauncherForVideo =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
-                    listOfMediaToSave.add(
+                    viewModel.addMedia(
                         Media(
                             uri = result.data?.data.toString(),
-                            description = "ça marche",
+                            description = "",
                             propertyId = 2
                         )
                     )
-                    recyclerView.adapter!!.notifyDataSetChanged()
                 }
             }
 
@@ -200,21 +198,22 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         val getVideoFromGalleryLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
                 if (it != null) {
-                    listOfMediaToSave.add(
+                    viewModel.addMedia(
                         Media(
                             uri = it.toString(),
-                            description = "ça marche",
+                            description = "",
                             propertyId = 2
                         )
                     )
-                    recyclerView.adapter!!.notifyDataSetChanged()
                 }
             })
         galleryVideoButton.setOnClickListener(View.OnClickListener {
             getVideoFromGalleryLauncher.launch("video/*")
         })
 
-        setUpRecyclerView(recyclerView, listOfMediaToSave)
+        viewModel.getListOfMedia().observe(viewLifecycleOwner, {
+            setUpRecyclerView(recyclerView, it)
+        })
 
         return rootView
     }
@@ -227,7 +226,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     private fun setUpRecyclerView(
         recyclerView: RecyclerView,
-        listOfPropertyMedia: MutableList<Media>
+        listOfPropertyMedia: List<Media>
     ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
@@ -248,8 +247,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     throw IOException("erreur compression")
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
-                listOfMediaToSave.add(Media(propertyId = 2, uri = uriPhoto, description = ""))
-                recyclerView.adapter!!.notifyDataSetChanged()
+                viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
 
             }
             true
@@ -266,7 +264,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     }
 
     override fun onDescriptionPhotoChanged(description: String, uri: String) {
-        listOfMediaToSave.find { it.uri == uri }?.description = description
+        viewModel.setDescriptionOfMedia(description, uri)
     }
 
 }

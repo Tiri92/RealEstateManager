@@ -15,7 +15,7 @@ import thierry.realestatemanager.model.Media
 
 class AddPropertyAdapter(
 
-    private val listOfPropertyMedia: MutableList<Media>,
+    private val listOfPropertyMedia: List<Media>,
     callback: PhotoDescriptionChanged
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -58,6 +58,7 @@ class AddPropertyAdapter(
                     mediaModel.uri
                 )
             }
+            photoDescription.setText(mediaModel.description)
         }
 
     }
@@ -93,6 +94,7 @@ class AddPropertyAdapter(
                     mediaModel.uri
                 )
             }
+            videoDescription.setText(mediaModel.description)
         }
 
     }
