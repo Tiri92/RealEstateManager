@@ -70,10 +70,6 @@ class AddPropertyAdapter(
                 propertyVideo.start()
             })
 
-            propertyVideo.setOnClickListener(View.OnClickListener {
-                propertyVideo.start()
-            })
-
             propertyVideo.setOnCompletionListener {
                 propertyVideo.start()
                 propertyVideo.pause()
