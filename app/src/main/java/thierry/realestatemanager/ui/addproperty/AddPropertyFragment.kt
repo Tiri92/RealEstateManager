@@ -100,9 +100,9 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             }
 
         fun chipsTest() {
-            val valChipGroupMulti: ChipGroup? = binding.chipGroupMulti
+            val valChipGroupMulti: ChipGroup? = binding.pointsOfInterestChipGroup
             valChipGroupMulti?.checkedChipIds?.forEach {
-                val chip = binding.chipGroupMulti.findViewById<Chip>(it).text.toString()
+                val chip = binding.pointsOfInterestChipGroup.findViewById<Chip>(it).text.toString()
                 Log.i("[CHIP]", "chip $chip.")
             }
         }

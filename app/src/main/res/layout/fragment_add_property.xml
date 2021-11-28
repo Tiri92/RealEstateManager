@@ -323,34 +323,68 @@
                 android:hint="Name and Number of street" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <TextView
+            android:id="@+id/points_of_interest_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/underline_small"
+            android:text="Points of interest"
+            android:textColor="@color/gold"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/street" />
+
         <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_multi"
+            android:id="@+id/points_of_interest_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
             app:singleLine="false"
             app:singleSelection="false"
-            app:layout_constraintTop_toBottomOf="@id/street"
+            app:layout_constraintTop_toBottomOf="@id/points_of_interest_title"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/schools_chip"
+                android:id="@+id/school_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:tag="Schools"
-                android:text="Schools" />
+                android:tag="School"
+                android:text="School" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/university_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
+                android:checked="false"
                 android:tag="University"
                 android:text="University" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/parks_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Parks"
+                android:text="Parks" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sports_clubs_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Sports clubs"
+                android:text="Sports clubs" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/stations_chip"
@@ -370,33 +404,18 @@
                 android:tag="Shopping centre"
                 android:text="Shopping centre" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/sports_clubs_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:tag="Sports clubs"
-                android:text="Sports clubs" />
-
-            <com.google.android.material.chip.Chip
-                android:id="@+id/parks_chip"
-                style="@style/Widget.MaterialComponents.Chip.Choice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="false"
-                android:tag="Parks"
-                android:text="Parks" />
-
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/save_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="Save"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/gold"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chip_group_multi"/>
+            app:layout_constraintTop_toBottomOf="@id/points_of_interest_chip_group"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
