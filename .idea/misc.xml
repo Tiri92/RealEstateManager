@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable-v24/underline.xml" value="0.20277777777777778" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/border_radius_white.xml" value="0.21851851851851853" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/underline_small.xml" value="0.21851851851851853" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout-sw600dp/fragment_item_detail.xml" value="0.144" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout-sw600dp/fragment_item_list.xml" value="0.190625" />
@@ -19,6 +20,7 @@
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_add_and_update_video.xml" value="0.176" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_list_content.xml" value="0.2" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_photo.xml" value="0.2" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_property_list_content.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_video.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/primary_details_nav_graph.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/menu/appbar_menu.xml" value="0.2" />

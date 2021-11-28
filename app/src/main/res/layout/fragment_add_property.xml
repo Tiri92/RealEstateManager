@@ -14,9 +14,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
-            android:text="Add a Property"
+            android:text="Add a new Property"
             android:textAlignment="center"
             android:textColor="@color/gold"
             android:textSize="36sp"
@@ -27,10 +27,10 @@
         <TextView
             android:id="@+id/underline_of_title"
             android:layout_width="match_parent"
-            android:layout_height="12dp"
-            android:layout_marginStart="120dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="104dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="120dp"
+            android:layout_marginEnd="104dp"
             android:background="@drawable/underline"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -50,8 +50,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
             android:text="Photo from Gallery"
-            android:textColor="@color/gold"
+            android:textSize="11sp"
+            android:drawableStart="@drawable/ic_baseline_photo_library_24"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/gold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
 
@@ -59,38 +63,47 @@
             android:id="@+id/button_for_camera_photo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="16dp"
             android:text="Photo from Camera"
-            android:textColor="@color/gold"
-            app:layout_constraintStart_toEndOf="@id/button_for_gallery_photo"
-            app:layout_constraintTop_toTopOf="@id/button_for_gallery_photo" />
+            android:textSize="11sp"
+            android:drawableStart="@drawable/ic_baseline_photo_camera_24"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/gold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/button_for_gallery_photo"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_gallery_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="24dp"
             android:text="Video from Gallery"
-            android:textColor="@color/gold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_for_gallery_photo" />
+            android:textSize="11sp"
+            android:drawableStart="@drawable/ic_baseline_video_library_24"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/gold"
+            app:layout_constraintStart_toEndOf="@id/button_for_gallery_photo"
+            app:layout_constraintTop_toTopOf="@id/button_for_gallery_photo"/>
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_camera_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="24dp"
             android:text="Video from Camera"
-            android:textColor="@color/gold"
-            app:layout_constraintStart_toEndOf="@id/button_for_gallery_photo"
-            app:layout_constraintTop_toTopOf="@id/button_for_gallery_video" />
+            android:textSize="11sp"
+            android:drawableStart="@drawable/ic_baseline_videocam_24"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/gold"
+            app:layout_constraintStart_toEndOf="@id/button_for_camera_photo"
+            app:layout_constraintTop_toTopOf="@id/button_for_camera_photo" />
 
         <TextView
             android:id="@+id/type_of_property_title"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/underline_small"
             android:text="Type of Property"
@@ -117,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="64dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/type_of_property_spinner">
@@ -222,7 +235,7 @@
                 android:id="@+id/description_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Description"
+                android:hint="Description of the property"
                 android:inputType="textMultiLine"
                 android:singleLine="false" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -268,6 +281,7 @@
                 android:id="@+id/city_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="City" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -305,6 +319,7 @@
                 android:id="@+id/street_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
                 android:hint="Name and Number of street" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -312,37 +327,67 @@
             android:id="@+id/chip_group_multi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:singleLine="true"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="16dp"
+            app:singleLine="false"
             app:singleSelection="false"
             app:layout_constraintTop_toBottomOf="@id/street"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_10"
+                android:id="@+id/schools_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:tag="Ecole"
-                android:text="Ecole" />
+                android:tag="Schools"
+                android:text="Schools" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_20"
+                android:id="@+id/university_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:tag="University"
+                android:text="University" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/stations_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:tag="Parc"
-                android:text="Parc" />
+                android:tag="Stations"
+                android:text="Stations" />
 
             <com.google.android.material.chip.Chip
-                android:id="@+id/chip_30"
+                android:id="@+id/shopping_centre_chip"
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="false"
-                android:tag="Gare"
-                android:text="Gare" />
+                android:tag="Shopping centre"
+                android:text="Shopping centre" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sports_clubs_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Sports clubs"
+                android:text="Sports clubs" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/parks_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Parks"
+                android:text="Parks" />
+
         </com.google.android.material.chip.ChipGroup>
 
         <androidx.appcompat.widget.AppCompatButton
