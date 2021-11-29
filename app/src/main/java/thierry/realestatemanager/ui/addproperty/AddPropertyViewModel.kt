@@ -4,6 +4,7 @@ import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
@@ -18,6 +19,9 @@ class AddPropertyViewModel @Inject constructor(private val localDatabaseReposito
 
     fun insertProperty(property: Property) =
         viewModelScope.launch { localDatabaseRepository.insertProperty(property) }
+
+    fun insertPointsOfInterest(pointsOfInterest: PointsOfInterest) =
+        viewModelScope.launch { localDatabaseRepository.insertPointsOfInterest(pointsOfInterest) }
 
     private var mutableListOfMedia = MutableLiveData<List<Media>>()
     private var listOfMedia: MutableList<Media> = mutableListOf()

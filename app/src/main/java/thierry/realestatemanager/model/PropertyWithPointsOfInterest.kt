@@ -9,5 +9,5 @@ data class PropertyWithPointsOfInterest(
         parentColumn = "id",
         entityColumn = "propertyId"
     )
-    val pointsOfInterestList: List<PointsOfInterest>
+    val pointsOfInterestList: PointsOfInterest
 )

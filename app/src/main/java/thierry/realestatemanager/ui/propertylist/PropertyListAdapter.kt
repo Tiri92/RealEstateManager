@@ -27,7 +27,7 @@ class PropertyListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = properties[position]
-        val formattedPrice: String? = Utils.formatThePrice(item.price)
+        val formattedPrice: String? = Utils.formatThePrice(item.price!!)
         holder.propertyPrice.text = formattedPrice.toString()
         holder.propertyType.text = item.type
         holder.propertyTown.text = item.address!!.city

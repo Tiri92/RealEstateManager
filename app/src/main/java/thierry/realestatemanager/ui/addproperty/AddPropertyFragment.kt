@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -26,6 +25,7 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddPropertyBinding
 import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -99,19 +99,44 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 }
             }
 
-        fun chipsTest() {
-            val valChipGroupMulti: ChipGroup? = binding.pointsOfInterestChipGroup
-            valChipGroupMulti?.checkedChipIds?.forEach {
-                val chip = binding.pointsOfInterestChipGroup.findViewById<Chip>(it).text.toString()
-                Log.i("[CHIP]", "chip $chip.")
-            }
-        }
-
-        viewModel.getLastIdPropertyTable.observe(viewLifecycleOwner) {
-            val lastIndex: Int = it
+        viewModel.getLastIdPropertyTable.observe(viewLifecycleOwner) { lastIndexValue ->
 
             val saveButton: AppCompatButton = binding.saveButton
             saveButton.setOnClickListener(View.OnClickListener {
+
+                var schoolState = false
+                var universityState = false
+                var parksState = false
+                var sportsClubsState = false
+                var stationsState = false
+                var shoppingCentreState = false
+                val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
+                pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
+                    val chipText =
+                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
+                    val chipState =
+                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
+                    when (chipText) {
+                        "School" -> schoolState = chipState
+                        "University" -> universityState = chipState
+                        "Parks" -> parksState = chipState
+                        "Sports clubs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Shopping centre" -> shoppingCentreState = chipState
+                    }
+                }
+                viewModel.insertPointsOfInterest(
+                    PointsOfInterest(
+                        propertyId = lastIndexValue,
+                        school = schoolState,
+                        university = universityState,
+                        parks = parksState,
+                        sportsClubs = sportsClubsState,
+                        stations = stationsState,
+                        shoppingCenter = shoppingCentreState
+                    )
+                )
+
                 viewModel.insertProperty(
                     Property(
                         price = binding.priceEditText.text.toString().toInt(),
@@ -131,12 +156,12 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     viewModel.insertMedia(
                         Media(
                             uri = item.uri,
-                            propertyId = lastIndex,
+                            propertyId = lastIndexValue,
                             description = item.description
                         )
                     )
                 }
-                chipsTest()
+
             })
         }
 
