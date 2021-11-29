@@ -16,7 +16,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="8dp"
-            android:text="Add a new Property"
+            android:text="@string/add_a_new_property"
             android:textAlignment="center"
             android:textColor="@color/gold"
             android:textSize="36sp"
@@ -51,11 +51,11 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
-            android:text="Photo from Gallery"
-            android:textSize="11sp"
-            android:drawableStart="@drawable/ic_baseline_photo_library_24"
-            android:textColor="@color/white"
             android:backgroundTint="@color/gold"
+            android:drawableStart="@drawable/ic_baseline_photo_library_24"
+            android:text="@string/photo_from_gallery"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
 
@@ -64,37 +64,37 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Photo from Camera"
-            android:textSize="11sp"
-            android:drawableStart="@drawable/ic_baseline_photo_camera_24"
-            android:textColor="@color/white"
             android:backgroundTint="@color/gold"
+            android:drawableStart="@drawable/ic_baseline_photo_camera_24"
+            android:text="@string/photo_from_camera"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_for_gallery_photo"/>
+            app:layout_constraintTop_toBottomOf="@id/button_for_gallery_photo" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_gallery_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="Video from Gallery"
-            android:textSize="11sp"
-            android:drawableStart="@drawable/ic_baseline_video_library_24"
-            android:textColor="@color/white"
             android:backgroundTint="@color/gold"
+            android:drawableStart="@drawable/ic_baseline_video_library_24"
+            android:text="@string/video_from_gallery"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@id/button_for_gallery_photo"
-            app:layout_constraintTop_toTopOf="@id/button_for_gallery_photo"/>
+            app:layout_constraintTop_toTopOf="@id/button_for_gallery_photo" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_for_camera_video"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
-            android:text="Video from Camera"
-            android:textSize="11sp"
-            android:drawableStart="@drawable/ic_baseline_videocam_24"
-            android:textColor="@color/white"
             android:backgroundTint="@color/gold"
+            android:drawableStart="@drawable/ic_baseline_videocam_24"
+            android:text="@string/video_from_camera"
+            android:textColor="@color/white"
+            android:textSize="11sp"
             app:layout_constraintStart_toEndOf="@id/button_for_camera_photo"
             app:layout_constraintTop_toTopOf="@id/button_for_camera_photo" />
 
@@ -106,7 +106,7 @@
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/underline_small"
-            android:text="Type of Property"
+            android:text="@string/type_of_property"
             android:textColor="@color/gold"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -131,6 +131,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/type_of_property_spinner">
@@ -139,8 +142,9 @@
                 android:id="@+id/price_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Price"
-                android:inputType="number" />
+                android:hint="@string/price"
+                android:inputType="number"
+                android:maxLength="8" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -151,6 +155,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="64dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/price">
 
@@ -158,8 +165,9 @@
                 android:id="@+id/rooms_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Number of Rooms"
-                android:inputType="number" />
+                android:hint="@string/number_of_rooms"
+                android:inputType="number"
+                android:maxLength="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -170,6 +178,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="64dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rooms">
 
@@ -177,8 +188,9 @@
                 android:id="@+id/bedrooms_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Number of Bedrooms"
-                android:inputType="number" />
+                android:hint="@string/number_of_bedrooms"
+                android:inputType="number"
+                android:maxLength="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -189,6 +201,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="64dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bedrooms">
 
@@ -196,8 +211,9 @@
                 android:id="@+id/bathrooms_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Number of Bathrooms"
-                android:inputType="number" />
+                android:hint="@string/number_of_bathrooms"
+                android:inputType="number"
+                android:maxLength="2" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -208,6 +224,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="64dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/bathrooms">
 
@@ -215,18 +234,22 @@
                 android:id="@+id/surface_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Surface of property in m²"
-                android:inputType="number" />
+                android:hint="@string/surface_of_property_in_m"
+                android:inputType="number"
+                android:maxLength="4" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/description"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
-            android:layout_height="160dp"
+            android:layout_height="match_parent"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/surface">
@@ -235,7 +258,7 @@
                 android:id="@+id/description_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Description of the property"
+                android:hint="@string/description_of_the_property"
                 android:inputType="textMultiLine"
                 android:singleLine="false" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -248,7 +271,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/underline_small"
-            android:text="Country"
+            android:text="@string/country"
             android:textColor="@color/gold"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -266,13 +289,16 @@
             app:layout_constraintTop_toBottomOf="@+id/country_title" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/City"
+            android:id="@+id/city"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toStartOf="@+id/postcode"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/country_spinner">
@@ -281,8 +307,8 @@
                 android:id="@+id/city_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="City" />
+                android:hint="@string/city"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -291,15 +317,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/City"
-            app:layout_constraintTop_toTopOf="@+id/City">
+            app:layout_constraintStart_toEndOf="@+id/city"
+            app:layout_constraintTop_toTopOf="@+id/city">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/postcode_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="PostCode"
+                android:hint="@string/postcode"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -311,6 +340,9 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
+            app:helperText="Field can't be empty"
+            app:helperTextEnabled="true"
+            app:helperTextTextColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/postcode">
@@ -319,8 +351,8 @@
                 android:id="@+id/street_edit_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-                android:hint="Name and Number of street" />
+                android:hint="@string/name_and_number_of_street"
+                android:singleLine="true" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <TextView
@@ -331,7 +363,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/underline_small"
-            android:text="Points of interest"
+            android:text="@string/points_of_interest"
             android:textColor="@color/gold"
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -342,12 +374,12 @@
             android:id="@+id/points_of_interest_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:layout_marginStart="16dp"
-            app:singleLine="false"
-            app:singleSelection="false"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/points_of_interest_title"
-            app:layout_constraintStart_toStartOf="parent">
+            app:singleLine="false"
+            app:singleSelection="false">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/school_chip"
@@ -356,7 +388,7 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:tag="School"
-                android:text="School" />
+                android:text="@string/school" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/university_chip"
@@ -365,7 +397,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:tag="University"
-                android:text="University" />
+                android:text="@string/university" />
 
 
             <com.google.android.material.chip.Chip
@@ -375,7 +407,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:tag="Parks"
-                android:text="Parks" />
+                android:text="@string/parks" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/sports_clubs_chip"
@@ -384,7 +416,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:tag="Sports clubs"
-                android:text="Sports clubs" />
+                android:text="@string/sports_clubs" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/stations_chip"
@@ -393,7 +425,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:tag="Stations"
-                android:text="Stations" />
+                android:text="@string/stations" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/shopping_centre_chip"
@@ -402,7 +434,7 @@
                 android:layout_height="wrap_content"
                 android:checked="false"
                 android:tag="Shopping centre"
-                android:text="Shopping centre" />
+                android:text="@string/shopping_centre" />
 
         </com.google.android.material.chip.ChipGroup>
 
@@ -411,11 +443,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="Save"
-            android:textColor="@color/white"
             android:backgroundTint="@color/gold"
+            android:text="@string/save"
+            android:textColor="@color/white"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/points_of_interest_chip_group"/>
+            app:layout_constraintTop_toBottomOf="@id/points_of_interest_chip_group" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

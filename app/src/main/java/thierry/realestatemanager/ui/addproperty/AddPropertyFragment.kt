@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
+import android.text.Editable
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -14,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -240,7 +242,78 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             setUpRecyclerView(recyclerView, it)
         })
 
+        binding.priceEditText.addTextChangedListener {
+            binding.price.helperText = validPriceText(binding.priceEditText.text)
+        }
+        binding.priceEditText.setOnFocusChangeListener { _, _ ->
+            binding.price.helperText = validPriceText(binding.priceEditText.text)
+        }
+
+        binding.roomsEditText.addTextChangedListener {
+            binding.rooms.helperText = validPriceText(binding.roomsEditText.text)
+        }
+        binding.roomsEditText.setOnFocusChangeListener { _, _ ->
+            binding.rooms.helperText = validPriceText(binding.roomsEditText.text)
+        }
+
+        binding.bedroomsEditText.addTextChangedListener {
+            binding.bedrooms.helperText = validPriceText(binding.bedroomsEditText.text)
+        }
+        binding.bedroomsEditText.setOnFocusChangeListener { _, _ ->
+            binding.bedrooms.helperText = validPriceText(binding.bedroomsEditText.text)
+        }
+
+        binding.bathroomsEditText.addTextChangedListener {
+            binding.bathrooms.helperText = validPriceText(binding.bathroomsEditText.text)
+        }
+        binding.bathroomsEditText.setOnFocusChangeListener { _, _ ->
+            binding.bathrooms.helperText = validPriceText(binding.bathroomsEditText.text)
+        }
+
+        binding.surfaceEditText.addTextChangedListener {
+            binding.surface.helperText = validPriceText(binding.surfaceEditText.text)
+        }
+        binding.surfaceEditText.setOnFocusChangeListener { _, _ ->
+            binding.surface.helperText = validPriceText(binding.surfaceEditText.text)
+        }
+
+        binding.descriptionEditText.addTextChangedListener {
+            binding.description.helperText = validPriceText(binding.descriptionEditText.text)
+        }
+        binding.descriptionEditText.setOnFocusChangeListener { _, _ ->
+            binding.description.helperText = validPriceText(binding.descriptionEditText.text)
+        }
+
+        binding.cityEditText.addTextChangedListener {
+            binding.city.helperText = validPriceText(binding.cityEditText.text)
+        }
+        binding.cityEditText.setOnFocusChangeListener { _, _ ->
+            binding.city.helperText = validPriceText(binding.cityEditText.text)
+        }
+
+        binding.postcodeEditText.addTextChangedListener {
+            binding.postcode.helperText = validPriceText(binding.postcodeEditText.text)
+        }
+        binding.postcodeEditText.setOnFocusChangeListener { _, _ ->
+            binding.postcode.helperText = validPriceText(binding.postcodeEditText.text)
+        }
+
+        binding.streetEditText.addTextChangedListener {
+            binding.street.helperText = validPriceText(binding.streetEditText.text)
+        }
+        binding.streetEditText.setOnFocusChangeListener { _, _ ->
+            binding.street.helperText = validPriceText(binding.streetEditText.text)
+        }
+
         return rootView
+    }
+
+
+    private fun validPriceText(textEditText: Editable?): String? {
+        return when (textEditText.toString()) {
+            "" -> "Field can't be empty"
+            else -> return null
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

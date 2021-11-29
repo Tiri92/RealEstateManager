@@ -2,6 +2,30 @@
     <string name="app_name">RealEstateManager</string>
     <string name="title_item_detail">Item Detail</string>
     <string name="app_title">Real Estate Manager</string>
+    <string name="add_a_new_property">Add a new Property</string>
+    <string name="photo_from_gallery">Photo from Gallery</string>
+    <string name="photo_from_camera">Photo from Camera</string>
+    <string name="video_from_gallery">Video from Gallery</string>
+    <string name="video_from_camera">Video from Camera</string>
+    <string name="type_of_property">Type of Property</string>
+    <string name="price">Price</string>
+    <string name="number_of_rooms">Number of Rooms</string>
+    <string name="number_of_bedrooms">Number of Bedrooms</string>
+    <string name="number_of_bathrooms">Number of Bathrooms</string>
+    <string name="surface_of_property_in_m">Surface of property in m²</string>
+    <string name="description_of_the_property">Description of the property</string>
+    <string name="country">Country</string>
+    <string name="city">City</string>
+    <string name="postcode">PostCode</string>
+    <string name="name_and_number_of_street">Name and Number of street</string>
+    <string name="points_of_interest">Points of interest</string>
+    <string name="school">School</string>
+    <string name="university">University</string>
+    <string name="parks">Parks</string>
+    <string name="sports_clubs">Sports clubs</string>
+    <string name="stations">Stations</string>
+    <string name="shopping_centre">Shopping centre</string>
+    <string name="save">Save</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>
