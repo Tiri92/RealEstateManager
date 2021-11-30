@@ -2,15 +2,16 @@ package thierry.realestatemanager.ui.updateproperty
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
-import thierry.realestatemanager.databinding.FragmentUpdatePropertyBinding
+import thierry.realestatemanager.R
+import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
 
 
 /**
@@ -20,7 +21,7 @@ import thierry.realestatemanager.databinding.FragmentUpdatePropertyBinding
  */
 @AndroidEntryPoint
 class UpdatePropertyFragment : Fragment() {
-    private var _binding: FragmentUpdatePropertyBinding? = null
+    private var _binding: FragmentAddUpdatePropertyBinding? = null
     private val viewModel by viewModels<UpdatePropertyViewModel>()
 
     // This property is only valid between onCreateView and
@@ -36,10 +37,11 @@ class UpdatePropertyFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentUpdatePropertyBinding.inflate(inflater, container, false)
+        _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+        binding.title.text = getString(R.string.update_property)
 
-        val isSoldButton: SwitchMaterial = binding.isSoldSwitchU
+        val isSoldButton: SwitchMaterial = binding.isSoldSwitch
         isSoldButton.setOnClickListener(View.OnClickListener {
             if (isSoldButton.isChecked) {
                 Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
@@ -49,7 +51,7 @@ class UpdatePropertyFragment : Fragment() {
         })
 
         viewModel.getCurrentProperty().observe(viewLifecycleOwner) {
-            binding.priceEditTextU.setText(it.id.toString())
+            binding.priceEditText.setText(it.id.toString())
         }
         Log.i("YEAHH", "Yeahh + $viewModel.actualPropertyIndex.toString()")
 

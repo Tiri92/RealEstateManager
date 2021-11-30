@@ -15,6 +15,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -24,7 +25,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
-import thierry.realestatemanager.databinding.FragmentAddPropertyBinding
+import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
 import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PointsOfInterest
@@ -37,7 +38,7 @@ import java.util.*
 class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment() {
 
     private val viewModel: AddPropertyViewModel by viewModels()
-    private var _binding: FragmentAddPropertyBinding? = null
+    private var _binding: FragmentAddUpdatePropertyBinding? = null
     private val binding get() = _binding!!
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
@@ -48,10 +49,11 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentAddPropertyBinding.inflate(inflater, container, false)
+        _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
+        binding.isSoldSwitch.isVisible = false
         setHasOptionsMenu(true)
 
         val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner

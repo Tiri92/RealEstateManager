@@ -26,6 +26,8 @@
     <string name="stations">Stations</string>
     <string name="shopping_centre">Shopping centre</string>
     <string name="save">Save</string>
+    <string name="is_sold">Is sold</string>
+    <string name="update_property">Update a Property</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>
