@@ -4,7 +4,6 @@ import thierry.realestatemanager.database.dao.PropertyDao
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
-import thierry.realestatemanager.model.PropertyWithPointsOfInterest
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -13,7 +12,7 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     fun allProperty() = propertyDao.getProperty()
 
-    fun actualProperty(id: Int) = propertyDao.getActualProperty(id)
+    fun getCurrentProperty(id: Int) = propertyDao.getCurrentProperty(id)
 
     fun allPropertyMedia() = propertyDao.getPropertyMedia()
 
