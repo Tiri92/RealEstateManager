@@ -365,6 +365,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     }
 
     override fun onDeleteMedia(media: Media) {
+        context?.deleteFile(media.uri.substringAfterLast("/"))
         viewModel.deleteMedia(media)
     }
 
