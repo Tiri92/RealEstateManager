@@ -31,11 +31,16 @@ class AddPropertyViewModel @Inject constructor(private val localDatabaseReposito
         mutableListOfMedia.value = listOfMedia
     }
 
-    fun setDescriptionOfMedia(description: String, uri: String) {
-        listOfMedia.find {  it.uri == uri }?.description = description
+    fun deleteMedia(media: Media) {
+        listOfMedia.remove(media)
+        mutableListOfMedia.value = listOfMedia
     }
 
-    fun getListOfMedia():LiveData<List<Media>> {
+    fun setDescriptionOfMedia(description: String, uri: String) {
+        listOfMedia.find { it.uri == uri }?.description = description
+    }
+
+    fun getListOfMedia(): LiveData<List<Media>> {
         return mutableListOfMedia
     }
 

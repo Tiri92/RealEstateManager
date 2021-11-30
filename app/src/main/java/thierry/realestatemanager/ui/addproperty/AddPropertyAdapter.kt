@@ -24,6 +24,8 @@ class AddPropertyAdapter(
 
     interface PhotoDescriptionChanged {
         fun onDescriptionPhotoChanged(description: String, uri: String)
+
+        fun onDeleteMedia(media: Media)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,6 +61,11 @@ class AddPropertyAdapter(
                 )
             }
             photoDescription.setText(mediaModel.description)
+
+            val deletePhotoButton: ImageView = itemView.findViewById(R.id.delete_property_photo)
+            deletePhotoButton.setOnClickListener(View.OnClickListener {
+                callback?.onDeleteMedia(mediaModel)
+            })
         }
 
     }
@@ -95,6 +102,11 @@ class AddPropertyAdapter(
                 )
             }
             videoDescription.setText(mediaModel.description)
+
+            val deleteVideoButton: ImageView = itemView.findViewById(R.id.delete_property_video)
+            deleteVideoButton.setOnClickListener(View.OnClickListener {
+                callback?.onDeleteMedia(mediaModel)
+            })
         }
 
     }

@@ -177,7 +177,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         context?.applicationContext?.contentResolver,
                         it
                     )
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
+                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
                 }
             }
         )
@@ -197,7 +197,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 if (result!!.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
                     val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap, recyclerView)
+                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
                 }
             }
 
@@ -334,8 +334,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     private fun savePhotoToInternalMemory(
         filename: String,
-        bmp: Bitmap,
-        recyclerView: RecyclerView
+        bmp: Bitmap
     ): Boolean {
         return try {
             context?.openFileOutput("$filename.jpg", Activity.MODE_PRIVATE).use { stream ->
@@ -363,6 +362,10 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     override fun onDescriptionPhotoChanged(description: String, uri: String) {
         viewModel.setDescriptionOfMedia(description, uri)
+    }
+
+    override fun onDeleteMedia(media: Media) {
+        viewModel.deleteMedia(media)
     }
 
 }
