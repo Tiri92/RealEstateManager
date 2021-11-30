@@ -28,6 +28,7 @@
     <string name="save">Save</string>
     <string name="is_sold">Is sold</string>
     <string name="update_property">Update a Property</string>
+    <string name="save_change">Save change</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

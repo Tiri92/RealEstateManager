@@ -43,6 +43,7 @@ class UpdatePropertyFragment : Fragment() {
         val rootView = binding.root
 
         binding.title.text = getString(R.string.update_property)
+        binding.saveButton.text = getString(R.string.save_change)
         binding.price.isHelperTextEnabled = false
         binding.rooms.isHelperTextEnabled = false
         binding.bedrooms.isHelperTextEnabled = false
