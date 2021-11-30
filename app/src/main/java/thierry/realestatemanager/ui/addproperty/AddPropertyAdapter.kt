@@ -31,11 +31,11 @@ class AddPropertyAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         if (viewType == 0) {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_add_and_update_photo, parent, false)
+                .inflate(R.layout.item_add_update_photo, parent, false)
             return PhotoViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_add_and_update_video, parent, false)
+                .inflate(R.layout.item_add_update_video, parent, false)
             return VideoViewHolder(view)
         }
     }
