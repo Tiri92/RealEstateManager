@@ -13,6 +13,8 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     fun allProperty() = propertyDao.getProperty()
 
+    fun actualProperty(id: Int) = propertyDao.getActualProperty(id)
+
     fun allPropertyMedia() = propertyDao.getPropertyMedia()
 
     //fun allPropertyPointsOfInterest() = propertyDao.getPropertyPointsOfInterest()

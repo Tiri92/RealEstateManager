@@ -10,6 +10,9 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table")
     fun getProperty(): Flow<List<Property>>
 
+    @Query("SELECT * FROM property_table WHERE id = :id")
+    fun getActualProperty(id: Int): Flow<Property>
+
     @Query("SELECT MAX(id) + 1 FROM property_table")
     fun getLastIdPropertyTable(): Flow<Int>
 

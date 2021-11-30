@@ -1,13 +1,17 @@
 package thierry.realestatemanager.ui.updateproperty
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import com.google.android.material.switchmaterial.SwitchMaterial
+import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.databinding.FragmentUpdatePropertyBinding
+import thierry.realestatemanager.ui.addproperty.AddPropertyViewModel
 
 
 /**
@@ -15,8 +19,10 @@ import thierry.realestatemanager.databinding.FragmentUpdatePropertyBinding
  * Use the [UpdatePropertyFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class UpdatePropertyFragment : Fragment() {
     private var _binding: FragmentUpdatePropertyBinding? = null
+    private val viewModel by viewModels<UpdatePropertyViewModel>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -42,6 +48,11 @@ class UpdatePropertyFragment : Fragment() {
                 Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
             }
         })
+
+        viewModel.getActualProperty().observe(viewLifecycleOwner) {
+            binding.priceEditTextU.setText(it.id.toString())
+        }
+        Log.i("YEAHH","Yeahh + $viewModel.actualPropertyIndex.toString()")
 
         return rootView
     }

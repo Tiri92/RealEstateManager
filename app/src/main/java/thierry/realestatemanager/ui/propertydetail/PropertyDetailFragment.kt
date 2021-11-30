@@ -12,6 +12,7 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PropertyWithMedia
+import thierry.realestatemanager.ui.updateproperty.UpdatePropertyViewModel
 
 /**
  * A fragment representing a single Item detail screen.
@@ -23,6 +24,7 @@ import thierry.realestatemanager.model.PropertyWithMedia
 class PropertyDetailFragment : Fragment() {
 
     private val viewModel: PropertyDetailViewModel by viewModels()
+    private val updatePropertyViewModel: UpdatePropertyViewModel by viewModels()
 
     /**
      * The placeholder content this fragment is presenting.
@@ -50,7 +52,7 @@ class PropertyDetailFragment : Fragment() {
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
                 item = it.getString(ARG_ITEM_ID)
-
+                updatePropertyViewModel.setPropertyId(item.toString())
             }
         }
 
