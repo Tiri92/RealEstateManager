@@ -16,7 +16,8 @@ data class Property(
     val numberOfBedrooms: Int? = null,
     val numberOfBathrooms: Int? = null,
     val surface: Int? = null,
-    val description: String? = null
+    val description: String? = null,
+    val staticMapUri: String? = null
 
 
 

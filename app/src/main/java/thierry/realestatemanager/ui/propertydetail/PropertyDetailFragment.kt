@@ -1,9 +1,14 @@
 package thierry.realestatemanager.ui.propertydetail
 
+import android.app.Activity
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +19,11 @@ import thierry.realestatemanager.BuildConfig
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.model.PropertyWithMedia
+import java.io.IOException
+import java.text.SimpleDateFormat
+import java.util.*
 
 /**
  * A fragment representing a single Item detail screen.
@@ -23,7 +32,7 @@ import thierry.realestatemanager.model.PropertyWithMedia
  * on handsets.
  */
 @AndroidEntryPoint
-class PropertyDetailFragment : Fragment() {
+class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
     private val viewModel: PropertyDetailViewModel by viewModels()
 
@@ -40,6 +49,7 @@ class PropertyDetailFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    lateinit var staticMap: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -114,11 +124,20 @@ class PropertyDetailFragment : Fragment() {
                 val listOfPropertyMedia: List<Media> = property.mediaList
                 recyclerView?.let { setUpRecyclerView(it, listOfPropertyMedia) }
 
-                val staticMap: ImageView? = binding.staticMap
+                staticMap = binding.staticMap!!
                 val staticMapUri =
                     "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.GOOGLE_KEY
 
-                Glide.with(this).load(staticMapUri).centerCrop().into(staticMap!!)
+                if (property.property.staticMapUri != null) {
+                    Glide.with(this).load(property.property.staticMapUri).centerCrop()
+                        .into(staticMap)
+                } else {
+                    Glide.with(this).load(staticMapUri).centerCrop()
+                        .listener(StaticMapRequestListener(this))/*.error(R.drawable.ERRORPHOTO)*/
+                        .into(staticMap)
+                }
+
+                viewModel.currentProperty = property.property
 
             }
         }
@@ -144,5 +163,55 @@ class PropertyDetailFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onFailure(message: String?) {
+        Log.i("NOOO", "NOOO")
+    }
+
+    override fun onSuccess(dataSource: Drawable) {
+        val staticMapBitmap = dataSource.toBitmap()
+        val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        savePhotoToInternalMemory(fileName, staticMapBitmap)
+
+    }
+
+    private fun savePhotoToInternalMemory(
+        filename: String,
+        bmp: Bitmap
+    ): Boolean {
+        return try {
+            context?.openFileOutput("StaticMapPhoto$filename.jpg", Activity.MODE_PRIVATE)
+                .use { stream ->
+
+                    //compress photo
+                    if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
+                        throw IOException("erreur compression")
+                    }
+                    val uriStaticMapPhoto: String =
+                        context?.filesDir.toString() + "/" + "StaticMapPhoto$filename.jpg"
+                    viewModel.updateProperty(
+                        Property(
+                            id = item!!.toInt(),
+                            price = viewModel.currentProperty.price,
+                            type = viewModel.currentProperty.type,
+                            surface = viewModel.currentProperty.surface,
+                            description = viewModel.currentProperty.description,
+                            numberOfRooms = viewModel.currentProperty.numberOfRooms,
+                            numberOfBathrooms = viewModel.currentProperty.numberOfBathrooms,
+                            numberOfBedrooms = viewModel.currentProperty.numberOfBedrooms,
+                            address = viewModel.currentProperty.address,
+                            staticMapUri = uriStaticMapPhoto,
+                            isSold = viewModel.currentProperty.isSold
+                        )
+                    )
+
+                }
+            true
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+            false
+        }
     }
 }
