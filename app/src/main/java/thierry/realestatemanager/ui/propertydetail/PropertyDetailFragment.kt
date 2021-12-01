@@ -2,12 +2,15 @@ package thierry.realestatemanager.ui.propertydetail
 
 import android.os.Bundle
 import android.view.*
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import dagger.hilt.android.AndroidEntryPoint
+import thierry.realestatemanager.BuildConfig
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Media
@@ -105,12 +108,19 @@ class PropertyDetailFragment : Fragment() {
                 numberOfBathroomsValue!!.text = property.property.numberOfBathrooms.toString()
                 numberOfBedrooms!!.text = "Number of bedrooms"
                 numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
+                var address: String =
+                    property.property.address!!.city + "+" + property.property.address!!.postcode
 
                 val listOfPropertyMedia: List<Media> = property.mediaList
                 recyclerView?.let { setUpRecyclerView(it, listOfPropertyMedia) }
+
+                val staticMap: ImageView? = binding.staticMap
+                val staticMapUri =
+                    "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.GOOGLE_KEY
+
+                Glide.with(this).load(staticMapUri).centerCrop().into(staticMap!!)
+
             }
-
-
         }
 
         return rootView

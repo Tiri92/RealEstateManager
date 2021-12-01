@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="thierry.realestatemanager">
 
+    <!-- added for use Glide -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:name=".ToDoApplication"
         android:allowBackup="true"
