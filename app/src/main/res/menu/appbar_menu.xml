@@ -20,4 +20,10 @@
         android:title="search"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/map"
+        android:icon="@drawable/ic_baseline_map_24"
+        android:title="map"
+        app:showAsAction="ifRoom"/>
+
 </menu>

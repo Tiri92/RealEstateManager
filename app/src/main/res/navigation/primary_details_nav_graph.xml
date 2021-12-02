@@ -33,5 +33,10 @@
         android:name="thierry.realestatemanager.ui.updateproperty.UpdatePropertyFragment"
         android:label="@string/app_title"
         tools:layout="@layout/fragment_add_update_property" />
+    <fragment
+        android:id="@+id/map"
+        android:name="thierry.realestatemanager.ui.googlemap.GoogleMapFragment"
+        android:label="@string/app_title"
+        tools:layout="@layout/fragment_google_map" />
 
 </navigation>

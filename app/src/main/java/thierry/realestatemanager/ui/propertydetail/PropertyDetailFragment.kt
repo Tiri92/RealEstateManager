@@ -107,7 +107,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
                 staticMap = binding.staticMap
                 val staticMapUri =
-                    "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.GOOGLE_KEY
+                    "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.MAPS_API_KEY
 
                 if (property.property.staticMapUri != null) {
                     Glide.with(this).load(property.property.staticMapUri).centerCrop()
