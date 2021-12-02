@@ -171,16 +171,17 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         }
 
         //PHOTO FROM GALLERY
+        val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val fileName = "Photo"
         val getImageFromGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback {
-                val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                 if (it != null) {
                     val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
                         context?.applicationContext?.contentResolver,
                         it
                     )
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                    savePhotoToInternalMemory("$fileName$fileDate", bitmap)
                 }
             }
         )
@@ -199,8 +200,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-                    savePhotoToInternalMemory("Photo_$fileName", bitmap)
+                    savePhotoToInternalMemory("$fileName$fileDate", bitmap)
                 }
             }
 
@@ -344,11 +344,10 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
                 //compress photo
                 if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                    throw IOException("erreur compression")
+                    throw IOException("error compression")
                 }
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
                 viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
-
             }
             true
 
