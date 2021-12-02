@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -11,24 +10,23 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginBottom="16dp"
+        android:textIsSelectable="true"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textIsSelectable="true"
         app:layout_constraintBottom_toTopOf="@id/recyclerview_fragment_detail"
-        app:layout_constraintStart_toStartOf="parent"
-         />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerview_fragment_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024"
-        android:orientation="horizontal"
-        android:layout_margin="8dp"/>
+        app:layout_constraintVertical_bias="0.100000024" />
 
     <TextView
         android:id="@+id/property_description_title"
@@ -36,98 +34,107 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
+        android:textIsSelectable="true"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:textIsSelectable="true"
-        app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_detail"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_detail" />
 
     <TextView
         android:id="@+id/property_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:lines="6"
         android:ellipsize="end"
-        app:layout_constraintTop_toBottomOf="@id/property_description_title"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:lines="6"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/property_description_title" />
 
     <TextView
         android:id="@+id/property_surface"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:drawablePadding="16dp"
         app:drawableStartCompat="@drawable/ic_baseline_aspect_ratio_24"
-        app:layout_constraintTop_toBottomOf="@id/property_description"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/property_description" />
 
     <TextView
         android:id="@+id/property_surface_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        app:layout_constraintTop_toBottomOf="@id/property_surface"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/property_surface" />
 
     <TextView
         android:id="@+id/number_of_rooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:drawablePadding="16dp"
         app:drawableStartCompat="@drawable/ic_baseline_number_of_rooms_24"
-        app:layout_constraintTop_toBottomOf="@id/property_surface_value"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/property_surface_value" />
 
     <TextView
         android:id="@+id/number_of_rooms_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        app:layout_constraintTop_toBottomOf="@id/number_of_rooms"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_rooms" />
 
     <TextView
         android:id="@+id/number_of_bathrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:drawablePadding="16dp"
         app:drawableStartCompat="@drawable/ic_baseline_bathrooms_24"
-        app:layout_constraintTop_toBottomOf="@id/number_of_rooms_value"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_rooms_value" />
 
     <TextView
         android:id="@+id/number_of_bathrooms_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms" />
 
     <TextView
         android:id="@+id/number_of_bedrooms"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
         android:drawablePadding="16dp"
         app:drawableStartCompat="@drawable/ic_baseline_bedrooms_24"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms_value"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms_value" />
 
     <TextView
         android:id="@+id/number_of_bedrooms_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms" />
+
+    <ImageView
+        android:id="@+id/static_map"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms_value" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

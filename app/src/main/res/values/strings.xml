@@ -29,6 +29,12 @@
     <string name="is_sold">Is sold</string>
     <string name="update_property">Update a Property</string>
     <string name="save_change">Save change</string>
+    <string name="media">Media</string>
+    <string name="description">Description</string>
+    <string name="surface">Surface</string>
+    <string name="number_rooms">Number of rooms</string>
+    <string name="number_bathrooms">Number of bathrooms</string>
+    <string name="number_bedrooms">Number of bedrooms</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,12 +24,6 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * A fragment representing a single Item detail screen.
- * This fragment is either contained in a [PropertyListFragment]
- * in two-pane mode (on larger screen devices) or self-contained
- * on handsets.
- */
 @AndroidEntryPoint
 class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
@@ -49,7 +42,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    lateinit var staticMap: ImageView
+    private lateinit var staticMap: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +56,9 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                 // arguments. In a real-world scenario, use a Loader
                 // to load content from a content provider.
                 item = it.getString(ARG_ITEM_ID)
-                viewModel.setCurrentPropertyId(item.toString().toInt())
+                if (item != "") {
+                    viewModel.setCurrentPropertyId(item.toString().toInt())
+                }
             }
         }
 
@@ -71,10 +66,9 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        if (item != "") {
-            menu.findItem(R.id.edit).isVisible = true
-        } else {
-            menu.findItem(R.id.edit).isVisible = false
+        when (item != "") {
+            true -> menu.findItem(R.id.edit).isVisible = true
+            else -> menu.findItem(R.id.edit).isVisible = false
         }
     }
 
@@ -86,20 +80,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
         _binding = FragmentPropertyDetailBinding.inflate(inflater, container, false)
         val rootView = binding.root
 
-        val recyclerView: RecyclerView? = binding.recyclerviewFragmentDetail
-
-        val mediaTitle: TextView? = binding.mediaTitle
-        val propertyDescriptionTitle: TextView? = binding.propertyDescriptionTitle
-        val propertyDescription: TextView? = binding.propertyDescription
-        val propertySurface: TextView? = binding.propertySurface
-        val propertySurfaceValue: TextView? = binding.propertySurfaceValue
-        val numberOfRooms: TextView? = binding.numberOfRooms
-        val numberOfRoomsValue: TextView? = binding.numberOfRoomsValue
-        val numberOfBathrooms: TextView? = binding.numberOfBathrooms
-        val numberOfBathroomsValue: TextView? = binding.numberOfBathroomsValue
-        val numberOfBedrooms: TextView? = binding.numberOfBedrooms
-        val numberOfBedroomsValue: TextView? = binding.numberOfBedroomsValue
-
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentDetail
 
         viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { listOfProperty ->
 
@@ -107,26 +88,26 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                 listOfProperty.find { it.property.id.toString() == item }
 
             if (property != null) {
-                propertyDescription!!.text = property.property.description
-                mediaTitle!!.text = "Media"
-                propertyDescriptionTitle!!.text = "Description"
-                propertySurface!!.text = "Surface"
-                propertySurfaceValue!!.text = property.property.surface.toString()
-                numberOfRooms!!.text = "Number of rooms"
-                numberOfRoomsValue!!.text = property.property.numberOfRooms.toString()
-                numberOfBathrooms!!.text = "Number of bathrooms"
-                numberOfBathroomsValue!!.text = property.property.numberOfBathrooms.toString()
-                numberOfBedrooms!!.text = "Number of bedrooms"
-                numberOfBedroomsValue!!.text = property.property.numberOfBedrooms.toString()
-                var address: String =
-                    property.property.address!!.city + "+" + property.property.address!!.postcode
+                binding.propertyDescription.text = property.property.description
+                binding.mediaTitle.text = getString(R.string.media)
+                binding.propertyDescriptionTitle.text = getString(R.string.description)
+                binding.propertySurface.text = getString(R.string.surface)
+                binding.propertySurfaceValue.text = property.property.surface.toString()
+                binding.numberOfRooms.text = getString(R.string.number_rooms)
+                binding.numberOfRoomsValue.text = property.property.numberOfRooms.toString()
+                binding.numberOfBathrooms.text = getString(R.string.number_bathrooms)
+                binding.numberOfBathroomsValue.text = property.property.numberOfBathrooms.toString()
+                binding.numberOfBedrooms.text = getString(R.string.number_bedrooms)
+                binding.numberOfBedroomsValue.text = property.property.numberOfBedrooms.toString()
+                val currentPropertyAddress: String =
+                    property.property.address!!.city + "+" + property.property.address.postcode
 
                 val listOfPropertyMedia: List<Media> = property.mediaList
-                recyclerView?.let { setUpRecyclerView(it, listOfPropertyMedia) }
+                setUpRecyclerView(recyclerView, listOfPropertyMedia)
 
-                staticMap = binding.staticMap!!
+                staticMap = binding.staticMap
                 val staticMapUri =
-                    "https://maps.googleapis.com/maps/api/staticmap?center=" + address + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.GOOGLE_KEY
+                    "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.GOOGLE_KEY
 
                 if (property.property.staticMapUri != null) {
                     Glide.with(this).load(property.property.staticMapUri).centerCrop()
@@ -138,7 +119,6 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                 }
 
                 viewModel.currentProperty = property.property
-
             }
         }
 
@@ -171,25 +151,26 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
     override fun onSuccess(dataSource: Drawable) {
         val staticMapBitmap = dataSource.toBitmap()
-        val fileName: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        savePhotoToInternalMemory(fileName, staticMapBitmap)
+        val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        savePhotoToInternalMemory(fileDate, staticMapBitmap)
 
     }
 
     private fun savePhotoToInternalMemory(
-        filename: String,
-        bmp: Bitmap
+        fileDate: String,
+        bitmap: Bitmap
     ): Boolean {
         return try {
-            context?.openFileOutput("StaticMapPhoto$filename.jpg", Activity.MODE_PRIVATE)
+            val fileName = "StaticMapPhoto"
+            context?.openFileOutput("$fileName$fileDate.jpg", Activity.MODE_PRIVATE)
                 .use { stream ->
 
                     //compress photo
-                    if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                        throw IOException("erreur compression")
+                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
+                        throw IOException("error compression")
                     }
                     val uriStaticMapPhoto: String =
-                        context?.filesDir.toString() + "/" + "StaticMapPhoto$filename.jpg"
+                        context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
                     viewModel.updateProperty(
                         Property(
                             id = item!!.toInt(),
@@ -205,13 +186,12 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                             isSold = viewModel.currentProperty.isSold
                         )
                     )
-
                 }
             true
-
         } catch (e: IOException) {
             e.printStackTrace()
             false
         }
     }
+
 }
