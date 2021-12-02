@@ -10,10 +10,15 @@ import android.widget.Toast
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
+import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.PropertyWithMedia
+import thierry.realestatemanager.ui.addproperty.AddPropertyAdapter
 
 
 /**
@@ -22,7 +27,7 @@ import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
  * create an instance of this fragment.
  */
 @AndroidEntryPoint
-class UpdatePropertyFragment : Fragment() {
+class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fragment() {
     private var _binding: FragmentAddUpdatePropertyBinding? = null
     private val viewModel by viewModels<UpdatePropertyViewModel>()
 
@@ -41,6 +46,7 @@ class UpdatePropertyFragment : Fragment() {
     ): View? {
         _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+        val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
 
         binding.title.text = getString(R.string.update_property)
         binding.saveButton.text = getString(R.string.save_change)
@@ -73,6 +79,11 @@ class UpdatePropertyFragment : Fragment() {
             binding.cityEditText.setText(currentProperty.address!!.city)
             binding.postcodeEditText.setText(currentProperty.address.postcode.toString())
             binding.streetEditText.setText(currentProperty.address.street)
+            viewModel.allPropertyMedia.observe(viewLifecycleOwner) { listOfPropertyWithMedia ->
+                val property: PropertyWithMedia? =
+                    listOfPropertyWithMedia.find { currentProperty.id == it.property.id }
+                setUpRecyclerView(recyclerView, property!!.mediaList)
+            }
         }
         Log.i("YEAHH", "Yeahh + $viewModel.actualPropertyIndex.toString()")
 
@@ -142,6 +153,13 @@ class UpdatePropertyFragment : Fragment() {
         return rootView
     }
 
+    private fun setUpRecyclerView(recyclerView: RecyclerView, mediaList: List<Media>) {
+        val myLayoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = myLayoutManager
+        recyclerView.adapter = UpdatePropertyAdapter(mediaList, this)
+    }
+
     private fun validPriceText(textEditText: Editable?): String? {
         return when (textEditText.toString()) {
             "" -> "Field can't be empty"
@@ -152,6 +170,14 @@ class UpdatePropertyFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    override fun onDescriptionPhotoChanged(description: String, uri: String) {
+
+    }
+
+    override fun onDeleteMedia(media: Media) {
+
     }
 
 }

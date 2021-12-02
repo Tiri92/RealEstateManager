@@ -24,4 +24,6 @@ class UpdatePropertyViewModel @Inject constructor(
         return currentProperty
     }
 
+    var allPropertyMedia = localDatabaseRepository.allPropertyMedia().asLiveData()
+
 }
