@@ -10,19 +10,15 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table")
     fun getProperty(): Flow<List<Property>>
 
-    @Query("SELECT * FROM property_table WHERE id = :id")
-    fun getCurrentProperty(id: Int): Flow<Property>
+    @Transaction
+    @Query("SELECT * FROM property_table")
+    fun getFullPropertyList(): Flow<List<FullProperty>>
 
     @Query("SELECT MAX(id) + 1 FROM property_table")
     fun getLastIdPropertyTable(): Flow<Int>
 
-    @Transaction
-    @Query("SELECT * FROM property_table")
-    fun getPropertyMedia(): Flow<List<PropertyWithMedia>>
-
-//    @Transaction
-//    @Query("SELECT * FROM points_of_interest_table")
-//    fun getPropertyPointsOfInterest(): Flow<List<PropertyWithPointsOfInterest>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertFullProperty(fullProperty: FullProperty)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)

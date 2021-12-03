@@ -10,13 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class LocalDatabaseRepository @Inject constructor(private val propertyDao: PropertyDao) {
 
-    fun allProperty() = propertyDao.getProperty()
-
-    fun getCurrentProperty(id: Int) = propertyDao.getCurrentProperty(id)
-
-    fun allPropertyMedia() = propertyDao.getPropertyMedia()
-
-    //fun allPropertyPointsOfInterest() = propertyDao.getPropertyPointsOfInterest()
+    fun getFullPropertyList() = propertyDao.getFullPropertyList()
 
     fun getLastIdPropertyTable() = propertyDao.getLastIdPropertyTable()
 
