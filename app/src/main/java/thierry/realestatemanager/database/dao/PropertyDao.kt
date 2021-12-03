@@ -7,18 +7,15 @@ import thierry.realestatemanager.model.*
 @Dao
 interface PropertyDao {
 
-    @Query("SELECT * FROM property_table")
-    fun getProperty(): Flow<List<Property>>
-
     @Transaction
     @Query("SELECT * FROM property_table")
     fun getFullPropertyList(): Flow<List<FullProperty>>
 
+    @Query("SELECT * FROM property_table")
+    fun getProperty(): Flow<List<Property>>
+
     @Query("SELECT MAX(id) + 1 FROM property_table")
     fun getLastIdPropertyTable(): Flow<Int>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertFullProperty(fullProperty: FullProperty)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
