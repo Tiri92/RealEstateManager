@@ -1,7 +1,5 @@
 package thierry.realestatemanager.ui.propertydetail
 
-import android.app.Activity
-import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
@@ -18,7 +16,7 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.model.Media
-import java.io.IOException
+import thierry.realestatemanager.utils.MediaUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -131,32 +129,19 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
     override fun onSuccess(dataSource: Drawable) {
         val staticMapBitmap = dataSource.toBitmap()
+        val fileName = "StaticMapPhoto"
         val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        savePhotoToInternalMemory(fileDate, staticMapBitmap)
-    }
-
-    private fun savePhotoToInternalMemory( // Cree une class MEDIA UTILS, la mettre dans un COMPANION comme static pour eviter les new
-        fileDate: String,
-        bitmap: Bitmap
-    ): Boolean {
-        return try {
-            val fileName = "StaticMapPhoto"
-            context?.openFileOutput("$fileName$fileDate.jpg", Activity.MODE_PRIVATE)
-                .use { stream ->
-
-                    //compress photo
-                    if (!bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                        throw IOException("error compression")
-                    }
-                    val uriStaticMapPhoto: String =
-                        context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
-                    viewModel.currentProperty.staticMapUri = uriStaticMapPhoto
-                    viewModel.updateProperty(viewModel.currentProperty)
-                }
-            true
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
+        val uriStaticMapPhoto: String =
+            context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
+        if (MediaUtils.savePhotoToInternalMemory(
+                fileDate,
+                fileName,
+                staticMapBitmap,
+                requireContext()
+            )
+        ) {
+            viewModel.currentProperty.staticMapUri = uriStaticMapPhoto
+            viewModel.updateProperty(viewModel.currentProperty)
         }
     }
 

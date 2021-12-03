@@ -30,7 +30,7 @@ import thierry.realestatemanager.model.Address
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
-import java.io.IOException
+import thierry.realestatemanager.utils.MediaUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -171,17 +171,26 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         }
 
         //PHOTO FROM GALLERY
-        val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val fileName = "Photo"
         val getImageFromGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback {
+                val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                val fileName = "Photo"
+                val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
                 if (it != null) {
                     val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
                         context?.applicationContext?.contentResolver,
                         it
                     )
-                    savePhotoToInternalMemory("$fileName$fileDate", bitmap)
+                    if (MediaUtils.savePhotoToInternalMemory(
+                            fileDate,
+                            fileName,
+                            bitmap,
+                            requireContext()
+                        )
+                    ) {
+                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                    }
                 }
             }
         )
@@ -199,8 +208,19 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
+                    val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                    val fileName = "Photo"
+                    val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
-                    savePhotoToInternalMemory("$fileName$fileDate", bitmap)
+                    if (MediaUtils.savePhotoToInternalMemory(
+                            fileDate,
+                            fileName,
+                            bitmap,
+                            requireContext()
+                        )
+                    ) {
+                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                    }
                 }
             }
 
@@ -333,28 +353,6 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
         recyclerView.adapter = AddPropertyAdapter(listOfPropertyMedia, this)
-    }
-
-    private fun savePhotoToInternalMemory(
-        filename: String,
-        bmp: Bitmap
-    ): Boolean {
-        return try {
-            context?.openFileOutput("$filename.jpg", Activity.MODE_PRIVATE).use { stream ->
-
-                //compress photo
-                if (!bmp.compress(Bitmap.CompressFormat.JPEG, 95, stream)) {
-                    throw IOException("error compression")
-                }
-                val uriPhoto: String = context?.filesDir.toString() + "/" + "$filename.jpg"
-                viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
-            }
-            true
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
     }
 
     override fun onDestroyView() {
