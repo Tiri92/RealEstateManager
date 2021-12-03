@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        viewModel.allProperty.observe(this) { list ->
+        viewModel.getFullPropertyList.observe(this) { list ->
             Log.i("[THIERRY]", "recup : ${list.size}")
         }
     }

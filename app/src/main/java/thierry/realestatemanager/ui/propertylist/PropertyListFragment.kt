@@ -10,26 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyListBinding
+import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
-
-/**
- * A Fragment representing a list of Pings. This fragment
- * has different presentations for handset and larger screen devices. On
- * handsets, the fragment presents a list of items, which when touched,
- * lead to a {@link ItemDetailFragment} representing
- * item details. On larger screens, the Navigation controller presents the list of items and
- * item details side-by-side using two vertical panes.
- */
 
 @AndroidEntryPoint
 class PropertyListFragment : Fragment() {
 
     private val viewModel: PropertyListViewModel by viewModels()
     private var _binding: FragmentPropertyListBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -56,7 +45,8 @@ class PropertyListFragment : Fragment() {
 
         // Leaving this not using view binding as it relies on if the view is visible the current
         // layout configuration (layout, layout-sw600dp)
-        val propertyDetailFragmentContainer: View? = view.findViewById(R.id.item_detail_nav_container)
+        val propertyDetailFragmentContainer: View? =
+            view.findViewById(R.id.item_detail_nav_container)
 
         /** Click Listener to trigger navigation based on if you have
          * a single pane layout or two pane layout
@@ -91,15 +81,13 @@ class PropertyListFragment : Fragment() {
             true
         }
 
-        //TODO Get list of photos
-        /*viewModel.allPropertyPhoto.observe(viewLifecycleOwner) { propertyPhoto ->
-            var test: List<PropertyWithPhoto> = propertyPhoto
-            val testview = binding.test
-            testview!!.text = test[2].Photolist[1].uri
-        }*/
-
-        viewModel.allProperty.observe(viewLifecycleOwner) { property ->
-            setupRecyclerView(recyclerView, onClickListener, onContextClickListener, property)
+        viewModel.getFullPropertyList.observe(viewLifecycleOwner) { fullPropertyList ->
+            setupRecyclerView(
+                recyclerView,
+                onClickListener,
+                onContextClickListener,
+                fullPropertyList
+            )
         }
     }
 
@@ -107,7 +95,7 @@ class PropertyListFragment : Fragment() {
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener,
         onContextClickListener: View.OnContextClickListener,
-        listOfProperty: List<Property>
+        listOfProperty: List<FullProperty>
     ) {
 
         recyclerView.adapter = PropertyListAdapter(

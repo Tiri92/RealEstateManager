@@ -9,11 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import thierry.realestatemanager.R
-import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.utils.Utils
 
 class PropertyListAdapter(
-    private val properties: List<Property>,
+    private val properties: List<FullProperty>,
     private val onClickListener: View.OnClickListener,
     private val onContextClickListener: View.OnContextClickListener
 ) :
@@ -27,10 +27,10 @@ class PropertyListAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = properties[position]
-        val formattedPrice: String? = Utils.formatThePrice(item.price!!)
+        val formattedPrice: String? = Utils.formatThePrice(item.property.price!!)
         holder.propertyPrice.text = formattedPrice.toString()
-        holder.propertyType.text = item.type
-        holder.propertyTown.text = item.address!!.city
+        holder.propertyType.text = item.property.type
+        holder.propertyTown.text = item.property.address!!.city
 
         Glide.with(holder.itemView)
             .load(R.drawable.property_drawable)
@@ -38,7 +38,7 @@ class PropertyListAdapter(
             .into(holder.propertyPhoto)
 
         with(holder.itemView) {
-            tag = item.id
+            tag = item.property.id
             setOnClickListener(onClickListener)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 setOnContextClickListener(onContextClickListener)

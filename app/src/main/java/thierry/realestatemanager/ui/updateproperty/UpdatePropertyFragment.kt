@@ -2,7 +2,6 @@ package thierry.realestatemanager.ui.updateproperty
 
 import android.os.Bundle
 import android.text.Editable
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,34 +15,20 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
+import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.model.Media
-import thierry.realestatemanager.model.PropertyWithMedia
-import thierry.realestatemanager.ui.addproperty.AddPropertyAdapter
 
-
-/**
- * A simple [Fragment] subclass.
- * Use the [UpdatePropertyFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 @AndroidEntryPoint
 class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fragment() {
+
     private var _binding: FragmentAddUpdatePropertyBinding? = null
     private val viewModel by viewModels<UpdatePropertyViewModel>()
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
@@ -69,23 +54,25 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
             }
         })
 
-        viewModel.getCurrentProperty().observe(viewLifecycleOwner) { currentProperty ->
-            binding.priceEditText.setText(currentProperty.price.toString())
-            binding.roomsEditText.setText(currentProperty.numberOfRooms.toString())
-            binding.bedroomsEditText.setText(currentProperty.numberOfBedrooms.toString())
-            binding.bathroomsEditText.setText(currentProperty.numberOfBathrooms.toString())
-            binding.surfaceEditText.setText(currentProperty.surface.toString())
-            binding.descriptionEditText.setText(currentProperty.description)
-            binding.cityEditText.setText(currentProperty.address!!.city)
-            binding.postcodeEditText.setText(currentProperty.address.postcode.toString())
-            binding.streetEditText.setText(currentProperty.address.street)
-            viewModel.allPropertyMedia.observe(viewLifecycleOwner) { listOfPropertyWithMedia ->
-                val property: PropertyWithMedia? =
-                    listOfPropertyWithMedia.find { currentProperty.id == it.property.id }
-                setUpRecyclerView(recyclerView, property!!.mediaList)
+        viewModel.getFullPropertyList.observe(viewLifecycleOwner) { fullPropertyList ->
+
+            val currentFullProperty: FullProperty =
+                fullPropertyList.find { fullPropertyListItem -> fullPropertyListItem.property.id == viewModel.currentFullPropertyId }!!
+
+            if (fullPropertyList != null) {
+                binding.priceEditText.setText(currentFullProperty.property.price.toString())
+                binding.roomsEditText.setText(currentFullProperty.property.numberOfRooms.toString())
+                binding.bedroomsEditText.setText(currentFullProperty.property.numberOfBedrooms.toString())
+                binding.bathroomsEditText.setText(currentFullProperty.property.numberOfBathrooms.toString())
+                binding.surfaceEditText.setText(currentFullProperty.property.surface.toString())
+                binding.descriptionEditText.setText(currentFullProperty.property.description)
+                binding.cityEditText.setText(currentFullProperty.property.address!!.city)
+                binding.postcodeEditText.setText(currentFullProperty.property.address.postcode.toString())
+                binding.streetEditText.setText(currentFullProperty.property.address.street)
+
+                setUpRecyclerView(recyclerView, currentFullProperty.mediaList)
             }
         }
-        Log.i("YEAHH", "Yeahh + $viewModel.actualPropertyIndex.toString()")
 
         binding.priceEditText.addTextChangedListener {
             binding.price.helperText = validPriceText(binding.priceEditText.text)
