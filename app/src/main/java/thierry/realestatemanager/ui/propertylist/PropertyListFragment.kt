@@ -11,7 +11,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyListBinding
 import thierry.realestatemanager.model.FullProperty
-import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
 
 @AndroidEntryPoint

@@ -210,7 +210,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 if (result!!.resultCode == Activity.RESULT_OK) {
                     val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
                     val fileName = "Photo"
-                    val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
+                    val uriPhoto: String =
+                        context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
                     if (MediaUtils.savePhotoToInternalMemory(
                             fileDate,

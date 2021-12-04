@@ -1,11 +1,9 @@
 package thierry.realestatemanager.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
@@ -20,8 +18,7 @@ import thierry.realestatemanager.databinding.ActivityMainBinding
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-    lateinit var  navController : NavController
-    private val viewModel: MainActivityViewModel by viewModels()
+    private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +33,6 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        viewModel.getFullPropertyList.observe(this) { list ->
-            Log.i("[THIERRY]", "recup : ${list.size}")
-        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -54,7 +48,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return NavigationUI.onNavDestinationSelected(item,navController)
+        return NavigationUI.onNavDestinationSelected(item, navController)
     }
 
 }

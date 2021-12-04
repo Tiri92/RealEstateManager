@@ -10,8 +10,6 @@ import javax.inject.Inject
 class MainActivityViewModel @Inject constructor(localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
 
-    var getFullPropertyList = localDatabaseRepository.getFullPropertyList().asLiveData()
-
 }
 
 
