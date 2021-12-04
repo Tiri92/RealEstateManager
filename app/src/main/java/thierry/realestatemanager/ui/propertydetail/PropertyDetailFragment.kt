@@ -14,7 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.BuildConfig
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
-import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.utils.MediaUtils
 import java.text.SimpleDateFormat
@@ -60,46 +59,46 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
         val rootView = binding.root
         val recyclerView: RecyclerView = binding.recyclerviewFragmentDetail
 
-        viewModel.getFullPropertyList.observe(viewLifecycleOwner) { fullPropertyList ->
+        viewModel.getCurrentFullProperty(currentPropertyId!!.toInt())
+            .observe(viewLifecycleOwner) { currentFullProperty ->
 
-            val currentFullProperty: FullProperty =
-                fullPropertyList.find { fullPropertyListItem -> fullPropertyListItem.property.id.toString() == currentPropertyId }!!
+                if (currentFullProperty != null) {
+                    binding.propertyDescription.text = currentFullProperty.property.description
+                    binding.mediaTitle.text = getString(R.string.media)
+                    binding.propertyDescriptionTitle.text = getString(R.string.description)
+                    binding.propertySurface.text = getString(R.string.surface)
+                    binding.propertySurfaceValue.text =
+                        currentFullProperty.property.surface.toString()
+                    binding.numberOfRooms.text = getString(R.string.number_rooms)
+                    binding.numberOfRoomsValue.text =
+                        currentFullProperty.property.numberOfRooms.toString()
+                    binding.numberOfBathrooms.text = getString(R.string.number_bathrooms)
+                    binding.numberOfBathroomsValue.text =
+                        currentFullProperty.property.numberOfBathrooms.toString()
+                    binding.numberOfBedrooms.text = getString(R.string.number_bedrooms)
+                    binding.numberOfBedroomsValue.text =
+                        currentFullProperty.property.numberOfBedrooms.toString()
 
-            if (fullPropertyList != null) {
-                binding.propertyDescription.text = currentFullProperty.property.description
-                binding.mediaTitle.text = getString(R.string.media)
-                binding.propertyDescriptionTitle.text = getString(R.string.description)
-                binding.propertySurface.text = getString(R.string.surface)
-                binding.propertySurfaceValue.text = currentFullProperty.property.surface.toString()
-                binding.numberOfRooms.text = getString(R.string.number_rooms)
-                binding.numberOfRoomsValue.text =
-                    currentFullProperty.property.numberOfRooms.toString()
-                binding.numberOfBathrooms.text = getString(R.string.number_bathrooms)
-                binding.numberOfBathroomsValue.text =
-                    currentFullProperty.property.numberOfBathrooms.toString()
-                binding.numberOfBedrooms.text = getString(R.string.number_bedrooms)
-                binding.numberOfBedroomsValue.text =
-                    currentFullProperty.property.numberOfBedrooms.toString()
+                    staticMap = binding.staticMap
+                    val currentPropertyAddress: String =
+                        currentFullProperty.property.address!!.city + "+" + currentFullProperty.property.address.postcode
+                    val staticMapUri =
+                        "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.MAPS_API_KEY
 
-                staticMap = binding.staticMap
-                val currentPropertyAddress: String =
-                    currentFullProperty.property.address!!.city + "+" + currentFullProperty.property.address.postcode
-                val staticMapUri =
-                    "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.MAPS_API_KEY
+                    if (currentFullProperty.property.staticMapUri != null) {
+                        Glide.with(this).load(currentFullProperty.property.staticMapUri)
+                            .centerCrop()
+                            .into(staticMap)
+                    } else {
+                        Glide.with(this).load(staticMapUri).centerCrop()
+                            .listener(StaticMapRequestListener(this))/*.error(R.drawable.ERRORPHOTO)*/
+                            .into(staticMap)
+                    }
 
-                if (currentFullProperty.property.staticMapUri != null) {
-                    Glide.with(this).load(currentFullProperty.property.staticMapUri).centerCrop()
-                        .into(staticMap)
-                } else {
-                    Glide.with(this).load(staticMapUri).centerCrop()
-                        .listener(StaticMapRequestListener(this))/*.error(R.drawable.ERRORPHOTO)*/
-                        .into(staticMap)
+                    viewModel.currentProperty = currentFullProperty.property
+                    setUpRecyclerView(recyclerView, currentFullProperty.mediaList)
                 }
-
-                viewModel.currentProperty = currentFullProperty.property
-                setUpRecyclerView(recyclerView, currentFullProperty.mediaList)
             }
-        }
 
         return rootView
     }

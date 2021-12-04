@@ -19,7 +19,8 @@ class PropertyDetailViewModel @Inject constructor(
 
     var currentProperty: Property = Property()
 
-    var getFullPropertyList = localDatabaseRepository.getFullPropertyList().asLiveData()
+    fun getCurrentFullProperty(id: Int) =
+        localDatabaseRepository.getCurrentFullProperty(id).asLiveData()
 
     fun setCurrentPropertyId(id: Int) {
         sharedRepository.setCurrentPropertyId(id)

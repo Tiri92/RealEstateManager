@@ -9,13 +9,13 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdatePropertyViewModel @Inject constructor(
-    localDatabaseRepository: LocalDatabaseRepository,
-    sharedRepository: SharedRepository
+    private val localDatabaseRepository: LocalDatabaseRepository,
+    private val sharedRepository: SharedRepository
 ) :
     ViewModel() {
 
-    var getFullPropertyList = localDatabaseRepository.getFullPropertyList().asLiveData()
-
-    val currentFullPropertyId = sharedRepository.getCurrentPropertyId()
+    fun getCurrentFullProperty() =
+        localDatabaseRepository.getCurrentFullProperty(sharedRepository.getCurrentPropertyId())
+            .asLiveData()
 
 }

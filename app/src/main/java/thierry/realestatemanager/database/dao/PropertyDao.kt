@@ -11,6 +11,10 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table")
     fun getFullPropertyList(): Flow<List<FullProperty>>
 
+    @Transaction
+    @Query("SELECT * FROM property_table WHERE id = :id")
+    fun getCurrentFullProperty(id: Int): Flow<FullProperty>
+
     @Query("SELECT * FROM property_table")
     fun getProperty(): Flow<List<Property>>
 

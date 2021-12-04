@@ -15,7 +15,6 @@ import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
-import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.model.Media
 
 @AndroidEntryPoint
@@ -54,12 +53,9 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
             }
         })
 
-        viewModel.getFullPropertyList.observe(viewLifecycleOwner) { fullPropertyList ->
+        viewModel.getCurrentFullProperty().observe(viewLifecycleOwner) { currentFullProperty ->
 
-            val currentFullProperty: FullProperty =
-                fullPropertyList.find { fullPropertyListItem -> fullPropertyListItem.property.id == viewModel.currentFullPropertyId }!!
-
-            if (fullPropertyList != null) {
+            if (currentFullProperty != null) {
                 binding.priceEditText.setText(currentFullProperty.property.price.toString())
                 binding.roomsEditText.setText(currentFullProperty.property.numberOfRooms.toString())
                 binding.bedroomsEditText.setText(currentFullProperty.property.numberOfBedrooms.toString())

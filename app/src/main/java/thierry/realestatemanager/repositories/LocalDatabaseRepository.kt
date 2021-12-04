@@ -12,6 +12,8 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     fun getFullPropertyList() = propertyDao.getFullPropertyList()
 
+    fun getCurrentFullProperty(id: Int) = propertyDao.getCurrentFullProperty(id)
+
     fun getLastIdPropertyTable() = propertyDao.getLastIdPropertyTable()
 
     suspend fun updateProperty(property: Property) = propertyDao.update(property)
@@ -20,6 +22,7 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
 
     suspend fun insertProperty(property: Property) = propertyDao.insertProperty(property)
 
-    suspend fun insertPointsOfInterest(pointsOfInterest: PointsOfInterest) = propertyDao.insertPropertyPointsOfInterest(pointsOfInterest)
+    suspend fun insertPointsOfInterest(pointsOfInterest: PointsOfInterest) =
+        propertyDao.insertPropertyPointsOfInterest(pointsOfInterest)
 
 }
