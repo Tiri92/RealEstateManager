@@ -5,7 +5,8 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "points_of_interest_table")
 data class PointsOfInterest(
-    @PrimaryKey val propertyId: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val propertyId: Int,
     val school: Boolean,
     val university: Boolean,
     val parks: Boolean,
