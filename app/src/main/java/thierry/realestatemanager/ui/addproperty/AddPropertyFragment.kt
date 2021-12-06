@@ -5,7 +5,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.text.Editable
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -31,6 +30,7 @@ import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.utils.MediaUtils
+import thierry.realestatemanager.utils.RegexUtils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -47,7 +47,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
@@ -69,7 +69,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 parent: AdapterView<*>?,
                 p1: View?,
                 position: Int,
-                p3: Long
+                p3: Long,
             ) {
                 val tSpinnerResult: String = parent?.getItemAtPosition(position).toString()
                 resultPropertyTypeSpinner = tSpinnerResult
@@ -93,7 +93,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     parent: AdapterView<*>?,
                     p1: View?,
                     position: Int,
-                    p3: Long
+                    p3: Long,
                 ) {
                     val cSpinnerResult: String = parent?.getItemAtPosition(position).toString()
                     resultPropertyCountrySpinner = cSpinnerResult
@@ -267,77 +267,71 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         })
 
         binding.priceEditText.addTextChangedListener {
-            binding.price.helperText = validPriceText(binding.priceEditText.text)
+            binding.price.helperText = RegexUtils.validPriceText(binding.priceEditText.text)
         }
         binding.priceEditText.setOnFocusChangeListener { _, _ ->
-            binding.price.helperText = validPriceText(binding.priceEditText.text)
+            binding.price.helperText = RegexUtils.validPriceText(binding.priceEditText.text)
         }
 
         binding.roomsEditText.addTextChangedListener {
-            binding.rooms.helperText = validPriceText(binding.roomsEditText.text)
+            binding.rooms.helperText = RegexUtils.validPriceText(binding.roomsEditText.text)
         }
         binding.roomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.rooms.helperText = validPriceText(binding.roomsEditText.text)
+            binding.rooms.helperText = RegexUtils.validPriceText(binding.roomsEditText.text)
         }
 
         binding.bedroomsEditText.addTextChangedListener {
-            binding.bedrooms.helperText = validPriceText(binding.bedroomsEditText.text)
+            binding.bedrooms.helperText = RegexUtils.validPriceText(binding.bedroomsEditText.text)
         }
         binding.bedroomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.bedrooms.helperText = validPriceText(binding.bedroomsEditText.text)
+            binding.bedrooms.helperText = RegexUtils.validPriceText(binding.bedroomsEditText.text)
         }
 
         binding.bathroomsEditText.addTextChangedListener {
-            binding.bathrooms.helperText = validPriceText(binding.bathroomsEditText.text)
+            binding.bathrooms.helperText = RegexUtils.validPriceText(binding.bathroomsEditText.text)
         }
         binding.bathroomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.bathrooms.helperText = validPriceText(binding.bathroomsEditText.text)
+            binding.bathrooms.helperText = RegexUtils.validPriceText(binding.bathroomsEditText.text)
         }
 
         binding.surfaceEditText.addTextChangedListener {
-            binding.surface.helperText = validPriceText(binding.surfaceEditText.text)
+            binding.surface.helperText = RegexUtils.validPriceText(binding.surfaceEditText.text)
         }
         binding.surfaceEditText.setOnFocusChangeListener { _, _ ->
-            binding.surface.helperText = validPriceText(binding.surfaceEditText.text)
+            binding.surface.helperText = RegexUtils.validPriceText(binding.surfaceEditText.text)
         }
 
         binding.descriptionEditText.addTextChangedListener {
-            binding.description.helperText = validPriceText(binding.descriptionEditText.text)
+            binding.description.helperText =
+                RegexUtils.validPriceText(binding.descriptionEditText.text)
         }
         binding.descriptionEditText.setOnFocusChangeListener { _, _ ->
-            binding.description.helperText = validPriceText(binding.descriptionEditText.text)
+            binding.description.helperText =
+                RegexUtils.validPriceText(binding.descriptionEditText.text)
         }
 
         binding.cityEditText.addTextChangedListener {
-            binding.city.helperText = validPriceText(binding.cityEditText.text)
+            binding.city.helperText = RegexUtils.validCityText(binding.cityEditText.text)
         }
         binding.cityEditText.setOnFocusChangeListener { _, _ ->
-            binding.city.helperText = validPriceText(binding.cityEditText.text)
+            binding.city.helperText = RegexUtils.validCityText(binding.cityEditText.text)
         }
 
         binding.postcodeEditText.addTextChangedListener {
-            binding.postcode.helperText = validPriceText(binding.postcodeEditText.text)
+            binding.postcode.helperText = RegexUtils.validPriceText(binding.postcodeEditText.text)
         }
         binding.postcodeEditText.setOnFocusChangeListener { _, _ ->
-            binding.postcode.helperText = validPriceText(binding.postcodeEditText.text)
+            binding.postcode.helperText = RegexUtils.validPriceText(binding.postcodeEditText.text)
         }
 
         binding.streetEditText.addTextChangedListener {
-            binding.street.helperText = validPriceText(binding.streetEditText.text)
+            binding.street.helperText = RegexUtils.validPriceText(binding.streetEditText.text)
         }
         binding.streetEditText.setOnFocusChangeListener { _, _ ->
-            binding.street.helperText = validPriceText(binding.streetEditText.text)
+            binding.street.helperText = RegexUtils.validPriceText(binding.streetEditText.text)
         }
 
         return rootView
-    }
-
-
-    private fun validPriceText(textEditText: Editable?): String? {
-        return when (textEditText.toString()) {
-            "" -> "Field can't be empty"
-            else -> return null
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -348,7 +342,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
     private fun setUpRecyclerView(
         recyclerView: RecyclerView,
-        listOfPropertyMedia: List<Media>
+        listOfPropertyMedia: List<Media>,
     ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
