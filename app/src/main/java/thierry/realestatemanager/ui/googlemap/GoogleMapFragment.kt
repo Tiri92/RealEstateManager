@@ -6,7 +6,6 @@ import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
@@ -17,12 +16,11 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
+import thierry.realestatemanager.utils.UiUtils
 
 @AndroidEntryPoint
 class GoogleMapFragment : Fragment() {
@@ -31,7 +29,7 @@ class GoogleMapFragment : Fragment() {
     private var _binding: FragmentGoogleMapBinding? = null
     private val binding get() = _binding!!
     private val viewModel: GoogleMapViewModel by viewModels()
-    private lateinit var map: GoogleMap
+    private var map: GoogleMap? = null
 
     @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
@@ -65,10 +63,14 @@ class GoogleMapFragment : Fragment() {
         viewModel.getListOfGeocodingResponse()
             .observe(viewLifecycleOwner) { listOfGeocodingResponse ->
                 listOfGeocodingResponse.forEach { geocodingResponse ->
-                    map.addMarker(MarkerOptions()
-                        .position(LatLng(geocodingResponse.results!![0]!!.geometry!!.location!!.lat!!,
-                            geocodingResponse.results[0]!!.geometry!!.location!!.lng!!))
-                        .title("Fine"))
+                    if (map != null) {
+                        map!!.addMarker(MarkerOptions()
+                            .position(LatLng(geocodingResponse.results!![0]!!.geometry!!.location!!.lat!!,
+                                geocodingResponse.results[0]!!.geometry!!.location!!.lng!!))
+                            .icon(UiUtils.bitmapDescriptorFromVector(requireContext(),
+                                R.drawable.ic_baseline_other_houses_24))
+                            .title("Property"))
+                    }
                 }
             }
 
@@ -115,8 +117,8 @@ class GoogleMapFragment : Fragment() {
     }
 
     private fun moveAndDisplayMyPosition(location: LatLng) {
-        map.clear()
-        map.addMarker(
+        map!!.clear()
+        map!!.addMarker(
             MarkerOptions()
                 .position(location)
                 .title("My position")
@@ -124,7 +126,7 @@ class GoogleMapFragment : Fragment() {
         val cameraPosition =
             CameraPosition.Builder().target(location)
                 .zoom(14f).tilt(30f).bearing(0f).build()
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+        map!!.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
