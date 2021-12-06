@@ -21,11 +21,8 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import dagger.hilt.android.AndroidEntryPoint
-import thierry.realestatemanager.BuildConfig
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
-import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
-import thierry.realestatemanager.ui.addproperty.AddPropertyViewModel
 
 @AndroidEntryPoint
 class GoogleMapFragment : Fragment() {
@@ -51,11 +48,29 @@ class GoogleMapFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentGoogleMapBinding.inflate(inflater, container, false)
         val rootView = binding.root
         setHasOptionsMenu(true)
+
+        viewModel.getFullPropertyList().observe(viewLifecycleOwner) { fullPropertyList ->
+            for (fullProperty in fullPropertyList) {
+                val address =
+                    "${fullProperty.property.address!!.street}%20${fullProperty.property.address.city}%20${fullProperty.property.address.postcode}"
+                viewModel.callGeocoding(address)
+            }
+        }
+
+        viewModel.getListOfGeocodingResponse()
+            .observe(viewLifecycleOwner) { listOfGeocodingResponse ->
+                listOfGeocodingResponse.forEach { geocodingResponse ->
+                    map.addMarker(MarkerOptions()
+                        .position(LatLng(geocodingResponse.results!![0]!!.geometry!!.location!!.lat!!,
+                            geocodingResponse.results[0]!!.geometry!!.location!!.lng!!))
+                        .title("Fine"))
+                }
+            }
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
