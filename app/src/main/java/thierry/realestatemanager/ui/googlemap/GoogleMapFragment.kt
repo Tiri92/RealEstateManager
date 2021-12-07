@@ -6,9 +6,11 @@ import android.location.Location
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
@@ -20,6 +22,7 @@ import com.google.android.gms.maps.model.*
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
+import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
 import thierry.realestatemanager.utils.UiUtils
 
 @AndroidEntryPoint
@@ -35,11 +38,23 @@ class GoogleMapFragment : Fragment() {
     private val callback = OnMapReadyCallback { googleMap ->
 
         map = googleMap
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val paris = LatLng(-48.86, 2.34)
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(paris))
         googleMap.uiSettings.isZoomControlsEnabled = true
         googleMap.isMyLocationEnabled = true
+        googleMap.setOnMarkerClickListener { marker ->
+            val propertyId = marker.tag
+            val bundle = Bundle()
+            bundle.putString(
+                PropertyDetailFragment.ARG_ITEM_ID,
+                propertyId.toString()
+            )
+            findNavController().navigate(R.id.action_GoogleMapFragment_to_property_detail_fragment,
+                bundle)
+
+            Log.i("MARKER", "YES")
+            false
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -60,7 +75,7 @@ class GoogleMapFragment : Fragment() {
                             requireContext(),
                             fullProperty.property.address.propertyLatitude!!,
                             fullProperty.property.address.propertyLongitude!!,
-                            fullProperty.property.type.toString())
+                            fullProperty.property.type.toString(), fullProperty.property.id)
                     }
                 } else {
                     viewModel.currentProperty = fullProperty.property
@@ -129,12 +144,6 @@ class GoogleMapFragment : Fragment() {
     }
 
     private fun moveAndDisplayMyPosition(location: LatLng) {
-        map!!.clear()
-        map!!.addMarker(
-            MarkerOptions()
-                .position(location)
-                .title("My position")
-        )
         val cameraPosition =
             CameraPosition.Builder().target(location)
                 .zoom(14f).tilt(30f).bearing(0f).build()

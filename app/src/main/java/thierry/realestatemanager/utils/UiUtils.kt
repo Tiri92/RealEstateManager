@@ -15,7 +15,10 @@ class UiUtils {
 
     companion object {
 
-        private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        private fun bitmapDescriptorFromVector(
+            context: Context,
+            vectorResId: Int,
+        ): BitmapDescriptor {
             // below line is use to generate a drawable.
             val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
 
@@ -42,12 +45,21 @@ class UiUtils {
             return BitmapDescriptorFactory.fromBitmap(bitmap)
         }
 
-        fun addMarker(map: GoogleMap, context: Context, lat: Double, lng: Double, title: String) {
-            map.addMarker(MarkerOptions()
-                .position(LatLng(lat, lng))
-                .icon(bitmapDescriptorFromVector(context,
-                    R.drawable.ic_baseline_other_houses_24))
-                .title(title))
+        fun addMarker(
+            map: GoogleMap,
+            context: Context,
+            lat: Double,
+            lng: Double,
+            title: String,
+            tag: Int,
+        ) {
+            val option = MarkerOptions()
+            option.position(LatLng(lat, lng))
+            option.icon(bitmapDescriptorFromVector(context,
+                R.drawable.ic_baseline_other_houses_24))
+            option.title(title)
+            val marker = map.addMarker(option)
+            marker!!.tag = tag
         }
 
     }
