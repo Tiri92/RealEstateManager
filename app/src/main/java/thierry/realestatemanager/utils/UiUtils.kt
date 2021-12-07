@@ -4,14 +4,18 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
+import thierry.realestatemanager.R
 
 class UiUtils {
 
     companion object {
 
-        fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
+        private fun bitmapDescriptorFromVector(context: Context, vectorResId: Int): BitmapDescriptor {
             // below line is use to generate a drawable.
             val vectorDrawable = ContextCompat.getDrawable(context, vectorResId)
 
@@ -36,6 +40,14 @@ class UiUtils {
 
             // after generating our bitmap we are returning our bitmap.
             return BitmapDescriptorFactory.fromBitmap(bitmap)
+        }
+
+        fun addMarker(map: GoogleMap, context: Context, lat: Double, lng: Double, title: String) {
+            map.addMarker(MarkerOptions()
+                .position(LatLng(lat, lng))
+                .icon(bitmapDescriptorFromVector(context,
+                    R.drawable.ic_baseline_other_houses_24))
+                .title(title))
         }
 
     }

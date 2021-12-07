@@ -14,11 +14,11 @@ import javax.inject.Singleton
 @Singleton
 class GeocodingRepository @Inject constructor(private val geocodingService: GeocodingService) {
 
-    private var mutableListOfGeocodingResponse = mutableListOf<GeocodingResponse>()
-    private var listOfGeocodingResponse = MutableLiveData<List<GeocodingResponse>>()
+    private var mutableGeocodingResponse = GeocodingResponse()
+    private var geocodingResponse = MutableLiveData<GeocodingResponse>()
 
-    fun getListOfGeocodingResponse(): LiveData<List<GeocodingResponse>> {
-        return listOfGeocodingResponse
+    fun getGeocodingResponse(): LiveData<GeocodingResponse> {
+        return geocodingResponse
     }
 
     fun callGeocoding(address: String, propertyId: Int) {
@@ -30,8 +30,8 @@ class GeocodingRepository @Inject constructor(private val geocodingService: Geoc
             ) {
                 if (response.isSuccessful) {
                     response.body()!!.propertyId = propertyId
-                    mutableListOfGeocodingResponse.add(response.body()!!)
-                    listOfGeocodingResponse.value = mutableListOfGeocodingResponse
+                    mutableGeocodingResponse = (response.body()!!)
+                    geocodingResponse.value = mutableGeocodingResponse
                 }
             }
 

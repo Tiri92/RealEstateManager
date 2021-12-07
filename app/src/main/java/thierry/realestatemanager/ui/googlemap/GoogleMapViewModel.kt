@@ -31,8 +31,8 @@ class GoogleMapViewModel @Inject constructor(
         geocodingRepository.callGeocoding(address, propertyId)
     }
 
-    fun getListOfGeocodingResponse(): LiveData<List<GeocodingResponse>> {
-        return geocodingRepository.getListOfGeocodingResponse()
+    fun getGeocodingResponse(): LiveData<GeocodingResponse> {
+        return geocodingRepository.getGeocodingResponse()
     }
 
     fun updateProperty(property: Property) =
