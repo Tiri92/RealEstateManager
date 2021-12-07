@@ -21,7 +21,7 @@ class GeocodingRepository @Inject constructor(private val geocodingService: Geoc
         return listOfGeocodingResponse
     }
 
-    fun callGeocoding(address: String) {
+    fun callGeocoding(address: String, propertyId: Int) {
         geocodingService.getGPSLocationFromAddress(address).enqueue(object :
             Callback<GeocodingResponse> {
             override fun onResponse(
@@ -29,6 +29,7 @@ class GeocodingRepository @Inject constructor(private val geocodingService: Geoc
                 response: Response<GeocodingResponse>,
             ) {
                 if (response.isSuccessful) {
+                    response.body()!!.propertyId = propertyId
                     mutableListOfGeocodingResponse.add(response.body()!!)
                     listOfGeocodingResponse.value = mutableListOfGeocodingResponse
                 }

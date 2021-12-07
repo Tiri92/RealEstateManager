@@ -54,9 +54,21 @@ class GoogleMapFragment : Fragment() {
 
         viewModel.getFullPropertyList().observe(viewLifecycleOwner) { fullPropertyList ->
             for (fullProperty in fullPropertyList) {
-                val address =
-                    "${fullProperty.property.address!!.street}%20${fullProperty.property.address.city}%20${fullProperty.property.address.postcode}"
-                viewModel.callGeocoding(address)
+                if (fullProperty.property.address!!.propertyLatitude != null && fullProperty.property.address.propertyLongitude != null) {
+                    if (map != null) {
+                        map!!.addMarker(MarkerOptions()
+                            .position(LatLng(fullProperty.property.address.propertyLatitude!!,
+                                fullProperty.property.address.propertyLongitude!!))
+                            .icon(UiUtils.bitmapDescriptorFromVector(requireContext(),
+                                R.drawable.ic_baseline_other_houses_24))
+                            .title("Property"))
+                    }
+                } else {
+                    viewModel.currentProperty = fullProperty.property
+                    val address =
+                        "${fullProperty.property.address.street}%20${fullProperty.property.address.city}%20${fullProperty.property.address.postcode}"
+                    viewModel.callGeocoding(address, fullProperty.property.id)
+                }
             }
         }
 
@@ -70,6 +82,14 @@ class GoogleMapFragment : Fragment() {
                             .icon(UiUtils.bitmapDescriptorFromVector(requireContext(),
                                 R.drawable.ic_baseline_other_houses_24))
                             .title("Property"))
+                        viewModel.currentProperty.address!!.propertyLatitude =
+                            geocodingResponse.results[0]!!.geometry!!.location!!.lat!!
+                        viewModel.currentProperty.address!!.propertyLongitude =
+                            geocodingResponse.results[0]!!.geometry!!.location!!.lng!!
+                        viewModel.currentProperty.id = geocodingResponse.propertyId!!
+                        if (viewModel.currentProperty.address!!.propertyLatitude != null && viewModel.currentProperty.address!!.propertyLongitude != null) {
+                            viewModel.updateProperty(viewModel.currentProperty)
+                        }
                     }
                 }
             }

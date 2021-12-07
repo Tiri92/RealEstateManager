@@ -4,9 +4,12 @@ import android.location.Location
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import thierry.realestatemanager.model.GeocodingResponse
+import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.repositories.GeocodingRepository
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import javax.inject.Inject
@@ -24,13 +27,18 @@ class GoogleMapViewModel @Inject constructor(
         return LatLng(location.latitude, location.longitude)
     }
 
-    fun callGeocoding(address: String) {
-        geocodingRepository.callGeocoding(address)
+    fun callGeocoding(address: String, propertyId: Int) {
+        geocodingRepository.callGeocoding(address, propertyId)
     }
 
-    fun getListOfGeocodingResponse():LiveData<List<GeocodingResponse>> {
+    fun getListOfGeocodingResponse(): LiveData<List<GeocodingResponse>> {
         return geocodingRepository.getListOfGeocodingResponse()
     }
+
+    fun updateProperty(property: Property) =
+        viewModelScope.launch { localDatabaseRepository.updateProperty(property) }
+
+    var currentProperty: Property = Property()
 
     var currentPosition: LatLng? = null
 
