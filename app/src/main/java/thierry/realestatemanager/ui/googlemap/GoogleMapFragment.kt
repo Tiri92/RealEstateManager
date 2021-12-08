@@ -2,15 +2,14 @@ package thierry.realestatemanager.ui.googlemap
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.location.Location
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +22,9 @@ import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
 import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
 import thierry.realestatemanager.utils.UiUtils
 
+private const val LOCATION_REQUEST_INTERVAL_MS = 10000
+private const val SMALLEST_DISPLACEMENT_THRESHOLD_METER = 25f
+
 @AndroidEntryPoint
 class GoogleMapFragment : Fragment() {
 
@@ -30,7 +32,7 @@ class GoogleMapFragment : Fragment() {
     private var _binding: FragmentGoogleMapBinding? = null
     private val binding get() = _binding!!
     private var map: GoogleMap? = null
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private var fusedLocationClient: FusedLocationProviderClient? = null
 
     private val callback = OnMapReadyCallback { googleMap ->
         map = googleMap
@@ -97,6 +99,12 @@ class GoogleMapFragment : Fragment() {
         return rootView
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+        mapFragment?.getMapAsync(callback)
+    }
+
     @SuppressLint("MissingPermission")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -115,20 +123,23 @@ class GoogleMapFragment : Fragment() {
     @SuppressLint("MissingPermission")
     fun launchGeolocationRequest() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
-        fusedLocationClient.lastLocation
-            .addOnSuccessListener { location: Location? ->
-                // Got last known location. In some rare situations this can be null.
-                if (location != null) {
-                    viewModel.currentPosition = viewModel.setLocationInLatLng(location)
-                    moveAndDisplayUserPosition(viewModel.currentPosition!!)
-                }
-            }
+        fusedLocationClient!!.removeLocationUpdates(locationCallback)
+        fusedLocationClient!!.requestLocationUpdates(
+            LocationRequest.create()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setSmallestDisplacement(SMALLEST_DISPLACEMENT_THRESHOLD_METER)
+                .setInterval(LOCATION_REQUEST_INTERVAL_MS.toLong()),
+            locationCallback,
+            Looper.getMainLooper()
+        )
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
-        mapFragment?.getMapAsync(callback)
+    private val locationCallback: LocationCallback = object : LocationCallback() {
+        override fun onLocationResult(locationResult: LocationResult) {
+            super.onLocationResult(locationResult)
+            viewModel.currentPosition = viewModel.setLocationInLatLng(locationResult.lastLocation)
+            moveAndDisplayUserPosition(viewModel.currentPosition!!)
+        }
     }
 
     private fun moveAndDisplayUserPosition(location: LatLng) {
