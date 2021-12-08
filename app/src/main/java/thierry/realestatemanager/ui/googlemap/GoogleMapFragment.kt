@@ -3,22 +3,20 @@ package thierry.realestatemanager.ui.googlemap
 import android.Manifest
 import android.annotation.SuppressLint
 import android.location.Location
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.*
+import com.google.android.gms.maps.model.CameraPosition
+import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
@@ -28,20 +26,18 @@ import thierry.realestatemanager.utils.UiUtils
 @AndroidEntryPoint
 class GoogleMapFragment : Fragment() {
 
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private val viewModel: GoogleMapViewModel by viewModels()
     private var _binding: FragmentGoogleMapBinding? = null
     private val binding get() = _binding!!
-    private val viewModel: GoogleMapViewModel by viewModels()
     private var map: GoogleMap? = null
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
-    @SuppressLint("MissingPermission")
     private val callback = OnMapReadyCallback { googleMap ->
-
         map = googleMap
         val paris = LatLng(-48.86, 2.34)
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(paris))
         googleMap.uiSettings.isZoomControlsEnabled = true
-        googleMap.isMyLocationEnabled = true
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 0)
         googleMap.setOnMarkerClickListener { marker ->
             val propertyId = marker.tag
             val bundle = Bundle()
@@ -51,13 +47,10 @@ class GoogleMapFragment : Fragment() {
             )
             findNavController().navigate(R.id.action_GoogleMapFragment_to_property_detail_fragment,
                 bundle)
-
-            Log.i("MARKER", "YES")
             false
         }
     }
 
-    @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -101,40 +94,35 @@ class GoogleMapFragment : Fragment() {
                 }
             }
 
+        return rootView
+    }
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray,
+    ) {
+        if (requestCode == 0 && grantResults[0] != -1) {
+            UiUtils.checkGpsState(binding.root, requireActivity())
+            launchGeolocationRequest()
+            map!!.isMyLocationEnabled = true
+        } else {
+            Log.i("", "")
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun launchGeolocationRequest() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location: Location? ->
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
                     viewModel.currentPosition = viewModel.setLocationInLatLng(location)
-                    moveAndDisplayMyPosition(viewModel.currentPosition!!)
+                    moveAndDisplayUserPosition(viewModel.currentPosition!!)
                 }
             }
-
-        val locationPermissionRequest = registerForActivityResult(
-            ActivityResultContracts.RequestMultiplePermissions()
-        ) { permissions ->
-            when {
-                permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false) -> {
-                    // Precise location access granted.
-                }
-                permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false) -> {
-                    // Only approximate location access granted.
-                }
-                else -> {
-                    // No location access granted.
-                }
-            }
-        }
-
-        locationPermissionRequest.launch(
-            arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            )
-        )
-
-        return rootView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -143,7 +131,7 @@ class GoogleMapFragment : Fragment() {
         mapFragment?.getMapAsync(callback)
     }
 
-    private fun moveAndDisplayMyPosition(location: LatLng) {
+    private fun moveAndDisplayUserPosition(location: LatLng) {
         val cameraPosition =
             CameraPosition.Builder().target(location)
                 .zoom(14f).tilt(30f).bearing(0f).build()
