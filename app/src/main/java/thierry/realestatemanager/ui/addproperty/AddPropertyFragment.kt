@@ -148,7 +148,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         address = Address(
                             city = resultPropertyCountrySpinner,
                             street = binding.streetEditText.text.toString(),
-                            postcode = binding.postcodeEditText.text.toString().toInt()
+                            postcode = binding.postcodeEditText.text.toString().toInt(),
+                            country = resultPropertyCountrySpinner
                         ),
                         numberOfRooms = binding.roomsEditText.text.toString().toInt(),
                         numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
