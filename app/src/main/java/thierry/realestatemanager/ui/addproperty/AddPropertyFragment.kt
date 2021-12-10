@@ -18,6 +18,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -25,10 +27,7 @@ import com.google.android.material.chip.ChipGroup
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
-import thierry.realestatemanager.model.Address
-import thierry.realestatemanager.model.Media
-import thierry.realestatemanager.model.PointsOfInterest
-import thierry.realestatemanager.model.Property
+import thierry.realestatemanager.model.*
 import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.RegexUtils
 import java.text.SimpleDateFormat
@@ -44,6 +43,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
+    private var lastIndexValue: Int? = null
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -104,7 +105,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             }
 
         viewModel.getLastIdPropertyTable.observe(viewLifecycleOwner) { lastIndexValue ->
-
+            this.lastIndexValue = lastIndexValue
             val saveButton: AppCompatButton = binding.saveButton
             saveButton.setOnClickListener(View.OnClickListener {
 
@@ -168,6 +169,11 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     )
                 }
 
+                val navHostFragment =
+                    requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+                navController = navHostFragment.navController
+                navController.navigateUp()
+
             })
         }
 
@@ -190,7 +196,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = lastIndexValue!!, uri = uriPhoto, description = ""))
                     }
                 }
             }
@@ -221,7 +227,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = lastIndexValue!!, uri = uriPhoto, description = ""))
                     }
                 }
             }
@@ -239,7 +245,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         Media(
                             uri = result.data?.data.toString(),
                             description = "",
-                            propertyId = 2
+                            propertyId = lastIndexValue!!
                         )
                     )
                 }
@@ -254,7 +260,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         Media(
                             uri = it.toString(),
                             description = "",
-                            propertyId = 2
+                            propertyId = lastIndexValue!!
                         )
                     )
                 }
