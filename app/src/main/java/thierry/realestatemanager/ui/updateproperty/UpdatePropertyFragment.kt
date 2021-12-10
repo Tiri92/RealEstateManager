@@ -21,13 +21,15 @@ import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
-import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.*
 import thierry.realestatemanager.utils.MediaUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -42,6 +44,8 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
+    private lateinit var currentFullProperty: FullProperty
+    private lateinit var navController: NavController
 
 
     override fun onCreateView(
@@ -73,8 +77,58 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
             }
         })
 
-        viewModel.getCurrentFullProperty().observe(viewLifecycleOwner) { currentFullProperty ->
+        val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
+        val propertyTypeAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.PropertiesTypes,
+            android.R.layout.simple_spinner_item
+        )
+        propertyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyTypeSpinner.adapter = propertyTypeAdapter
+        propertyTypeSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long,
+                ) {
+                    val tSpinnerResult: String =
+                        parent?.getItemAtPosition(position).toString()
+                    resultPropertyTypeSpinner = tSpinnerResult
+                }
 
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+
+        val propertyCountrySpinner: AppCompatSpinner = binding.countrySpinner
+        val propertyCountryAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.Countries,
+            android.R.layout.simple_spinner_item
+        )
+        propertyCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyCountrySpinner.adapter = propertyCountryAdapter
+        propertyCountrySpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long,
+                ) {
+                    val cSpinnerResult: String =
+                        parent?.getItemAtPosition(position).toString()
+                    resultPropertyCountrySpinner = cSpinnerResult
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
+
+        viewModel.getCurrentFullProperty().observe(viewLifecycleOwner) { currentFullProperty ->
+            this.currentFullProperty = currentFullProperty
             if (currentFullProperty != null) {
                 binding.priceEditText.setText(currentFullProperty.property.price.toString())
                 binding.roomsEditText.setText(currentFullProperty.property.numberOfRooms.toString())
@@ -117,58 +171,13 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
 
                 val currentPropertyType = currentFullProperty.property.type
-                val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
-                val propertyTypeAdapter = ArrayAdapter.createFromResource(
-                    requireContext(),
-                    R.array.PropertiesTypes,
-                    android.R.layout.simple_spinner_item
-                )
-                propertyTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                propertyTypeSpinner.adapter = propertyTypeAdapter
-                propertyTypeSpinner.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            p1: View?,
-                            position: Int,
-                            p3: Long,
-                        ) {
-                            val tSpinnerResult: String =
-                                parent?.getItemAtPosition(position).toString()
-                            resultPropertyTypeSpinner = tSpinnerResult
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {
-                        }
-                    }
-                propertyTypeSpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(propertyTypeSpinner,
+                propertyTypeSpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(
+                    propertyTypeSpinner,
                     currentPropertyType))
 
                 val currentPropertyCountry = currentFullProperty.property.address.country
-                val propertyCountrySpinner: AppCompatSpinner = binding.countrySpinner
-                val propertyCountryAdapter = ArrayAdapter.createFromResource(
-                    requireContext(),
-                    R.array.Countries,
-                    android.R.layout.simple_spinner_item
-                )
-                propertyCountryAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                propertyCountrySpinner.adapter = propertyCountryAdapter
-                propertyCountrySpinner.onItemSelectedListener =
-                    object : AdapterView.OnItemSelectedListener {
-                        override fun onItemSelected(
-                            parent: AdapterView<*>?,
-                            p1: View?,
-                            position: Int,
-                            p3: Long,
-                        ) {
-                            val cSpinnerResult: String = parent?.getItemAtPosition(position).toString()
-                            resultPropertyCountrySpinner = cSpinnerResult
-                        }
-
-                        override fun onNothingSelected(p0: AdapterView<*>?) {
-                        }
-                    }
-                propertyCountrySpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(propertyCountrySpinner,
+                propertyCountrySpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(
+                    propertyCountrySpinner,
                     currentPropertyCountry))
 
                 viewModel.publicListOfMedia = currentFullProperty.mediaList as MutableList<Media>
@@ -179,6 +188,60 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
             }
         }
+
+        val saveChangeButton: AppCompatButton = binding.saveButton
+        saveChangeButton.setOnClickListener(View.OnClickListener {
+
+            viewModel.updateProperty(Property(price = binding.priceEditText.text.toString()
+                .toInt(),
+                id = currentFullProperty.property.id,
+                type = resultPropertyTypeSpinner,
+                numberOfRooms = binding.roomsEditText.text.toString().toInt(),
+                numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
+                numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
+                surface = binding.surfaceEditText.text.toString().toInt(),
+                description = binding.descriptionEditText.text.toString(),
+                address = Address(street = binding.streetEditText.text.toString(),
+                    city = binding.cityEditText.text.toString(),
+                    postcode = binding.postcodeEditText.text.toString().toInt(),
+                    country = resultPropertyCountrySpinner),
+                staticMapUri = currentFullProperty.property.staticMapUri))
+
+            viewModel.updatePropertyPointOfInterest(PointsOfInterest(propertyId = currentFullProperty.property.id,
+                school = binding.schoolChip.isChecked,
+                university = binding.universityChip.isChecked,
+                parks = binding.parksChip.isChecked,
+                sportsClubs = binding.sportsClubsChip.isChecked,
+                stations = binding.stationsChip.isChecked,
+                shoppingCenter = binding.shoppingCentreChip.isChecked))
+
+            for (mediaToDelete in viewModel.listOfMediaToDelete) {
+                context?.deleteFile(mediaToDelete.uri.substringAfterLast("/"))
+                viewModel.deletePropertyMediaFromDb(mediaToDelete)
+            }
+
+            for (item in viewModel.getListOfMedia().value!!) {
+                if (!currentFullProperty.mediaList.contains(item)) {
+                    if (!viewModel.mediaListToSet.contains(item)) {
+                        viewModel.insertPropertyMedia(Media(uri = item.uri,
+                            description = item.description,
+                            propertyId = currentFullProperty.property.id))
+                    }
+                }
+            }
+
+            for (media in viewModel.mediaListToSet) {
+                if (!viewModel.listOfMediaToDelete.contains(media)) {
+                    viewModel.insertPropertyMedia(media)
+                }
+            }
+
+            val navHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+            navController = navHostFragment.navController
+            navController.navigateUp()
+
+        })
 
         //PHOTO FROM GALLERY
         val getImageFromGalleryLauncher = registerForActivityResult(
@@ -199,7 +262,9 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = currentFullProperty.property.id,
+                            uri = uriPhoto,
+                            description = ""))
                     }
                 }
             }
@@ -230,7 +295,9 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = 2, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = currentFullProperty.property.id,
+                            uri = uriPhoto,
+                            description = ""))
                     }
                 }
             }
@@ -248,7 +315,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                         Media(
                             uri = result.data?.data.toString(),
                             description = "",
-                            propertyId = 2
+                            propertyId = currentFullProperty.property.id
                         )
                     )
                 }
@@ -263,7 +330,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                         Media(
                             uri = it.toString(),
                             description = "",
-                            propertyId = 2
+                            propertyId = currentFullProperty.property.id
                         )
                     )
                 }
@@ -378,8 +445,8 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     }
 
     override fun onDeleteMedia(media: Media) {
-        context?.deleteFile(media.uri.substringAfterLast("/"))
         viewModel.deleteMedia(media)
+        viewModel.listOfMediaToDelete.add(media)
     }
 
 }

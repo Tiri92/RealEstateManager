@@ -31,6 +31,12 @@ interface PropertyDao {
     suspend fun insertPropertyPointsOfInterest(pointsOfInterest: PointsOfInterest)
 
     @Update
-    suspend fun update(property: Property)
+    suspend fun updateProperty(property: Property)
+
+    @Update
+    suspend fun updatePropertyPointOfInterest(pointsOfInterest: PointsOfInterest)
+
+    @Delete
+    suspend fun deletePropertyMedia(media: Media)
 
 }

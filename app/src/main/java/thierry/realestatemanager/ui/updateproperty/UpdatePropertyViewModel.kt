@@ -1,11 +1,11 @@
 package thierry.realestatemanager.ui.updateproperty
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.model.PointsOfInterest
+import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
 import thierry.realestatemanager.repositories.SharedRepository
 import javax.inject.Inject
@@ -45,12 +45,36 @@ class UpdatePropertyViewModel @Inject constructor(
         mutableListOfMedia.value = listOfMedia
     }
 
+    var mediaListToSet: MutableList<Media> = mutableListOf()
     fun setDescriptionOfMedia(description: String, uri: String) {
-        listOfMedia.find { it.uri == uri }?.description = description
+        for (media in listOfMedia) {
+            if (media.uri == uri) {
+                media.description = description
+            }
+            if (!mediaListToSet.contains(media)) {
+                mediaListToSet.add(media)
+            }
+        }
     }
 
     fun getListOfMedia(): LiveData<List<Media>> {
         return mutableListOfMedia
     }
+
+    fun insertPropertyMedia(media: Media) =
+        viewModelScope.launch { localDatabaseRepository.insertPropertyMedia(media) }
+
+    fun updateProperty(property: Property) =
+        viewModelScope.launch { localDatabaseRepository.updateProperty(property) }
+
+    fun updatePropertyPointOfInterest(pointOfInterest: PointsOfInterest) =
+        viewModelScope.launch {
+            localDatabaseRepository.updatePropertyPointOfInterest(pointOfInterest)
+        }
+
+    var listOfMediaToDelete: MutableList<Media> = mutableListOf()
+
+    fun deletePropertyMediaFromDb(media: Media) =
+        viewModelScope.launch { localDatabaseRepository.deletePropertyMedia(media) }
 
 }
