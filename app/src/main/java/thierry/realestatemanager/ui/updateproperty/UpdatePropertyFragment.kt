@@ -25,6 +25,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.switchmaterial.SwitchMaterial
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
@@ -207,25 +209,53 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     country = resultPropertyCountrySpinner),
                 staticMapUri = currentFullProperty.property.staticMapUri))
 
-            viewModel.updatePropertyPointOfInterest(PointsOfInterest(propertyId = currentFullProperty.property.id,
-                school = binding.schoolChip.isChecked,
-                university = binding.universityChip.isChecked,
-                parks = binding.parksChip.isChecked,
-                sportsClubs = binding.sportsClubsChip.isChecked,
-                stations = binding.stationsChip.isChecked,
-                shoppingCenter = binding.shoppingCentreChip.isChecked))
+            var schoolState = false
+            var universityState = false
+            var parksState = false
+            var sportsClubsState = false
+            var stationsState = false
+            var shoppingCentreState = false
+            val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
+            pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
+                val chipText =
+                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
+                val chipState =
+                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
+                when (chipText) {
+                    "School" -> schoolState = chipState
+                    "University" -> universityState = chipState
+                    "Parks" -> parksState = chipState
+                    "Sports clubs" -> sportsClubsState = chipState
+                    "Stations" -> stationsState = chipState
+                    "Shopping centre" -> shoppingCentreState = chipState
+                }
+            }
+            viewModel.updatePropertyPointOfInterest(
+                PointsOfInterest(
+                    propertyId = currentFullProperty.property.id,
+                    id = currentFullProperty.property.id,
+                    school = schoolState,
+                    university = universityState,
+                    parks = parksState,
+                    sportsClubs = sportsClubsState,
+                    stations = stationsState,
+                    shoppingCenter = shoppingCentreState
+                )
+            )
 
             for (mediaToDelete in viewModel.listOfMediaToDelete) {
                 context?.deleteFile(mediaToDelete.uri.substringAfterLast("/"))
                 viewModel.deletePropertyMediaFromDb(mediaToDelete)
             }
 
-            for (item in viewModel.getListOfMedia().value!!) {
-                if (!currentFullProperty.mediaList.contains(item)) {
-                    if (!viewModel.mediaListToSet.contains(item)) {
-                        viewModel.insertPropertyMedia(Media(uri = item.uri,
-                            description = item.description,
-                            propertyId = currentFullProperty.property.id))
+            if (viewModel.getListOfMedia().value != null) {
+                for (item in viewModel.getListOfMedia().value!!) {
+                    if (!currentFullProperty.mediaList.contains(item)) {
+                        if (!viewModel.mediaListToSet.contains(item)) {
+                            viewModel.insertPropertyMedia(Media(uri = item.uri,
+                                description = item.description,
+                                propertyId = currentFullProperty.property.id))
+                        }
                     }
                 }
             }
