@@ -106,76 +106,94 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
         viewModel.getLastIdPropertyTable.observe(viewLifecycleOwner) { lastIndexValue ->
             this.lastIndexValue = lastIndexValue
-            val saveButton: AppCompatButton = binding.saveButton
-            saveButton.setOnClickListener(View.OnClickListener {
+        }
 
-                var schoolState = false
-                var universityState = false
-                var parksState = false
-                var sportsClubsState = false
-                var stationsState = false
-                var shoppingCentreState = false
-                val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
-                pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
-                    val chipText =
-                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
-                    val chipState =
-                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
-                    when (chipText) {
-                        "School" -> schoolState = chipState
-                        "University" -> universityState = chipState
-                        "Parks" -> parksState = chipState
-                        "Sports clubs" -> sportsClubsState = chipState
-                        "Stations" -> stationsState = chipState
-                        "Shopping centre" -> shoppingCentreState = chipState
-                    }
+        val saveButton: AppCompatButton = binding.saveButton
+        saveButton.setOnClickListener(View.OnClickListener {
+
+            var schoolState = false
+            var universityState = false
+            var parksState = false
+            var sportsClubsState = false
+            var stationsState = false
+            var shoppingCentreState = false
+            val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
+            pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
+                val chipText =
+                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
+                val chipState =
+                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
+                when (chipText) {
+                    "School" -> schoolState = chipState
+                    "University" -> universityState = chipState
+                    "Parks" -> parksState = chipState
+                    "Sports clubs" -> sportsClubsState = chipState
+                    "Stations" -> stationsState = chipState
+                    "Shopping centre" -> shoppingCentreState = chipState
                 }
-                viewModel.insertPointsOfInterest(
-                    PointsOfInterest(
-                        propertyId = lastIndexValue,
-                        school = schoolState,
-                        university = universityState,
-                        parks = parksState,
-                        sportsClubs = sportsClubsState,
-                        stations = stationsState,
-                        shoppingCenter = shoppingCentreState
-                    )
+            }
+            viewModel.insertPointsOfInterest(
+                PointsOfInterest(
+                    propertyId = lastIndexValue!!,
+                    school = schoolState,
+                    university = universityState,
+                    parks = parksState,
+                    sportsClubs = sportsClubsState,
+                    stations = stationsState,
+                    shoppingCenter = shoppingCentreState
                 )
+            )
 
-                viewModel.insertProperty(
-                    Property(
-                        price = binding.priceEditText.text.toString().toInt(),
-                        type = resultPropertyTypeSpinner,
-                        address = Address(
-                            city = resultPropertyCountrySpinner,
-                            street = binding.streetEditText.text.toString(),
-                            postcode = binding.postcodeEditText.text.toString().toInt(),
-                            country = resultPropertyCountrySpinner
-                        ),
-                        numberOfRooms = binding.roomsEditText.text.toString().toInt(),
-                        numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
-                        numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
-                        surface = binding.surfaceEditText.text.toString().toInt(),
-                        description = binding.descriptionEditText.text.toString()
-                    )
+            viewModel.insertProperty(
+                Property(
+                    price = binding.priceEditText.text.toString().toInt(),
+                    type = resultPropertyTypeSpinner,
+                    address = Address(
+                        city = resultPropertyCountrySpinner,
+                        street = binding.streetEditText.text.toString(),
+                        postcode = binding.postcodeEditText.text.toString().toInt(),
+                        country = resultPropertyCountrySpinner
+                    ),
+                    numberOfRooms = binding.roomsEditText.text.toString().toInt(),
+                    numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
+                    numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
+                    surface = binding.surfaceEditText.text.toString().toInt(),
+                    description = binding.descriptionEditText.text.toString()
                 )
+            )
+
+            if (viewModel.getListOfMedia().value != null) {
                 for (item in viewModel.getListOfMedia().value!!) {
                     viewModel.insertMedia(
                         Media(
                             uri = item.uri,
-                            propertyId = lastIndexValue,
+                            propertyId = lastIndexValue!!,
                             description = item.description
                         )
                     )
                 }
+            }
 
-                val navHostFragment =
-                    requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
-                navController = navHostFragment.navController
-                navController.navigateUp()
+            val navHostFragment =
+                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+            navController = navHostFragment.navController
+            navController.navigateUp()
 
-            })
+        })
+
+        fun updateSaveButtonState() {
+            RegexUtils.updateButtonState(saveButton,
+                binding.priceEditText.text,
+                binding.roomsEditText.text,
+                binding.bedroomsEditText.text,
+                binding.bathroomsEditText.text,
+                binding.surfaceEditText.text,
+                binding.descriptionEditText.text,
+                binding.cityEditText.text,
+                binding.postcodeEditText.text,
+                binding.streetEditText.text)
         }
+        updateSaveButtonState()
 
         //PHOTO FROM GALLERY
         val getImageFromGalleryLauncher = registerForActivityResult(
@@ -196,7 +214,9 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = lastIndexValue!!, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = lastIndexValue!!,
+                            uri = uriPhoto,
+                            description = ""))
                     }
                 }
             }
@@ -227,7 +247,9 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                             requireContext()
                         )
                     ) {
-                        viewModel.addMedia(Media(propertyId = lastIndexValue!!, uri = uriPhoto, description = ""))
+                        viewModel.addMedia(Media(propertyId = lastIndexValue!!,
+                            uri = uriPhoto,
+                            description = ""))
                     }
                 }
             }
@@ -274,68 +296,87 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         })
 
         binding.priceEditText.addTextChangedListener {
-            binding.price.helperText = RegexUtils.validPriceText(binding.priceEditText.text)
+            binding.price.helperText = RegexUtils.emptyTextVerification(binding.priceEditText.text)
+            updateSaveButtonState()
         }
         binding.priceEditText.setOnFocusChangeListener { _, _ ->
-            binding.price.helperText = RegexUtils.validPriceText(binding.priceEditText.text)
+            binding.price.helperText = RegexUtils.emptyTextVerification(binding.priceEditText.text)
         }
 
         binding.roomsEditText.addTextChangedListener {
-            binding.rooms.helperText = RegexUtils.validPriceText(binding.roomsEditText.text)
+            binding.rooms.helperText = RegexUtils.emptyTextVerification(binding.roomsEditText.text)
+            updateSaveButtonState()
         }
         binding.roomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.rooms.helperText = RegexUtils.validPriceText(binding.roomsEditText.text)
+            binding.rooms.helperText = RegexUtils.emptyTextVerification(binding.roomsEditText.text)
         }
 
         binding.bedroomsEditText.addTextChangedListener {
-            binding.bedrooms.helperText = RegexUtils.validPriceText(binding.bedroomsEditText.text)
+            binding.bedrooms.helperText =
+                RegexUtils.emptyTextVerification(binding.bedroomsEditText.text)
+            updateSaveButtonState()
         }
         binding.bedroomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.bedrooms.helperText = RegexUtils.validPriceText(binding.bedroomsEditText.text)
+            binding.bedrooms.helperText =
+                RegexUtils.emptyTextVerification(binding.bedroomsEditText.text)
         }
 
         binding.bathroomsEditText.addTextChangedListener {
-            binding.bathrooms.helperText = RegexUtils.validPriceText(binding.bathroomsEditText.text)
+            binding.bathrooms.helperText =
+                RegexUtils.emptyTextVerification(binding.bathroomsEditText.text)
+            updateSaveButtonState()
         }
         binding.bathroomsEditText.setOnFocusChangeListener { _, _ ->
-            binding.bathrooms.helperText = RegexUtils.validPriceText(binding.bathroomsEditText.text)
+            binding.bathrooms.helperText =
+                RegexUtils.emptyTextVerification(binding.bathroomsEditText.text)
         }
 
         binding.surfaceEditText.addTextChangedListener {
-            binding.surface.helperText = RegexUtils.validPriceText(binding.surfaceEditText.text)
+            binding.surface.helperText =
+                RegexUtils.emptyTextVerification(binding.surfaceEditText.text)
+            updateSaveButtonState()
         }
         binding.surfaceEditText.setOnFocusChangeListener { _, _ ->
-            binding.surface.helperText = RegexUtils.validPriceText(binding.surfaceEditText.text)
+            binding.surface.helperText =
+                RegexUtils.emptyTextVerification(binding.surfaceEditText.text)
         }
 
         binding.descriptionEditText.addTextChangedListener {
             binding.description.helperText =
-                RegexUtils.validPriceText(binding.descriptionEditText.text)
+                RegexUtils.emptyTextVerification(binding.descriptionEditText.text)
+            updateSaveButtonState()
         }
         binding.descriptionEditText.setOnFocusChangeListener { _, _ ->
             binding.description.helperText =
-                RegexUtils.validPriceText(binding.descriptionEditText.text)
+                RegexUtils.emptyTextVerification(binding.descriptionEditText.text)
         }
 
         binding.cityEditText.addTextChangedListener {
-            binding.city.helperText = RegexUtils.validCityText(binding.cityEditText.text)
+            binding.city.helperText = RegexUtils.emptyTextVerification(binding.cityEditText.text)
+            updateSaveButtonState()
         }
         binding.cityEditText.setOnFocusChangeListener { _, _ ->
-            binding.city.helperText = RegexUtils.validCityText(binding.cityEditText.text)
+            binding.city.helperText = RegexUtils.emptyTextVerification(binding.cityEditText.text)
         }
 
         binding.postcodeEditText.addTextChangedListener {
-            binding.postcode.helperText = RegexUtils.validPriceText(binding.postcodeEditText.text)
+            binding.postcode.helperText =
+                RegexUtils.emptyTextVerification(binding.postcodeEditText.text)
+            updateSaveButtonState()
         }
         binding.postcodeEditText.setOnFocusChangeListener { _, _ ->
-            binding.postcode.helperText = RegexUtils.validPriceText(binding.postcodeEditText.text)
+            binding.postcode.helperText =
+                RegexUtils.emptyTextVerification(binding.postcodeEditText.text)
         }
 
         binding.streetEditText.addTextChangedListener {
-            binding.street.helperText = RegexUtils.validPriceText(binding.streetEditText.text)
+            binding.street.helperText =
+                RegexUtils.emptyTextVerification(binding.streetEditText.text)
+            updateSaveButtonState()
         }
         binding.streetEditText.setOnFocusChangeListener { _, _ ->
-            binding.street.helperText = RegexUtils.validPriceText(binding.streetEditText.text)
+            binding.street.helperText =
+                RegexUtils.emptyTextVerification(binding.streetEditText.text)
         }
 
         return rootView
