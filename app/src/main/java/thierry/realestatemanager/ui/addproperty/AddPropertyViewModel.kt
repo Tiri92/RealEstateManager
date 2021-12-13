@@ -12,13 +12,17 @@ import javax.inject.Inject
 @HiltViewModel
 class AddPropertyViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
     ViewModel() {
+
     var getLastIdPropertyTable = localDatabaseRepository.getLastIdPropertyTable().asLiveData()
 
     fun insertMedia(media: Media) =
         viewModelScope.launch { localDatabaseRepository.insertPropertyMedia(media) }
 
     fun insertProperty(property: Property) =
-        viewModelScope.launch { localDatabaseRepository.insertProperty(property) }
+        viewModelScope.launch {
+            val mutableIsSuccessfullyInserted = localDatabaseRepository.insertProperty(property)
+            isSuccessfullyInserted.value = mutableIsSuccessfullyInserted
+        }
 
     fun insertPointsOfInterest(pointsOfInterest: PointsOfInterest) =
         viewModelScope.launch { localDatabaseRepository.insertPointsOfInterest(pointsOfInterest) }
@@ -42,6 +46,11 @@ class AddPropertyViewModel @Inject constructor(private val localDatabaseReposito
 
     fun getListOfMedia(): LiveData<List<Media>> {
         return mutableListOfMedia
+    }
+
+    private var isSuccessfullyInserted = MutableLiveData<Long>()
+    fun propertySuccessfullyInserted(): LiveData<Long> {
+        return isSuccessfullyInserted
     }
 
 }

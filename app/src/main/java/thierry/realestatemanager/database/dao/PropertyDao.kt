@@ -26,7 +26,7 @@ interface PropertyDao {
     fun getPropertyCursor(): Cursor
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProperty(property: Property)
+    suspend fun insertProperty(property: Property): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPropertyMedia(media: Media)

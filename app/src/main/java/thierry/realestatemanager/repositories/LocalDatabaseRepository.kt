@@ -21,7 +21,7 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
     suspend fun updatePropertyPointOfInterest(pointsOfInterest: PointsOfInterest) =
         propertyDao.updatePropertyPointOfInterest(pointsOfInterest)
 
-    suspend fun insertProperty(property: Property) = propertyDao.insertProperty(property)
+    suspend fun insertProperty(property: Property): Long = propertyDao.insertProperty(property)
 
     suspend fun insertPropertyMedia(media: Media) = propertyDao.insertPropertyMedia(media)
 

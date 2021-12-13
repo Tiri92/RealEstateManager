@@ -1,8 +1,13 @@
 package thierry.realestatemanager.ui.addproperty
 
 import android.app.Activity
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
@@ -14,6 +19,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.app.NotificationCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -174,10 +180,18 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 }
             }
 
-            val navHostFragment =
-                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
-            navController = navHostFragment.navController
-            navController.navigateUp()
+            viewModel.propertySuccessfullyInserted()
+                .observe(viewLifecycleOwner) { isSuccessfullyInserted ->
+                    val title = "Property successfully added"
+                    val message = "Good luck with the sale !"
+                    displayNotification(title, message)
+                    if (isSuccessfullyInserted.toInt() == lastIndexValue) {
+                        val navHostFragment =
+                            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+                        navController = navHostFragment.navController
+                        navController.navigateUp()
+                    }
+                }
 
         })
 
@@ -380,6 +394,25 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         }
 
         return rootView
+    }
+
+    private fun displayNotification(task: String, desc: String) {
+        val manager =
+            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel =
+                NotificationChannel("RealEstateManager",
+                    "RealEstateManager",
+                    NotificationManager.IMPORTANCE_DEFAULT)
+            manager.createNotificationChannel(channel)
+        }
+        val builder: NotificationCompat.Builder =
+            NotificationCompat.Builder(requireContext(), "RealEstateManager")
+                .setContentTitle(task)
+                .setStyle(NotificationCompat.BigTextStyle().bigText(desc))
+                .setDefaults(Notification.DEFAULT_SOUND)
+                .setSmallIcon(R.mipmap.ic_logo)
+        manager.notify(1, builder.build())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
