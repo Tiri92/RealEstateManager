@@ -1,5 +1,6 @@
 package thierry.realestatemanager.database.dao
 
+import android.database.Cursor
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
 import thierry.realestatemanager.model.*
@@ -20,6 +21,9 @@ interface PropertyDao {
 
     @Query("SELECT MAX(id) + 1 FROM property_table")
     fun getLastIdPropertyTable(): Flow<Int>
+
+    @Query("SELECT * FROM property_table")
+    fun getPropertyCursor(): Cursor
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertProperty(property: Property)
