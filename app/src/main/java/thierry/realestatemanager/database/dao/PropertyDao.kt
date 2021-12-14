@@ -2,6 +2,7 @@ package thierry.realestatemanager.database.dao
 
 import android.database.Cursor
 import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteQuery
 import kotlinx.coroutines.flow.Flow
 import thierry.realestatemanager.model.*
 
@@ -42,5 +43,8 @@ interface PropertyDao {
 
     @Delete
     suspend fun deletePropertyMedia(media: Media)
+
+    @RawQuery
+    fun getFilteredFullPropertyList(query: SupportSQLiteQuery): Flow<List<FullProperty>>
 
 }

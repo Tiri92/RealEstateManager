@@ -1,5 +1,6 @@
 package thierry.realestatemanager.repositories
 
+import androidx.sqlite.db.SupportSQLiteQuery
 import thierry.realestatemanager.database.dao.PropertyDao
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.model.PointsOfInterest
@@ -15,6 +16,8 @@ class LocalDatabaseRepository @Inject constructor(private val propertyDao: Prope
     fun getCurrentFullProperty(id: Int) = propertyDao.getCurrentFullProperty(id)
 
     fun getLastIdPropertyTable() = propertyDao.getLastIdPropertyTable()
+
+    fun getFilteredFullPropertyList(query: SupportSQLiteQuery) = propertyDao.getFilteredFullPropertyList(query)
 
     suspend fun updateProperty(property: Property) = propertyDao.updateProperty(property)
 

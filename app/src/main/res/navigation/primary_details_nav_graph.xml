@@ -42,5 +42,10 @@
             android:id="@+id/action_GoogleMapFragment_to_property_detail_fragment"
             app:destination="@id/property_detail_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/filter"
+        android:name="thierry.realestatemanager.ui.propertiesfilter.PropertiesFilterFragment"
+        android:label="@string/app_title"
+        tools:layout="@layout/fragment_properties_filter" />
 
 </navigation>

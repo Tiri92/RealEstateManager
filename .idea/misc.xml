@@ -19,6 +19,7 @@
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_google_map.xml" value="0.2" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_item_detail.xml" value="0.16" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_item_list.xml" value="0.1" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_properties_filter.xml" value="0.176" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_property_detail.xml" value="0.176" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_update_property.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_add_and_update_photo.xml" value="0.152" />
@@ -30,6 +31,7 @@
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_property_list_content.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_video.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/primary_details_nav_graph.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/properties_filter_fragment.xml" value="0.25052083333333336" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/menu/appbar_menu.xml" value="0.2" />
       </map>
     </option>

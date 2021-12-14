@@ -15,9 +15,9 @@
         app:showAsAction="always"/>
 
     <item
-        android:id="@+id/search"
+        android:id="@+id/filter"
         android:icon="@drawable/ic_baseline_search_24"
-        android:title="search"
+        android:title="Filter properties"
         app:showAsAction="ifRoom"/>
 
     <item
