@@ -22,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
@@ -383,8 +384,31 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
             getVideoFromGalleryLauncher.launch("video/*")
         })
 
-        viewModel.getListOfMedia().observe(viewLifecycleOwner, {
-            setUpRecyclerView(recyclerView, it)
+        viewModel.getListOfMedia().observe(viewLifecycleOwner, { mediaList ->
+            setUpRecyclerView(recyclerView, mediaList)
+
+            val simpleCallback = object :
+                ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END,
+                    0) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder,
+                ): Boolean {
+                    val fromPosition = viewHolder.adapterPosition
+                    val toPosition = target.adapterPosition
+                    Collections.swap(mediaList, fromPosition, toPosition)
+                    recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
+                    return false
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                    //SWIPE DELETE FEATURE
+                }
+            }
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(recyclerView)
+
         })
 
         binding.priceEditText.addTextChangedListener {
