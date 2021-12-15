@@ -17,8 +17,7 @@ data class Property(
     val numberOfBathrooms: Int? = null,
     val surface: Int? = null,
     val description: String? = null,
-    var staticMapUri: String? = null
+    var staticMapUri: String? = null,
+    val dateOfCreation: Long? = null,
 
-
-
-)
+    )

@@ -8,6 +8,10 @@ import android.net.NetworkInfo;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -43,9 +47,19 @@ public class Utils {
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
      */
 
-    public static String getTodayDate() {
+    public static String getTodayFormattedDate() {
         @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return dateFormat.format(new Date());
+    }
+
+    public static long getTodayDate() {
+        return System.currentTimeMillis();
+    }
+
+    public static LocalDate epochMilliToLocalDate(Long millisecondsFromEpoch) {
+        Instant instant = Instant.ofEpochMilli(millisecondsFromEpoch);
+        LocalDateTime dateTime = LocalDateTime.ofInstant(instant, ZoneId.systemDefault());
+        return dateTime.toLocalDate();
     }
 
     /**
