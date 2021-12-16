@@ -10,13 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -34,6 +34,7 @@ import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
 import thierry.realestatemanager.model.*
 import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.RegexUtils
+import thierry.realestatemanager.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -49,6 +50,8 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     lateinit var resultPropertyCountrySpinner: String
     private lateinit var currentFullProperty: FullProperty
     private lateinit var navController: NavController
+    private var dateOfSale: Long? = null
+    private var isSold: Boolean = false
 
 
     override fun onCreateView(
@@ -70,15 +73,6 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         binding.city.isHelperTextEnabled = false
         binding.postcode.isHelperTextEnabled = false
         binding.street.isHelperTextEnabled = false
-
-        val isSoldButton: SwitchMaterial = binding.isSoldSwitch
-        isSoldButton.setOnClickListener(View.OnClickListener {
-            if (isSoldButton.isChecked) {
-                Toast.makeText(requireContext(), "enabled", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), "disabled", Toast.LENGTH_SHORT).show()
-            }
-        })
 
         val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
         val propertyTypeAdapter = ArrayAdapter.createFromResource(
@@ -189,6 +183,18 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 ) {
                     viewModel.initListOfMedia()
                 }
+
+                val isSoldButton: SwitchMaterial = binding.isSoldSwitch
+                isSoldButton.setOnClickListener(View.OnClickListener {
+                    if (isSoldButton.isChecked) {
+                        dateOfSale = Utils.getTodayDate()
+                        isSold = true
+                    } else {
+                        isSold = false
+                        dateOfSale = null
+                    }
+                })
+                isSoldButton.isChecked = currentFullProperty.property.isSold == true
             }
         }
 
@@ -208,7 +214,10 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     city = binding.cityEditText.text.toString(),
                     postcode = binding.postcodeEditText.text.toString().toInt(),
                     country = resultPropertyCountrySpinner),
-                staticMapUri = currentFullProperty.property.staticMapUri))
+                staticMapUri = currentFullProperty.property.staticMapUri,
+                isSold = isSold,
+                dateOfSale = dateOfSale,
+                dateOfCreation = currentFullProperty.property.dateOfCreation))
 
             var schoolState = false
             var universityState = false

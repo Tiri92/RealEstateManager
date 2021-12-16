@@ -12,6 +12,7 @@ data class Property(
     val address: Address? = null,
     val type: String? = null,
     val isSold: Boolean? = null,
+    val dateOfSale: Long? = null,
     val numberOfRooms: Int? = null,
     val numberOfBedrooms: Int? = null,
     val numberOfBathrooms: Int? = null,
