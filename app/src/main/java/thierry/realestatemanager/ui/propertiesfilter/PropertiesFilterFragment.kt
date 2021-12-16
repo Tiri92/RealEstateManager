@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,9 +23,9 @@ import java.util.*
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import thierry.realestatemanager.R
 import thierry.realestatemanager.utils.Utils
-import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
@@ -33,15 +34,7 @@ class PropertiesFilterFragment : Fragment() {
     private val viewModel: PropertiesFilterViewModel by viewModels()
     private var _binding: FragmentPropertiesFilterBinding? = null
     private val binding get() = _binding!!
-    private var minPrice: Int? = null
-    private var maxPrice: Int? = null
-    private var minSurface: Int? = null
-    private var maxSurface: Int? = null
-    private var minMedia: Int? = null
     private var datePicker: MaterialDatePicker<Long>? = null
-    private var currentDate: LocalDate? = null
-    private var currentFormattedDate: String? = null
-    private var currentLongDate: Long? = null
     private lateinit var navController: NavController
 
     override fun onCreateView(
@@ -58,8 +51,8 @@ class PropertiesFilterFragment : Fragment() {
             }
 
             override fun onStopTrackingTouch(slider: RangeSlider) {
-                minPrice = slider.values[0].toInt()
-                maxPrice = slider.values[1].toInt()
+                viewModel.minPrice = slider.values[0].toInt()
+                viewModel.maxPrice = slider.values[1].toInt()
             }
         }
         binding.priceSlider.addOnSliderTouchListener(priceTouchListener)
@@ -77,8 +70,8 @@ class PropertiesFilterFragment : Fragment() {
             }
 
             override fun onStopTrackingTouch(slider: RangeSlider) {
-                minSurface = slider.values[0].toInt()
-                maxSurface = slider.values[1].toInt()
+                viewModel.minSurface = slider.values[0].toInt()
+                viewModel.maxSurface = slider.values[1].toInt()
             }
         }
         binding.surfaceSlider.addOnSliderTouchListener(surfaceTouchListener)
@@ -93,7 +86,7 @@ class PropertiesFilterFragment : Fragment() {
             }
 
             override fun onStopTrackingTouch(slider: Slider) {
-                minMedia = slider.value.toInt()
+                viewModel.minMedia = slider.value.toInt()
             }
         }
         binding.photoSlider.addOnSliderTouchListener(photoTouchListener)
@@ -102,9 +95,19 @@ class PropertiesFilterFragment : Fragment() {
         }
 
         //DATE PICKER
-        binding.textviewDatePicker.setOnClickListener(View.OnClickListener {
+        binding.dateOfCreationPicker.setOnClickListener(View.OnClickListener {
             if (datePicker == null || !datePicker!!.isAdded) {
-                createDatePicker()
+                binding.dateOfCreationPicker.tag = "dateOfCreation"
+                createDatePicker(it as TextView)
+                datePicker!!.show(childFragmentManager.beginTransaction(), "DATE_PICKER")
+            }
+        })
+
+        //Date PICKER2
+        binding.dateOfSalePicker.setOnClickListener(View.OnClickListener {
+            if (datePicker == null || !datePicker!!.isAdded) {
+                binding.dateOfSalePicker.tag = "dateOfSale"
+                createDatePicker(it as TextView)
                 datePicker!!.show(childFragmentManager.beginTransaction(), "DATE_PICKER")
             }
         })
@@ -136,38 +139,45 @@ class PropertiesFilterFragment : Fragment() {
 
             var queryString = ""
             var containsCondition = false
-            var containsOtherCondition = false
 
             queryString += "SELECT * FROM property_table"
 
-            if (maxPrice != null && minPrice != null) {
+            if (viewModel.maxPrice != null && viewModel.minPrice != null) {
                 containsCondition = true
-                queryString += " Where price BETWEEN $minPrice AND $maxPrice"
+                queryString += " Where price BETWEEN ${viewModel.minPrice} AND ${viewModel.maxPrice}"
             }
 
-            if (maxSurface != null && minSurface != null) {
+            if (viewModel.maxSurface != null && viewModel.minSurface != null) {
                 if (containsCondition) {
                     queryString += " AND "
                 } else {
                     queryString += " WHERE"
                     containsCondition = true
                 }
-                queryString += " surface BETWEEN $minSurface AND $maxSurface"
+                queryString += " surface BETWEEN ${viewModel.minSurface} AND ${viewModel.maxSurface}"
             }
 
-            if (currentFormattedDate != null) {
+            if (viewModel.selectedDateOfCreation != null) {
                 if (containsCondition) {
                     queryString += " AND "
                 } else {
                     queryString += " WHERE"
                     containsCondition = true
                 }
-                queryString += " dateOfCreation >= '$currentLongDate'"
+                queryString += " dateOfCreation >= '${viewModel.selectedDateOfCreation}'"
             }
 
-            if (minMedia != null) {
-                queryString += " INNER JOIN media_table ON propertyId = property_table.id GROUP BY media_table.propertyId HAVING COUNT(media_table.propertyId) >= $minMedia"
-                containsOtherCondition = true
+            if (viewModel.selectedDateOfSale != null) {
+                if (containsCondition) {
+                    queryString += " AND "
+                } else {
+                    queryString += " WHERE"
+                }
+                queryString += " dateOfSale >= '${viewModel.selectedDateOfSale}'"
+            }
+
+            if (viewModel.minMedia != null) {
+                queryString += " INNER JOIN media_table ON propertyId = property_table.id GROUP BY media_table.propertyId HAVING COUNT(media_table.propertyId) >= ${viewModel.minMedia}"
             }
 
 //            queryString += " INNER JOIN points_of_interest_table ON propertyId = property_table.id GROUP BY points_of_interest_table.propertyId HAVING points_of_interest_table.parks >= $parksState " +
@@ -181,28 +191,50 @@ class PropertiesFilterFragment : Fragment() {
                     it?.forEach {
                         Log.i("THIERRYBITAR", "${it.property.type}")
                     }
+                    if (!it.isNullOrEmpty()) {
+                        val navHostFragment =
+                            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+                        navController = navHostFragment.navController
+                        navController.navigateUp()
+                    } else {
+                        Snackbar.make(requireView(),
+                            "No results, change filters",
+                            Snackbar.LENGTH_SHORT).show()
+                    }
                 }
-
-            val navHostFragment =
-                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
-            navController = navHostFragment.navController
-            navController.navigateUp()
 
         })
 
         return rootView
     }
 
-    private fun createDatePicker() {
+    override fun onResume() {
+        super.onResume()
+        if (viewModel.selectedDateOfCreation != null) {
+            binding.dateOfCreationPicker.text = viewModel.selectedFormattedDateOfCreation
+        }
+        if (viewModel.selectedDateOfSale != null) {
+            binding.dateOfSalePicker.text = viewModel.selectedFormattedDateOfSale
+        }
+    }
+
+    private fun createDatePicker(view: TextView) {
         datePicker = MaterialDatePicker.Builder.datePicker()
             .setTitleText("Select a date")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
         datePicker!!.addOnPositiveButtonClickListener(MaterialPickerOnPositiveButtonClickListener { selection ->
-            currentLongDate = selection
-            currentDate = Utils.epochMilliToLocalDate(selection)
-            currentFormattedDate = currentDate!!.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-            binding.textviewDatePicker.text = currentFormattedDate
+            if (view.tag == "dateOfCreation") {
+                viewModel.selectedDateOfCreation = selection
+                viewModel.selectedFormattedDateOfCreation = Utils.epochMilliToLocalDate(selection)
+                    .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                view.text = viewModel.selectedFormattedDateOfCreation
+            } else {
+                viewModel.selectedDateOfSale = selection
+                viewModel.selectedFormattedDateOfSale = Utils.epochMilliToLocalDate(selection)
+                    .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                view.text = viewModel.selectedFormattedDateOfSale
+            }
         })
     }
 
