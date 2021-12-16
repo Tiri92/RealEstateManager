@@ -16,4 +16,17 @@
         app:layoutManager="LinearLayoutManager"
         tools:context="com.example.masterdetail.ItemDetailHostActivity"
         tools:listitem="@layout/item_property_list_content" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancel_filter_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="128dp"
+        android:src="@drawable/ic_baseline_search_off_24"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="32dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

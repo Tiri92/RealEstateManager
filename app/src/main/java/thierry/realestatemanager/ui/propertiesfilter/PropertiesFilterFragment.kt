@@ -14,19 +14,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
-import dagger.hilt.android.AndroidEntryPoint
-import thierry.realestatemanager.databinding.FragmentPropertiesFilterBinding
-import java.text.NumberFormat
-import java.util.*
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
-
-import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
+import thierry.realestatemanager.databinding.FragmentPropertiesFilterBinding
 import thierry.realestatemanager.utils.Utils
+import java.text.NumberFormat
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 @AndroidEntryPoint
 class PropertiesFilterFragment : Fragment() {
@@ -188,6 +187,7 @@ class PropertiesFilterFragment : Fragment() {
 
             viewModel.getFilteredFullPropertyList(SimpleSQLiteQuery(queryString))
                 .observe(viewLifecycleOwner) {
+                    viewModel.setFilteredFullPropertyList(it.toMutableList())
                     it?.forEach {
                         Log.i("THIERRYBITAR", "${it.property.type}")
                     }

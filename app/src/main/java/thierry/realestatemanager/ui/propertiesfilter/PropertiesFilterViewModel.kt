@@ -4,11 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.sqlite.db.SupportSQLiteQuery
 import dagger.hilt.android.lifecycle.HiltViewModel
+import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.repositories.LocalDatabaseRepository
+import thierry.realestatemanager.repositories.SharedRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class PropertiesFilterViewModel @Inject constructor(private val localDatabaseRepository: LocalDatabaseRepository) :
+class PropertiesFilterViewModel @Inject constructor(
+    private val localDatabaseRepository: LocalDatabaseRepository,
+    private val sharedRepository: SharedRepository,
+) :
     ViewModel() {
 
     var selectedDateOfCreation: Long? = null
@@ -23,5 +28,9 @@ class PropertiesFilterViewModel @Inject constructor(private val localDatabaseRep
 
     fun getFilteredFullPropertyList(query: SupportSQLiteQuery) =
         localDatabaseRepository.getFilteredFullPropertyList(query).asLiveData()
+
+    fun setFilteredFullPropertyList(filteredFullPropertyList: MutableList<FullProperty>) {
+        sharedRepository.setFilteredFullPropertyList(filteredFullPropertyList)
+    }
 
 }

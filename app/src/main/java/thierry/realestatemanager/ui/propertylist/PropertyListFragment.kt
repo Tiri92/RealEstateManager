@@ -19,10 +19,12 @@ class PropertyListFragment : Fragment() {
     private val viewModel: PropertyListViewModel by viewModels()
     private var _binding: FragmentPropertyListBinding? = null
     private val binding get() = _binding!!
+    private lateinit var fullPropertyList: List<FullProperty>
+    var isFilter: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
 
         setHasOptionsMenu(true)
@@ -80,23 +82,48 @@ class PropertyListFragment : Fragment() {
             true
         }
 
+        viewModel.getFilteredFullPropertyList().observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                isFilter = true
+                setupRecyclerView(recyclerView,
+                    onClickListener,
+                    onContextClickListener, it)
+                binding.cancelFilterButton!!.show()
+            }
+        }
+
         viewModel.getFullPropertyList.observe(viewLifecycleOwner) { fullPropertyList ->
+            this.fullPropertyList = fullPropertyList
+            if (!isFilter) {
+                setupRecyclerView(
+                    recyclerView,
+                    onClickListener,
+                    onContextClickListener,
+                    fullPropertyList
+                )
+            }
+        }
+
+        binding.cancelFilterButton!!.setOnClickListener(View.OnClickListener {
+            isFilter = false
+            binding.cancelFilterButton!!.hide()
+            viewModel.clearFilteredFullPropertyList()
             setupRecyclerView(
                 recyclerView,
                 onClickListener,
                 onContextClickListener,
                 fullPropertyList
             )
-        }
+        })
+
     }
 
     private fun setupRecyclerView(
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener,
         onContextClickListener: View.OnContextClickListener,
-        listOfProperty: List<FullProperty>
+        listOfProperty: List<FullProperty>,
     ) {
-
         recyclerView.adapter = PropertyListAdapter(
             listOfProperty,
             onClickListener,
