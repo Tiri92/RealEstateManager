@@ -141,9 +141,15 @@ class PropertiesFilterFragment : Fragment() {
 
             queryString += "SELECT * FROM property_table"
 
+            if (viewModel.minMedia != null) {
+                queryString += " INNER JOIN media_table ON media_table.propertyId = property_table.id"
+            }
+
+            queryString += " INNER JOIN points_of_interest_table ON points_of_interest_table.propertyId = property_table.id"
+
             if (viewModel.maxPrice != null && viewModel.minPrice != null) {
                 containsCondition = true
-                queryString += " Where price BETWEEN ${viewModel.minPrice} AND ${viewModel.maxPrice}"
+                queryString += " Where property_table.price BETWEEN ${viewModel.minPrice} AND ${viewModel.maxPrice}"
             }
 
             if (viewModel.maxSurface != null && viewModel.minSurface != null) {
@@ -153,7 +159,7 @@ class PropertiesFilterFragment : Fragment() {
                     queryString += " WHERE"
                     containsCondition = true
                 }
-                queryString += " surface BETWEEN ${viewModel.minSurface} AND ${viewModel.maxSurface}"
+                queryString += " property_table.surface BETWEEN ${viewModel.minSurface} AND ${viewModel.maxSurface}"
             }
 
             if (viewModel.selectedDateOfCreation != null) {
@@ -163,7 +169,7 @@ class PropertiesFilterFragment : Fragment() {
                     queryString += " WHERE"
                     containsCondition = true
                 }
-                queryString += " dateOfCreation >= '${viewModel.selectedDateOfCreation}'"
+                queryString += " property_table.dateOfCreation >= '${viewModel.selectedDateOfCreation}'"
             }
 
             if (viewModel.selectedDateOfSale != null) {
@@ -172,16 +178,19 @@ class PropertiesFilterFragment : Fragment() {
                 } else {
                     queryString += " WHERE"
                 }
-                queryString += " dateOfSale >= '${viewModel.selectedDateOfSale}'"
+                queryString += " property_table.dateOfSale >= '${viewModel.selectedDateOfSale}'"
             }
 
             if (viewModel.minMedia != null) {
-                queryString += " INNER JOIN media_table ON propertyId = property_table.id GROUP BY media_table.propertyId HAVING COUNT(media_table.propertyId) >= ${viewModel.minMedia}"
+                queryString += " GROUP BY media_table.propertyId,"
+                queryString += " points_of_interest_table.propertyId HAVING COUNT(media_table.propertyId) >= ${viewModel.minMedia} AND points_of_interest_table.parks >= $parksState " +
+                        "AND points_of_interest_table.school >= $schoolState AND points_of_interest_table.university >= $universityState AND points_of_interest_table.sportsClubs >= $sportsClubsState " +
+                        "AND points_of_interest_table.stations >= $stationsState AND points_of_interest_table.shoppingCenter >= $shoppingCentreState"
+            } else {
+                queryString += " GROUP BY points_of_interest_table.propertyId HAVING points_of_interest_table.parks >= $parksState " +
+                        "AND points_of_interest_table.school >= $schoolState AND points_of_interest_table.university >= $universityState AND points_of_interest_table.sportsClubs >= $sportsClubsState " +
+                        "AND points_of_interest_table.stations >= $stationsState AND points_of_interest_table.shoppingCenter >= $shoppingCentreState"
             }
-
-//            queryString += " INNER JOIN points_of_interest_table ON propertyId = property_table.id GROUP BY points_of_interest_table.propertyId HAVING points_of_interest_table.parks >= $parksState " +
-//                    "AND points_of_interest_table.school >= $schoolState AND points_of_interest_table.university >= $universityState AND points_of_interest_table.sportsClubs >= $sportsClubsState " +
-//                    "AND points_of_interest_table.stations >= $stationsState AND points_of_interest_table.shoppingCenter >= $shoppingCentreState"
 
             queryString += ";"
 
