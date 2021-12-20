@@ -15,7 +15,7 @@ import thierry.realestatemanager.model.Media
 
 class UpdatePropertyAdapter(
 
-    private val listOfPropertyMedia: List<Media>,
+    val listOfPropertyMedia: List<Media>,
     callback: PhotoDescriptionChanged
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {

@@ -270,6 +270,8 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
             }
 
+            viewModel.sortedMediaList.forEachIndexed { index, media -> media.position = index }
+
             for (media in viewModel.mediaListToSet) {
                 if (!viewModel.listOfMediaToDelete.contains(media)) {
                     viewModel.insertPropertyMedia(media)
@@ -394,30 +396,59 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         })
 
         viewModel.getListOfMedia().observe(viewLifecycleOwner, { mediaList ->
-            setUpRecyclerView(recyclerView, mediaList)
+            setUpRecyclerView(recyclerView, mediaList.sortedBy { it.position })
 
             val simpleCallback = object :
                 ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END,
                     0) {
+
                 override fun onMove(
                     recyclerView: RecyclerView,
                     viewHolder: RecyclerView.ViewHolder,
                     target: RecyclerView.ViewHolder,
                 ): Boolean {
+
+                    val adapterSortedMediaList =
+                        (binding.recyclerviewFragmentAddAndUpdate.adapter as UpdatePropertyAdapter).listOfPropertyMedia
+
                     val fromPosition = viewHolder.adapterPosition
                     val toPosition = target.adapterPosition
-                    Collections.swap(mediaList, fromPosition, toPosition)
-                    recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
-                    return false
+
+                    Collections.swap(adapterSortedMediaList, fromPosition, toPosition)
+
+                    recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                    viewModel.sortedMediaList = adapterSortedMediaList as MutableList<Media>
+
+                    return true
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                    //SWIPE DELETE FEATURE
                 }
+
+                override fun onSelectedChanged(
+                    viewHolder: RecyclerView.ViewHolder?,
+                    actionState: Int,
+                ) {
+                    super.onSelectedChanged(viewHolder, actionState)
+                    if (actionState == 2) {
+                        viewHolder?.itemView?.setBackgroundColor(ContextCompat.getColor(
+                            requireContext(),
+                            R.color.backgroundItem))
+                    }
+                }
+
+                override fun clearView(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                ) {
+                    super.clearView(recyclerView, viewHolder)
+                    viewHolder.itemView.setBackgroundColor(0)
+                }
+
             }
+
             val itemTouchHelper = ItemTouchHelper(simpleCallback)
             itemTouchHelper.attachToRecyclerView(recyclerView)
-
         })
 
         binding.priceEditText.addTextChangedListener {

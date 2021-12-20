@@ -36,7 +36,6 @@ class UpdatePropertyViewModel @Inject constructor(
 
     fun addMedia(media: Media) {
         listOfMedia.add(media)
-        listOfMedia.sortBy { it.uri }
         mutableListOfMedia.value = listOfMedia
     }
 
@@ -57,6 +56,7 @@ class UpdatePropertyViewModel @Inject constructor(
         }
     }
 
+    var sortedMediaList = mutableListOf<Media>()
     fun getListOfMedia(): LiveData<List<Media>> {
         return mutableListOfMedia
     }
@@ -73,7 +73,6 @@ class UpdatePropertyViewModel @Inject constructor(
         }
 
     var listOfMediaToDelete: MutableList<Media> = mutableListOf()
-
     fun deletePropertyMediaFromDb(media: Media) =
         viewModelScope.launch { localDatabaseRepository.deletePropertyMedia(media) }
 

@@ -15,5 +15,6 @@
     <color name="grayTransparent">#E6595c5d</color>
     <color name="blackTransparent">#80595C5d</color>
     <color name="red">#ca2216</color>
+    <color name="backgroundItem">#9C9A9AF2</color>
 
 </resources>

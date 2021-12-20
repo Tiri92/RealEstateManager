@@ -8,5 +8,6 @@ data class Media(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val propertyId: Int,
     val uri: String,
-    var description: String
+    var description: String,
+    var position: Int? = null
 )
