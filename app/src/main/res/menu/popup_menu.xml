@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/photo_from_gallery"
+        android:icon="@drawable/ic_baseline_photo_library_24"
+        android:title="@string/photo_from_gallery" />
+
+    <item
+        android:id="@+id/photo_from_camera"
+        android:icon="@drawable/ic_baseline_photo_camera_24"
+        android:title="@string/photo_from_camera" />
+
+    <item
+        android:id="@+id/video_from_gallery"
+        android:icon="@drawable/ic_baseline_video_library_24"
+        android:title="@string/video_from_gallery" />
+
+    <item
+        android:id="@+id/video_from_camera"
+        android:icon="@drawable/ic_baseline_videocam_24"
+        android:title="@string/video_from_camera" />
+
+</menu>

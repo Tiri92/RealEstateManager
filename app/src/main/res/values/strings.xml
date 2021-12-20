@@ -35,6 +35,7 @@
     <string name="number_rooms">Number of rooms</string>
     <string name="number_bathrooms">Number of bathrooms</string>
     <string name="number_bedrooms">Number of bedrooms</string>
+    <string name="add_media">Add Media</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

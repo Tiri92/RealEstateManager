@@ -13,6 +13,7 @@ import android.provider.MediaStore
 import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.PopupMenu
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
@@ -40,6 +41,7 @@ import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.RegexUtils
+import java.lang.reflect.Field
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -239,17 +241,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 }
             }
         )
-        val galleryPhotoButton: AppCompatButton = binding.buttonForGalleryPhoto
-        galleryPhotoButton.setOnClickListener(View.OnClickListener {
-            getImageFromGalleryLauncher.launch("image/*")
-        })
 
         //PHOTO FROM CAMERA
-        val cameraPhotoButton: AppCompatButton = binding.buttonForCameraPhoto
-        cameraPhotoButton.setOnClickListener(View.OnClickListener {
-            val getImageFromCameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            activityResultLauncher.launch(getImageFromCameraIntent)
-        })
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
@@ -273,11 +266,6 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             }
 
         //VIDEO FROM CAMERA
-        val cameraVideoButton: AppCompatButton = binding.buttonForCameraVideo
-        cameraVideoButton.setOnClickListener(View.OnClickListener {
-            val getVideoFromCameraIntent = Intent(MediaStore.ACTION_VIDEO_CAPTURE)
-            activityResultLauncherForVideo.launch(getVideoFromCameraIntent)
-        })
         activityResultLauncherForVideo =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
@@ -292,7 +280,6 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
             }
 
         //VIDEO FROM GALlERY
-        val galleryVideoButton: AppCompatButton = binding.buttonForGalleryVideo
         val getVideoFromGalleryLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
                 if (it != null) {
@@ -305,37 +292,42 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     )
                 }
             })
-        galleryVideoButton.setOnClickListener(View.OnClickListener {
-            getVideoFromGalleryLauncher.launch("video/*")
+
+        binding.mediaButton.setOnClickListener(View.OnClickListener {
+            popupMenu(binding.mediaButton,
+                getImageFromGalleryLauncher,
+                activityResultLauncher,
+                activityResultLauncherForVideo,
+                getVideoFromGalleryLauncher)
         })
 
         viewModel.getListOfMedia().observe(viewLifecycleOwner, {
 
-        val simpleCallback = object :
-            ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END,
-                0) {
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder,
-            ): Boolean {
+            val simpleCallback = object :
+                ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END,
+                    0) {
+                override fun onMove(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder,
+                ): Boolean {
 
-                val fromPosition = viewHolder.adapterPosition
-                val toPosition = target.adapterPosition
+                    val fromPosition = viewHolder.adapterPosition
+                    val toPosition = target.adapterPosition
 
-                Collections.swap(it, fromPosition, toPosition)
+                    Collections.swap(it, fromPosition, toPosition)
 
-                recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+                    recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
 
-                return true
+                    return true
+                }
+
+                override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                }
+
             }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-            }
-
-        }
-        val itemTouchHelper = ItemTouchHelper(simpleCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
+            val itemTouchHelper = ItemTouchHelper(simpleCallback)
+            itemTouchHelper.attachToRecyclerView(recyclerView)
 
             setUpRecyclerView(recyclerView, it)
         })
@@ -474,6 +466,46 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     override fun onDeleteMedia(media: Media) {
         context?.deleteFile(media.uri.substringAfterLast("/"))
         viewModel.deleteMedia(media)
+    }
+
+    private fun popupMenu(
+        view: View,
+        getImageFromGalleryLauncher: ActivityResultLauncher<String>,
+        activityResultLauncher: ActivityResultLauncher<Intent>,
+        activityResultLauncherForVideo: ActivityResultLauncher<Intent>,
+        getVideoFromGalleryLauncher: ActivityResultLauncher<String>,
+    ) {
+        val popupMenu = PopupMenu(requireContext(), view)
+        popupMenu.inflate(R.menu.popup_menu)
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                R.id.photo_from_gallery -> {
+                    getImageFromGalleryLauncher.launch("image/*")
+                    true
+                }
+                R.id.photo_from_camera -> {
+                    activityResultLauncher.launch(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+                    true
+                }
+                R.id.video_from_gallery -> {
+                    getVideoFromGalleryLauncher.launch("video/*")
+                    true
+                }
+                R.id.video_from_camera -> {
+                    activityResultLauncherForVideo.launch(Intent(MediaStore.ACTION_VIDEO_CAPTURE))
+                    true
+                }
+                else -> {
+                    true
+                }
+            }
+        }
+        val popup: Field = PopupMenu::class.java.getDeclaredField("mPopup")
+        popup.isAccessible = true
+        val menu: Any? = popup.get(popupMenu)
+        menu?.javaClass?.getDeclaredMethod("setForceShowIcon", Boolean::class.java)
+            ?.invoke(menu, true)
+        popupMenu.show()
     }
 
 }
