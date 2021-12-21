@@ -37,6 +37,7 @@
     <string name="number_bedrooms">Number of bedrooms</string>
     <string name="add_media">Add Media</string>
     <string name="sold">Sold</string>
+    <string name="add_media_guide">Add media and only after change their order as you like</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

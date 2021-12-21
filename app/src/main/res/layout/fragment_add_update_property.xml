@@ -45,12 +45,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/underline_of_title" />
 
+        <TextView
+            android:id="@+id/textview_media"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="@string/add_media_guide"
+            android:textColor="@color/gray"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
+
         <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
             android:id="@+id/media_button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="112dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="4dp"
             android:layout_marginEnd="112dp"
             android:padding="16dp"
             android:text="@string/add_media"
@@ -58,7 +74,7 @@
             app:icon="@drawable/ic_baseline_add_24"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_add_and_update" />
+            app:layout_constraintTop_toBottomOf="@id/textview_media" />
 
         <TextView
             android:id="@+id/type_of_property_title"
