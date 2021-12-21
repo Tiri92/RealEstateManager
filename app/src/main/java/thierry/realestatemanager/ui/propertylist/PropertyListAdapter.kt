@@ -15,13 +15,14 @@ import thierry.realestatemanager.utils.Utils
 class PropertyListAdapter(
     private val properties: List<FullProperty>,
     private val onClickListener: View.OnClickListener,
-    private val onContextClickListener: View.OnContextClickListener
+    private val onContextClickListener: View.OnContextClickListener,
 ) :
     RecyclerView.Adapter<PropertyListAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_property_list_content, parent, false)
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_property_list_content, parent, false)
         return ViewHolder(binding)
     }
 
@@ -32,10 +33,21 @@ class PropertyListAdapter(
         holder.propertyType.text = item.property.type
         holder.propertyTown.text = item.property.address!!.city
 
-        Glide.with(holder.itemView)
-            .load(R.drawable.property_drawable)
-            .centerCrop()
-            .into(holder.propertyPhoto)
+        item.mediaList.forEachIndexed { index, media ->
+            if (media.propertyId == item.property.id) {
+                if (media.position?.equals(0) == true) {
+                    Glide.with(holder.itemView)
+                        .load(item.mediaList[index].uri)
+                        .centerCrop()
+                        .into(holder.propertyPhoto)
+                } else if (index == 0) {
+                    Glide.with(holder.itemView)
+                        .load(item.mediaList[index].uri)
+                        .centerCrop()
+                        .into(holder.propertyPhoto)
+                }
+            }
+        }
 
         with(holder.itemView) {
             tag = item.property.id

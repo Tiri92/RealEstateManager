@@ -21,6 +21,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -32,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
@@ -123,83 +125,91 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         val saveButton: AppCompatButton = binding.saveButton
         saveButton.setOnClickListener(View.OnClickListener {
 
-            var schoolState = false
-            var universityState = false
-            var parksState = false
-            var sportsClubsState = false
-            var stationsState = false
-            var shoppingCentreState = false
-            val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
-            pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
-                val chipText =
-                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
-                val chipState =
-                    binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
-                when (chipText) {
-                    "School" -> schoolState = chipState
-                    "University" -> universityState = chipState
-                    "Parks" -> parksState = chipState
-                    "Sports clubs" -> sportsClubsState = chipState
-                    "Stations" -> stationsState = chipState
-                    "Shopping centre" -> shoppingCentreState = chipState
+            if (!viewModel.getListOfMedia().value.isNullOrEmpty()) {
+
+                var schoolState = false
+                var universityState = false
+                var parksState = false
+                var sportsClubsState = false
+                var stationsState = false
+                var shoppingCentreState = false
+                val pointsOfInterestChipGroup: ChipGroup = binding.pointsOfInterestChipGroup
+                pointsOfInterestChipGroup.checkedChipIds.forEach { chipItem ->
+                    val chipText =
+                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
+                    val chipState =
+                        binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
+                    when (chipText) {
+                        "School" -> schoolState = chipState
+                        "University" -> universityState = chipState
+                        "Parks" -> parksState = chipState
+                        "Sports clubs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Shopping centre" -> shoppingCentreState = chipState
+                    }
                 }
-            }
-            viewModel.insertPointsOfInterest(
-                PointsOfInterest(
-                    propertyId = lastIndexValue!!,
-                    school = schoolState,
-                    university = universityState,
-                    parks = parksState,
-                    sportsClubs = sportsClubsState,
-                    stations = stationsState,
-                    shoppingCenter = shoppingCentreState
-                )
-            )
-
-            viewModel.insertProperty(
-                Property(
-                    price = binding.priceEditText.text.toString().toInt(),
-                    type = resultPropertyTypeSpinner,
-                    address = Address(
-                        city = resultPropertyCountrySpinner,
-                        street = binding.streetEditText.text.toString(),
-                        postcode = binding.postcodeEditText.text.toString().toInt(),
-                        country = resultPropertyCountrySpinner
-                    ),
-                    numberOfRooms = binding.roomsEditText.text.toString().toInt(),
-                    numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
-                    numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
-                    surface = binding.surfaceEditText.text.toString().toInt(),
-                    description = binding.descriptionEditText.text.toString()
-                )
-            )
-
-            if (viewModel.getListOfMedia().value != null) {
-                for (item in viewModel.getListOfMedia().value!!) {
-                    viewModel.insertMedia(
-                        Media(
-                            uri = item.uri,
-                            propertyId = lastIndexValue!!,
-                            description = item.description
-                        )
+                viewModel.insertPointsOfInterest(
+                    PointsOfInterest(
+                        propertyId = lastIndexValue!!,
+                        school = schoolState,
+                        university = universityState,
+                        parks = parksState,
+                        sportsClubs = sportsClubsState,
+                        stations = stationsState,
+                        shoppingCenter = shoppingCentreState
                     )
-                }
-            }
+                )
 
-            viewModel.propertySuccessfullyInserted()
-                .observe(viewLifecycleOwner) { isSuccessfullyInserted ->
-                    val title = "Property successfully added"
-                    val message = "Good luck with the sale !"
-                    displayNotification(title, message)
-                    if (isSuccessfullyInserted.toInt() == lastIndexValue) {
-                        val navHostFragment =
-                            requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
-                        navController = navHostFragment.navController
-                        navController.navigateUp()
+                viewModel.insertProperty(
+                    Property(
+                        price = binding.priceEditText.text.toString().toInt(),
+                        type = resultPropertyTypeSpinner,
+                        address = Address(
+                            city = resultPropertyCountrySpinner,
+                            street = binding.streetEditText.text.toString(),
+                            postcode = binding.postcodeEditText.text.toString().toInt(),
+                            country = resultPropertyCountrySpinner
+                        ),
+                        numberOfRooms = binding.roomsEditText.text.toString().toInt(),
+                        numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
+                        numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
+                        surface = binding.surfaceEditText.text.toString().toInt(),
+                        description = binding.descriptionEditText.text.toString()
+                    )
+                )
+
+                if (viewModel.getListOfMedia().value != null) {
+                    viewModel.getListOfMedia().value!!.forEachIndexed { index, media ->
+                        viewModel.insertMedia(
+                            Media(
+                                uri = media.uri,
+                                propertyId = lastIndexValue!!,
+                                description = media.description,
+                                position = index
+                            )
+                        )
                     }
                 }
 
+                viewModel.propertySuccessfullyInserted()
+                    .observe(viewLifecycleOwner) { isSuccessfullyInserted ->
+                        val title = "Property successfully added"
+                        val message = "Good luck with the sale !"
+                        displayNotification(title, message)
+                        if (isSuccessfullyInserted.toInt() == lastIndexValue) {
+                            val navHostFragment =
+                                requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
+                            navController = navHostFragment.navController
+                            navController.navigateUp()
+                        }
+                    }
+
+            } else {
+                Snackbar.make(requireView(), "Add at least one media", Snackbar.LENGTH_LONG).show()
+            }
+
         })
+
 
         fun updateSaveButtonState() {
             RegexUtils.updateButtonState(saveButton,
@@ -323,6 +333,26 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                 }
 
                 override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                }
+
+                override fun onSelectedChanged(
+                    viewHolder: RecyclerView.ViewHolder?,
+                    actionState: Int,
+                ) {
+                    super.onSelectedChanged(viewHolder, actionState)
+                    if (actionState == 2) {
+                        viewHolder?.itemView?.setBackgroundColor(ContextCompat.getColor(
+                            requireContext(),
+                            R.color.backgroundItem))
+                    }
+                }
+
+                override fun clearView(
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                ) {
+                    super.clearView(recyclerView, viewHolder)
+                    viewHolder.itemView.setBackgroundColor(0)
                 }
 
             }

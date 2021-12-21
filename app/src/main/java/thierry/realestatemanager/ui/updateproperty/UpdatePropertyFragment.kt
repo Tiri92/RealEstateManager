@@ -388,7 +388,17 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         })
 
         viewModel.getListOfMedia().observe(viewLifecycleOwner, { mediaList ->
-            setUpRecyclerView(recyclerView, mediaList.sortedBy { it.position })
+            var numberOfMediaWithNullPosition = 0
+            for (media in mediaList) {
+                if (media.position == null) {
+                    numberOfMediaWithNullPosition++
+                }
+            }
+            if (numberOfMediaWithNullPosition != 0) {
+                setUpRecyclerView(recyclerView, mediaList.sortedByDescending { it.position })
+            } else {
+                setUpRecyclerView(recyclerView, mediaList.sortedBy { it.position })
+            }
 
             val simpleCallback = object :
                 ItemTouchHelper.SimpleCallback(ItemTouchHelper.START or ItemTouchHelper.END,
