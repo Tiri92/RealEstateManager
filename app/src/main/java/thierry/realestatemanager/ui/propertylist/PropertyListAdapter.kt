@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import thierry.realestatemanager.R
@@ -57,6 +58,8 @@ class PropertyListAdapter(
             }
         }
 
+        holder.isSoldTextView.isVisible = item.property.isSold == true
+
     }
 
     override fun getItemCount(): Int {
@@ -69,6 +72,7 @@ class PropertyListAdapter(
         val propertyType: TextView = binding.findViewById(R.id.propertyType)
         val propertyTown: TextView = binding.findViewById(R.id.propertyTown)
         val propertyPhoto: ImageView = binding.findViewById(R.id.propertyPicture)
+        val isSoldTextView: TextView = binding.findViewById(R.id.propertyIsSold)
     }
 
 }

@@ -46,14 +46,29 @@
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/underline_small"
                 android:shadowColor="@color/gold"
+                android:textColor="@color/black"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/propertyTown"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/propertyPicture"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="Flat" />
+
+            <TextView
+                android:id="@+id/propertyIsSold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:rotation="12"
+                android:text="@string/sold"
+                android:textColor="@color/red"
+                android:textStyle="bold|italic"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintStart_toStartOf="@id/propertyType"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/propertyTown"
