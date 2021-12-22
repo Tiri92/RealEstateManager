@@ -139,32 +139,32 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 binding.postcodeEditText.setText(currentFullProperty.property.address.postcode.toString())
                 binding.streetEditText.setText(currentFullProperty.property.address.street)
 
-                when (currentFullProperty.pointsOfInterestList[0].school) {
+                when (currentFullProperty.pointsOfInterestList.school) {
                     true -> binding.schoolChip.isChecked = true
                     false -> binding.schoolChip.isChecked = false
                 }
 
-                when (currentFullProperty.pointsOfInterestList[0].parks) {
+                when (currentFullProperty.pointsOfInterestList.parks) {
                     true -> binding.parksChip.isChecked = true
                     false -> binding.parksChip.isChecked = false
                 }
 
-                when (currentFullProperty.pointsOfInterestList[0].shoppingCenter) {
+                when (currentFullProperty.pointsOfInterestList.shoppingCenter) {
                     true -> binding.shoppingCentreChip.isChecked = true
                     false -> binding.shoppingCentreChip.isChecked = false
                 }
 
-                when (currentFullProperty.pointsOfInterestList[0].sportsClubs) {
+                when (currentFullProperty.pointsOfInterestList.sportsClubs) {
                     true -> binding.sportsClubsChip.isChecked = true
                     false -> binding.sportsClubsChip.isChecked = false
                 }
 
-                when (currentFullProperty.pointsOfInterestList[0].stations) {
+                when (currentFullProperty.pointsOfInterestList.stations) {
                     true -> binding.stationsChip.isChecked = true
                     false -> binding.stationsChip.isChecked = false
                 }
 
-                when (currentFullProperty.pointsOfInterestList[0].university) {
+                when (currentFullProperty.pointsOfInterestList.university) {
                     true -> binding.universityChip.isChecked = true
                     false -> binding.universityChip.isChecked = false
                 }

@@ -15,5 +15,5 @@ data class FullProperty(
         parentColumn = "id",
         entityColumn = "propertyId"
     )
-    val pointsOfInterestList: List<PointsOfInterest>
+    val pointsOfInterestList: PointsOfInterest,
 )
