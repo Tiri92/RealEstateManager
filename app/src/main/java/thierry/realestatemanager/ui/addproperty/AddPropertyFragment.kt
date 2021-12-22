@@ -494,6 +494,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.findItem(R.id.edit).isVisible = false
         menu.findItem(R.id.add).isVisible = false
+        menu.findItem(R.id.map).isVisible = false
+        menu.findItem(R.id.filter).isVisible = false
         super.onCreateOptionsMenu(menu, inflater)
     }
 

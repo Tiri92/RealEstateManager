@@ -2,9 +2,7 @@ package thierry.realestatemanager.ui.propertiesfilter
 
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
 import androidx.fragment.app.Fragment
@@ -42,6 +40,7 @@ class PropertiesFilterFragment : Fragment() {
     ): View {
         _binding = FragmentPropertiesFilterBinding.inflate(inflater, container, false)
         val rootView = binding.root
+        setHasOptionsMenu(true)
 
         //PRICE
         val priceTouchListener: RangeSlider.OnSliderTouchListener = object :
@@ -215,6 +214,14 @@ class PropertiesFilterFragment : Fragment() {
         })
 
         return rootView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.edit).isVisible = false
+        menu.findItem(R.id.add).isVisible = false
+        menu.findItem(R.id.filter).isVisible = false
+        menu.findItem(R.id.map).isVisible = false
     }
 
     override fun onResume() {

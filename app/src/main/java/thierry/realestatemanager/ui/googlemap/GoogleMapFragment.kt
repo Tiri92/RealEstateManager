@@ -152,7 +152,7 @@ class GoogleMapFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         menu.findItem(R.id.map).isVisible = false
-        menu.findItem(R.id.add).isVisible = false
+        menu.findItem(R.id.filter).isVisible = false
         menu.findItem(R.id.edit).isVisible = false
     }
 

@@ -48,6 +48,9 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
             true -> menu.findItem(R.id.edit).isVisible = true
             else -> menu.findItem(R.id.edit).isVisible = false
         }
+        menu.findItem(R.id.filter).isVisible = false
+        menu.findItem(R.id.map).isVisible = false
+        menu.findItem(R.id.add).isVisible = false
     }
 
     override fun onCreateView(

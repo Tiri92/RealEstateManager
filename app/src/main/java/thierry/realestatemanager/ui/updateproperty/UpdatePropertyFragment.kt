@@ -5,9 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
@@ -62,6 +60,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     ): View {
         _binding = FragmentAddUpdatePropertyBinding.inflate(inflater, container, false)
         val rootView = binding.root
+        setHasOptionsMenu(true)
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
 
         binding.title.text = getString(R.string.update_property)
@@ -560,6 +559,14 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         }
 
         return rootView
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        menu.findItem(R.id.edit).isVisible = false
+        menu.findItem(R.id.add).isVisible = false
+        menu.findItem(R.id.filter).isVisible = false
+        menu.findItem(R.id.map).isVisible = false
     }
 
     private fun getCurrentPropertyTypeAndCountryIndex(
