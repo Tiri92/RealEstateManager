@@ -84,9 +84,9 @@ class GoogleMapFragment : Fragment() {
 
         viewModel.getGeocodingResponse()
             .observe(viewLifecycleOwner) { geocodingResponse ->
-                if (map != null) {
+                if (map != null && !geocodingResponse.results.isNullOrEmpty()) {
                     viewModel.currentProperty.address!!.propertyLatitude =
-                        geocodingResponse.results!![0]!!.geometry!!.location!!.lat!!
+                        geocodingResponse.results[0]!!.geometry!!.location!!.lat!!
                     viewModel.currentProperty.address!!.propertyLongitude =
                         geocodingResponse.results[0]!!.geometry!!.location!!.lng!!
                     viewModel.currentProperty.id = geocodingResponse.propertyId!!
