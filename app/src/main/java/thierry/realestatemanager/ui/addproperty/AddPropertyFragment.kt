@@ -22,6 +22,7 @@ import androidx.appcompat.widget.AppCompatButton
 import androidx.appcompat.widget.AppCompatSpinner
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
+import androidx.core.net.toUri
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
@@ -43,6 +44,7 @@ import thierry.realestatemanager.model.PointsOfInterest
 import thierry.realestatemanager.model.Property
 import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.RegexUtils
+import thierry.realestatemanager.utils.Utils
 import java.lang.reflect.Field
 import java.text.SimpleDateFormat
 import java.util.*
@@ -228,18 +230,18 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         //PHOTO FROM GALLERY
         val getImageFromGalleryLauncher = registerForActivityResult(
             ActivityResultContracts.GetContent(),
-            ActivityResultCallback {
-                val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+            ActivityResultCallback { uri ->
+                val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
                 val fileName = "Photo"
                 val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
-                if (it != null) {
+                if (uri != null) {
                     val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
                         context?.applicationContext?.contentResolver,
-                        it
+                        uri
                     )
                     if (MediaUtils.savePhotoToInternalMemory(
-                            fileDate,
                             fileName,
+                            fileDate,
                             bitmap,
                             requireContext()
                         )
@@ -256,14 +258,14 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         activityResultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
-                    val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+                    val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
                     val fileName = "Photo"
                     val uriPhoto: String =
                         context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
                     val bitmap = result.data!!.extras!!.get("data") as Bitmap
                     if (MediaUtils.savePhotoToInternalMemory(
-                            fileDate,
                             fileName,
+                            fileDate,
                             bitmap,
                             requireContext()
                         )
@@ -279,29 +281,51 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         activityResultLauncherForVideo =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
                 if (result!!.resultCode == Activity.RESULT_OK) {
-                    viewModel.addMedia(
-                        Media(
-                            uri = result.data?.data.toString(),
-                            description = "",
-                            propertyId = lastIndexValue!!
+                    val fileName = "Video"
+                    val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
+                    val uriVideo =
+                        context?.filesDir.toString() + "/" + "$fileName$fileDate.mp4"
+                    if (MediaUtils.saveVideoToInternalMemory(fileName,
+                            fileDate,
+                            result.data?.data.toString().toUri(),
+                            requireContext())
+                    ) {
+                        viewModel.addMedia(
+                            Media(
+                                uri = uriVideo,
+                                description = "",
+                                propertyId = lastIndexValue!!
+                            )
                         )
-                    )
+                    }
                 }
             }
 
         //VIDEO FROM GALlERY
         val getVideoFromGalleryLauncher =
-            registerForActivityResult(ActivityResultContracts.GetContent(), ActivityResultCallback {
-                if (it != null) {
-                    viewModel.addMedia(
-                        Media(
-                            uri = it.toString(),
-                            description = "",
-                            propertyId = lastIndexValue!!
-                        )
-                    )
-                }
-            })
+            registerForActivityResult(ActivityResultContracts.GetContent(),
+                ActivityResultCallback { uri ->
+                    if (uri != null) {
+                        val fileName = "Video"
+                        val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
+                        val uriVideo =
+                            context?.filesDir.toString() + "/" + "$fileName$fileDate.mp4"
+                        if (
+                            MediaUtils.saveVideoToInternalMemory(fileName,
+                                fileDate,
+                                uri,
+                                requireContext())
+                        ) {
+                            viewModel.addMedia(
+                                Media(
+                                    uri = uriVideo,
+                                    description = "",
+                                    propertyId = lastIndexValue!!
+                                )
+                            )
+                        }
+                    }
+                })
 
         binding.mediaButton.setOnClickListener(View.OnClickListener {
             popupMenu(binding.mediaButton,

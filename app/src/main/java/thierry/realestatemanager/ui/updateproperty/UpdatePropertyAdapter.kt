@@ -112,7 +112,7 @@ class UpdatePropertyAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (listOfPropertyMedia[position].uri.contains("/data/user/")) {
+        return if (listOfPropertyMedia[position].uri.contains("Photo")) {
             0
         } else {
             1
