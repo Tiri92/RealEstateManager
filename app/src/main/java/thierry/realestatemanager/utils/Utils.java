@@ -48,7 +48,12 @@ public class Utils {
      */
 
     public static String getTodayFormattedDate() {
-        @SuppressLint("SimpleDateFormat") DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        return dateFormat.format(new Date());
+    }
+
+    public static String getTodayFormattedDateForMediaUri() {
+        DateFormat dateFormat = new SimpleDateFormat("dd_MM_yyyy_HH_mm_ss", Locale.getDefault());
         return dateFormat.format(new Date());
     }
 
