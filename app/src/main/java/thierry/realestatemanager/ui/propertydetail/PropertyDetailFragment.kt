@@ -16,8 +16,7 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.utils.MediaUtils
-import java.text.SimpleDateFormat
-import java.util.*
+import thierry.realestatemanager.utils.Utils
 
 @AndroidEntryPoint
 class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
@@ -131,12 +130,12 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
     override fun onSuccess(dataSource: Drawable) {
         val staticMapBitmap = dataSource.toBitmap()
         val fileName = "StaticMapPhoto"
-        val fileDate: String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
         val uriStaticMapPhoto: String =
             context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
         if (MediaUtils.savePhotoToInternalMemory(
-                fileDate,
                 fileName,
+                fileDate,
                 staticMapBitmap,
                 requireContext()
             )
