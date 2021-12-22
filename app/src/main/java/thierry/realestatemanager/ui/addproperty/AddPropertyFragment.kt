@@ -46,7 +46,6 @@ import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.RegexUtils
 import thierry.realestatemanager.utils.Utils
 import java.lang.reflect.Field
-import java.text.SimpleDateFormat
 import java.util.*
 
 @AndroidEntryPoint
