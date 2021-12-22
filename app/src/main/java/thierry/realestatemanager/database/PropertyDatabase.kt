@@ -43,7 +43,7 @@ abstract class PropertyDatabase : RoomDatabase() {
                 dao.insertProperty(Property(price = 8430000,
                     address = Address(street = "70 rue de l'égalité",
                         city = "Issy les Moulineaux",
-                        postcode = 92130, country = "United States"),
+                        postcode = 92130, country = "France"),
                     type = "Flat",
                     numberOfRooms = 5,
                     numberOfBedrooms = 7,
