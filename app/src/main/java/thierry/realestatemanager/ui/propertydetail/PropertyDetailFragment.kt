@@ -81,7 +81,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
 
                         staticMap = binding.staticMap
                         val currentPropertyAddress: String =
-                            currentFullProperty.property.address!!.city + "+" + currentFullProperty.property.address.postcode
+                            currentFullProperty.property.address?.street!! + "+" + currentFullProperty.property.address.city + "+" + currentFullProperty.property.address.postcode + "+" + currentFullProperty.property.address.country
                         val staticMapUri =
                             "https://maps.googleapis.com/maps/api/staticmap?center=" + currentPropertyAddress + "&zoom=15&size=600x300&maptype=roadmap" + "&key=" + BuildConfig.MAPS_API_KEY
 
