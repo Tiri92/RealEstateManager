@@ -6,6 +6,7 @@ import android.view.*
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -99,7 +100,9 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                         }
 
                         viewModel.currentProperty = currentFullProperty.property
-                        setUpRecyclerView(recyclerView, currentFullProperty.mediaList)
+                        setUpRecyclerView(recyclerView,
+                            currentFullProperty.mediaList,
+                            childFragmentManager)
                     }
                 }
         }
@@ -107,11 +110,15 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
         return rootView
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, listOfPropertyMedia: List<Media>) {
+    private fun setUpRecyclerView(
+        recyclerView: RecyclerView,
+        listOfPropertyMedia: List<Media>,
+        supportFragmentManager: FragmentManager,
+    ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = PropertyDetailAdapter(listOfPropertyMedia)
+        recyclerView.adapter = PropertyDetailAdapter(listOfPropertyMedia, supportFragmentManager)
     }
 
     companion object {
