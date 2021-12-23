@@ -215,7 +215,6 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     city = binding.cityEditText.text.toString(),
                     postcode = binding.postcodeEditText.text.toString().toInt(),
                     country = resultPropertyCountrySpinner),
-                staticMapUri = currentFullProperty.property.staticMapUri,
                 isSold = isSold,
                 dateOfSale = dateOfSale,
                 dateOfCreation = currentFullProperty.property.dateOfCreation))
