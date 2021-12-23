@@ -6,13 +6,13 @@ import thierry.realestatemanager.utils.Utils
 
 class UtilsUnitTest {
 
-    private val todayDate = "13/12/2021" //change date before test
+    private val todayDate = "23/12/2021" //change date before test
     private val euro = 82
     private val dollar = 100
 
     @Test
     fun getTodayDateFormat() {
-        assertEquals(Utils.getTodayDate(), todayDate)
+        assertEquals(Utils.getTodayFormattedDate(), todayDate)
     }
 
     @Test
