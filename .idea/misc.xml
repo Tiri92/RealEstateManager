@@ -4,13 +4,18 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable-v24/underline.xml" value="0.20277777777777778" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/baseline_check_circle_24.xml" value="0.18055555555555555" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/baseline_unpublished_24.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/border_radius_white.xml" value="0.21851851851851853" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_add_24.xml" value="0.19537037037037036" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_aspect_ratio_24.xml" value="0.18333333333333332" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_bathrooms_24.xml" value="0.18055555555555555" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_bedrooms_24.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_cancel_24.xml" value="0.18796296296296297" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_location_on_24.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_map_24.xml" value="0.20185185185185187" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_mode_edit_24.xml" value="0.20185185185185187" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_number_of_rooms_24.xml" value="0.18055555555555555" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_other_houses_24.xml" value="0.20185185185185187" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_photo_camera_24.xml" value="0.18333333333333332" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/drawable/ic_baseline_photo_library_24.xml" value="0.19537037037037036" />

@@ -109,6 +109,36 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                                 .into(staticMap)
                         }
 
+                        when(currentFullProperty.pointsOfInterestList.school) {
+                             true -> binding.schoolPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24, 0, 0, 0)
+                             false -> binding.schoolPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24, 0, 0, 0)
+                        }
+
+                        when(currentFullProperty.pointsOfInterestList.university) {
+                             true -> binding.universityPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24, 0, 0, 0)
+                             false-> binding.universityPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24, 0, 0, 0)
+                        }
+
+                        when(currentFullProperty.pointsOfInterestList.parks) {
+                           true -> binding.parksPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24, 0, 0, 0)
+                           false -> binding.parksPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24, 0, 0, 0)
+                        }
+
+                        when(currentFullProperty.pointsOfInterestList.sportsClubs) {
+                            true -> binding.sportsClubsPoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_check_circle_24, 0)
+                            false -> binding.sportsClubsPoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_unpublished_24, 0)
+                        }
+
+                        when(currentFullProperty.pointsOfInterestList.stations) {
+                            true -> binding.stationsPoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_check_circle_24, 0)
+                            false -> binding.stationsPoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_unpublished_24, 0)
+                        }
+
+                        when(currentFullProperty.pointsOfInterestList.shoppingCenter) {
+                            true -> binding.shoppingCentrePoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_check_circle_24, 0)
+                            false -> binding.shoppingCentrePoi?.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.baseline_unpublished_24, 0)
+                        }
+
                         viewModel.currentProperty = currentFullProperty.property
                         setUpRecyclerView(recyclerView,
                             currentFullProperty.mediaList,
