@@ -21,7 +21,7 @@ class PropertyDetailAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_photo, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.item_media, parent, false)
         return ViewHolder(binding)
     }
 

@@ -87,6 +87,11 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                         binding.numberOfBedrooms.text = getString(R.string.number_bedrooms)
                         binding.numberOfBedroomsValue.text =
                             currentFullProperty.property.numberOfBedrooms.toString()
+                        binding.propertyAddress?.text = getString(R.string.location)
+                        val propertyAddress =
+                            "${currentFullProperty.property.address?.street} \n ${currentFullProperty.property.address?.city} \n ${currentFullProperty.property.address?.postcode} \n " +
+                                    "${currentFullProperty.property.address?.country}"
+                        binding.propertyAddressValue?.text = propertyAddress
 
                         staticMap = binding.staticMap
                         val currentPropertyAddress: String =
