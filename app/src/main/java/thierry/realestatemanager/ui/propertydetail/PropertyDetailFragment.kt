@@ -46,12 +46,17 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
         when (currentPropertyId != "") {
-            true -> menu.findItem(R.id.edit).isVisible = true
+            true -> {
+                menu.findItem(R.id.edit).isVisible = true; menu.findItem(R.id.filter).isVisible =
+                    false; menu.findItem(R.id.map).isVisible =
+                    false; menu.findItem(R.id.add).isVisible = false
+            }
             else -> menu.findItem(R.id.edit).isVisible = false
         }
-        menu.findItem(R.id.filter).isVisible = false
-        menu.findItem(R.id.map).isVisible = false
-        menu.findItem(R.id.add).isVisible = false
+        if (Utils.isTablet(requireContext())) {
+            menu.findItem(R.id.filter).isVisible = true; menu.findItem(R.id.map).isVisible =
+                true; menu.findItem(R.id.add).isVisible = true
+        }
     }
 
     override fun onCreateView(
