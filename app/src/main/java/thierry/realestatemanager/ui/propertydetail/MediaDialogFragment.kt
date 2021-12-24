@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.MediaController
 import android.widget.VideoView
 import androidx.core.net.toUri
 import androidx.core.view.isVisible
@@ -33,10 +34,19 @@ class MediaDialogFragment : DialogFragment() {
             videoview.isVisible = true
             imageview.isVisible = false
             videoview.setVideoURI(mediaUri?.toUri())
-//            val mediaController = MediaController(videoview.context)
-//            mediaController.setAnchorView(videoview)
-//            videoview.setMediaController(mediaController)
-            videoview.start()
+            val mediaController = MediaController(videoview.context)
+            videoview.setOnClickListener(View.OnClickListener {
+                videoview.start()
+            })
+
+            videoview.setOnPreparedListener {
+                it.setOnVideoSizeChangedListener { mediaPlayer, i, i2 ->
+                    videoview.setMediaController(mediaController)
+                    mediaController.setAnchorView(requireView().rootView)
+                }
+                videoview.start()
+                videoview.pause()
+            }
         }
 
         return rootView
