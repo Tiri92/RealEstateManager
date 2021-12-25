@@ -71,6 +71,20 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/date_of_sale_of_property"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:rotation="12"
+                android:textColor="@color/red"
+                android:textSize="11sp"
+                android:textStyle="bold|italic"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.95"
+                app:layout_constraintStart_toStartOf="@id/propertyType"
+                app:layout_constraintTop_toBottomOf="@id/propertyIsSold" />
+
+            <TextView
                 android:id="@+id/propertyTown"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
