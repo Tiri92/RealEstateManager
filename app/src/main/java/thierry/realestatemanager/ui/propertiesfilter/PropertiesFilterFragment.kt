@@ -1,7 +1,6 @@
 package thierry.realestatemanager.ui.propertiesfilter
 
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
@@ -13,7 +12,6 @@ import androidx.sqlite.db.SimpleSQLiteQuery
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
 import com.google.android.material.snackbar.Snackbar
@@ -78,7 +76,7 @@ class PropertiesFilterFragment : Fragment() {
         }
 
         //MEDIA
-        val photoTouchListener: Slider.OnSliderTouchListener = object :
+        val mediaTouchListener: Slider.OnSliderTouchListener = object :
             Slider.OnSliderTouchListener {
             override fun onStartTrackingTouch(slider: Slider) {
             }
@@ -87,31 +85,45 @@ class PropertiesFilterFragment : Fragment() {
                 viewModel.minMedia = slider.value.toInt()
             }
         }
-        binding.photoSlider.addOnSliderTouchListener(photoTouchListener)
-        binding.photoSlider.setLabelFormatter { value: Float ->
+        binding.mediaSlider.addOnSliderTouchListener(mediaTouchListener)
+        binding.mediaSlider.setLabelFormatter { value: Float ->
             "$value media minimum"
         }
 
-        //DATE PICKER
-        binding.dateOfCreationPicker.setOnClickListener(View.OnClickListener {
+        //DATE PICKER CREATE
+        binding.dateOfCreationPicker.setOnClickListener {
             if (datePicker == null || !datePicker!!.isAdded) {
                 binding.dateOfCreationPicker.tag = "dateOfCreation"
                 createDatePicker(it as TextView)
                 datePicker!!.show(childFragmentManager.beginTransaction(), "DATE_PICKER")
             }
-        })
+        }
+        binding.cancelDateOfCreationFilter.setOnClickListener {
+            if (viewModel.selectedDateOfCreation != null) {
+                viewModel.selectedDateOfCreation = null
+                binding.dateOfCreationPicker.text =
+                    getString(R.string.property_put_up_for_sale_from_the_selected_date)
+            }
+        }
 
-        //Date PICKER2
-        binding.dateOfSalePicker.setOnClickListener(View.OnClickListener {
+        //DATE PICKER SOLD
+        binding.dateOfSalePicker.setOnClickListener {
             if (datePicker == null || !datePicker!!.isAdded) {
                 binding.dateOfSalePicker.tag = "dateOfSale"
                 createDatePicker(it as TextView)
                 datePicker!!.show(childFragmentManager.beginTransaction(), "DATE_PICKER")
             }
-        })
+        }
+        binding.cancelDateOfSaleFilter.setOnClickListener {
+            if (viewModel.selectedDateOfSale != null) {
+                viewModel.selectedDateOfSale = null
+                binding.dateOfSalePicker.text =
+                    getString(R.string.property_sold_since_the_selected_date)
+            }
+        }
 
         val filterButton: AppCompatButton = binding.filterButton
-        filterButton.setOnClickListener(View.OnClickListener {
+        filterButton.setOnClickListener {
 
             var schoolState = false
             var universityState = false
@@ -172,10 +184,10 @@ class PropertiesFilterFragment : Fragment() {
             }
 
             if (viewModel.selectedDateOfSale != null) {
-                if (containsCondition) {
-                    queryString += " AND "
+                queryString += if (containsCondition) {
+                    " AND "
                 } else {
-                    queryString += " WHERE"
+                    " WHERE"
                 }
                 queryString += " property_table.dateOfSale >= '${viewModel.selectedDateOfSale}'"
             }
@@ -194,12 +206,9 @@ class PropertiesFilterFragment : Fragment() {
             queryString += ";"
 
             viewModel.getFilteredFullPropertyList(SimpleSQLiteQuery(queryString))
-                .observe(viewLifecycleOwner) {
-                    viewModel.setFilteredFullPropertyList(it.toMutableList())
-                    it?.forEach {
-                        Log.i("THIERRYBITAR", "${it.property.type}")
-                    }
-                    if (!it.isNullOrEmpty()) {
+                .observe(viewLifecycleOwner) { fullPropertyList ->
+                    viewModel.setFilteredFullPropertyList(fullPropertyList.toMutableList())
+                    if (!fullPropertyList.isNullOrEmpty()) {
                         val navHostFragment =
                             requireActivity().supportFragmentManager.findFragmentById(R.id.nav_host_fragment_property_detail) as NavHostFragment
                         navController = navHostFragment.navController
@@ -211,7 +220,7 @@ class PropertiesFilterFragment : Fragment() {
                     }
                 }
 
-        })
+        }
 
         return rootView
     }
@@ -239,7 +248,7 @@ class PropertiesFilterFragment : Fragment() {
             .setTitleText("Select a date")
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
-        datePicker!!.addOnPositiveButtonClickListener(MaterialPickerOnPositiveButtonClickListener { selection ->
+        datePicker!!.addOnPositiveButtonClickListener { selection ->
             if (view.tag == "dateOfCreation") {
                 viewModel.selectedDateOfCreation = selection
                 viewModel.selectedFormattedDateOfCreation = Utils.epochMilliToLocalDate(selection)
@@ -251,7 +260,7 @@ class PropertiesFilterFragment : Fragment() {
                     .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                 view.text = viewModel.selectedFormattedDateOfSale
             }
-        })
+        }
     }
 
 }

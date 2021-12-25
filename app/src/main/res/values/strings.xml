@@ -39,6 +39,12 @@
     <string name="sold">Sold</string>
     <string name="add_media_guide">Add media and only after change their order as you like</string>
     <string name="location">Location</string>
+    <string name="property_sold_since_the_selected_date">Property sold since the selected date</string>
+    <string name="property_put_up_for_sale_from_the_selected_date">Property put up for sale from the selected date</string>
+    <string name="choose_a_price_range">Choose a price range</string>
+    <string name="choose_a_surface_area_range_in_m">Choose a surface area range in m²</string>
+    <string name="choose_the_minimum_number_of_media">Choose the minimum number of media</string>
+    <string name="filter">Filter</string>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

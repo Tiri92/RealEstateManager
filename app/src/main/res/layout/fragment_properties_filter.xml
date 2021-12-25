@@ -1,149 +1,229 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/price_slider"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
-        android:valueFrom="1000000.0"
-        android:valueTo="99000000.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:values="@array/initial_price_slider_values" />
+        android:layout_height="wrap_content">
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/surface_slider"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
-        android:valueFrom="300.0"
-        android:valueTo="2000.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/price_slider"
-        app:values="@array/initial_surface_slider_values" />
+        <TextView
+            android:id="@+id/price_slider_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/underline_small"
+            android:text="@string/choose_a_price_range"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/photo_slider"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="32dp"
-        android:stepSize="1"
-        android:valueFrom="1"
-        android:valueTo="10"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/surface_slider" />
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/price_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:valueFrom="1000000.0"
+            android:valueTo="99000000.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_slider_title"
+            app:values="@array/initial_price_slider_values" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/points_of_interest_chip_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photo_slider"
-        app:singleLine="false"
-        app:singleSelection="false">
+        <TextView
+            android:id="@+id/surface_slider_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/underline_small"
+            android:text="@string/choose_a_surface_area_range_in_m"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_slider" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/school_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/surface_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:valueFrom="300.0"
+            android:valueTo="2000.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/surface_slider_title"
+            app:values="@array/initial_surface_slider_values" />
+
+        <TextView
+            android:id="@+id/media_slider_title"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/underline_small"
+            android:text="@string/choose_the_minimum_number_of_media"
+            android:textColor="@color/gray"
+            android:textSize="20sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/surface_slider" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/media_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="32dp"
+            android:stepSize="1"
+            android:value="2"
+            android:valueFrom="1"
+            android:valueTo="10"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/media_slider_title" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/points_of_interest_chip_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:tag="School"
-            android:text="@string/school" />
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/media_slider"
+            app:singleLine="false"
+            app:singleSelection="false">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/university_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+            <com.google.android.material.chip.Chip
+                android:id="@+id/school_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:tag="School"
+                android:text="@string/school" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/university_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="University"
+                android:text="@string/university" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/parks_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Parks"
+                android:text="@string/parks" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/sports_clubs_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Sports clubs"
+                android:text="@string/sports_clubs" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/stations_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Stations"
+                android:text="@string/stations" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/shopping_centre_chip"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"
+                android:tag="Shopping centre"
+                android:text="@string/shopping_centre" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+        <TextView
+            android:id="@+id/date_of_creation_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:tag="University"
-            android:text="@string/university" />
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/property_put_up_for_sale_from_the_selected_date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:drawableTopCompat="@drawable/ic_baseline_access_date_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/points_of_interest_chip_group" />
 
-
-        <com.google.android.material.chip.Chip
-            android:id="@+id/parks_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <TextView
+            android:id="@+id/cancel_date_of_creation_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:tag="Parks"
-            android:text="@string/parks" />
+            app:drawableRightCompat="@drawable/ic_baseline_cancel_24"
+            app:layout_constraintBottom_toTopOf="@id/date_of_creation_picker"
+            app:layout_constraintEnd_toEndOf="@id/date_of_creation_picker"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="@id/date_of_creation_picker"
+            app:layout_constraintTop_toTopOf="@id/points_of_interest_chip_group"
+            app:layout_constraintVertical_bias="1.0" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/sports_clubs_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <TextView
+            android:id="@+id/date_of_sale_picker"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:tag="Sports clubs"
-            android:text="@string/sports_clubs" />
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/property_sold_since_the_selected_date"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:drawableTopCompat="@drawable/ic_baseline_access_date_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_of_creation_picker" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/stations_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
+        <TextView
+            android:id="@+id/cancel_date_of_sale_filter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:tag="Stations"
-            android:text="@string/stations" />
+            app:drawableRightCompat="@drawable/ic_baseline_cancel_24"
+            app:layout_constraintBottom_toBottomOf="@id/date_of_sale_picker"
+            app:layout_constraintEnd_toEndOf="@id/date_of_sale_picker"
+            app:layout_constraintHorizontal_bias="0.95"
+            app:layout_constraintStart_toStartOf="@id/date_of_sale_picker"
+            app:layout_constraintTop_toTopOf="@id/cancel_date_of_creation_filter"
+            app:layout_constraintVertical_bias="0.60" />
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/shopping_centre_chip"
-            style="@style/Widget.MaterialComponents.Chip.Choice"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/filter_button"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:checked="false"
-            android:tag="Shopping centre"
-            android:text="@string/shopping_centre" />
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/gold"
+            android:text="@string/filter"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/date_of_sale_picker" />
 
-    </com.google.android.material.chip.ChipGroup>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/date_of_creation_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Property put up for sale from the selected date"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:drawableTopCompat="@drawable/ic_baseline_access_date_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/points_of_interest_chip_group" />
-
-    <TextView
-        android:id="@+id/date_of_sale_picker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:gravity="center"
-        android:padding="16dp"
-        android:text="Property sold since the selected date"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:drawableTopCompat="@drawable/ic_baseline_access_date_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_of_creation_picker" />
-
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/filter_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:backgroundTint="@color/gold"
-        android:text="Filter"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/date_of_sale_picker" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
-
+</androidx.core.widget.NestedScrollView>
 
