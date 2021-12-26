@@ -48,6 +48,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
+    lateinit var resultPropertyAgentSpinner: String
     private lateinit var currentFullProperty: FullProperty
     private lateinit var navController: NavController
     private var dateOfSale: Long? = null
@@ -74,6 +75,31 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         binding.city.isHelperTextEnabled = false
         binding.postcode.isHelperTextEnabled = false
         binding.street.isHelperTextEnabled = false
+
+        val propertyAgentSpinner: AppCompatSpinner = binding.propertyAgentSpinner
+        val propertyAgentAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.PropertiesAgents,
+            android.R.layout.simple_spinner_item
+        )
+        propertyAgentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyAgentSpinner.adapter = propertyAgentAdapter
+        propertyAgentSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long,
+                ) {
+                    val aSpinnerResult: String =
+                        parent?.getItemAtPosition(position).toString()
+                    resultPropertyAgentSpinner = aSpinnerResult
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
 
         val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
         val propertyTypeAdapter = ArrayAdapter.createFromResource(
@@ -168,13 +194,18 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     false -> binding.universityChip.isChecked = false
                 }
 
+                val currentPropertyAgent = currentFullProperty.property.propertyAgent
+                propertyAgentSpinner.setSelection(getCurrentPropertyAgentAndTypeAndCountryIndex(
+                    propertyAgentSpinner,
+                    currentPropertyAgent))
+
                 val currentPropertyType = currentFullProperty.property.type
-                propertyTypeSpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(
+                propertyTypeSpinner.setSelection(getCurrentPropertyAgentAndTypeAndCountryIndex(
                     propertyTypeSpinner,
                     currentPropertyType))
 
                 val currentPropertyCountry = currentFullProperty.property.address.country
-                propertyCountrySpinner.setSelection(getCurrentPropertyTypeAndCountryIndex(
+                propertyCountrySpinner.setSelection(getCurrentPropertyAgentAndTypeAndCountryIndex(
                     propertyCountrySpinner,
                     currentPropertyCountry))
 
@@ -217,7 +248,8 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     country = resultPropertyCountrySpinner),
                 isSold = isSold,
                 dateOfSale = dateOfSale,
-                dateOfCreation = currentFullProperty.property.dateOfCreation))
+                dateOfCreation = currentFullProperty.property.dateOfCreation,
+                propertyAgent = resultPropertyAgentSpinner))
 
             var schoolState = false
             var universityState = false
@@ -568,12 +600,12 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         menu.findItem(R.id.map).isVisible = false
     }
 
-    private fun getCurrentPropertyTypeAndCountryIndex(
-        propertyTypeSpinner: AppCompatSpinner,
+    private fun getCurrentPropertyAgentAndTypeAndCountryIndex(
+        spinner: AppCompatSpinner,
         s: String?,
     ): Int {
-        for (i in 0..propertyTypeSpinner.count) {
-            if (propertyTypeSpinner.getItemAtPosition(i).toString().contentEquals(s)) {
+        for (i in 0..spinner.count) {
+            if (spinner.getItemAtPosition(i).toString().contentEquals(s)) {
                 return i
             }
         }

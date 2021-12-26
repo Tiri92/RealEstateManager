@@ -58,6 +58,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
     private lateinit var activityResultLauncherForVideo: ActivityResultLauncher<Intent>
     lateinit var resultPropertyTypeSpinner: String
     lateinit var resultPropertyCountrySpinner: String
+    lateinit var resultPropertyAgentSpinner: String
     private var lastIndexValue: Int? = null
     private lateinit var navController: NavController
 
@@ -71,6 +72,31 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         val recyclerView: RecyclerView = binding.recyclerviewFragmentAddAndUpdate
         binding.isSoldSwitch.isVisible = false
         setHasOptionsMenu(true)
+
+        val propertyAgentSpinner: AppCompatSpinner = binding.propertyAgentSpinner
+        val propertyAgentAdapter = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.PropertiesAgents,
+            android.R.layout.simple_spinner_item
+        )
+        propertyAgentAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        propertyAgentSpinner.adapter = propertyAgentAdapter
+        propertyAgentSpinner.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    p1: View?,
+                    position: Int,
+                    p3: Long,
+                ) {
+                    val aSpinnerResult: String =
+                        parent?.getItemAtPosition(position).toString()
+                    resultPropertyAgentSpinner = aSpinnerResult
+                }
+
+                override fun onNothingSelected(p0: AdapterView<*>?) {
+                }
+            }
 
         val propertyTypeSpinner: AppCompatSpinner = binding.typeOfPropertySpinner
         val propertyTypeAdapter = ArrayAdapter.createFromResource(
@@ -175,7 +201,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         numberOfBedrooms = binding.bedroomsEditText.text.toString().toInt(),
                         numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
                         surface = binding.surfaceEditText.text.toString().toInt(),
-                        description = binding.descriptionEditText.text.toString()
+                        description = binding.descriptionEditText.text.toString(),
+                        propertyAgent = resultPropertyAgentSpinner
                     )
                 )
 

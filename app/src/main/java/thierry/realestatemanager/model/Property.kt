@@ -20,5 +20,6 @@ data class Property(
     val description: String? = null,
     var staticMapUri: String? = null,
     val dateOfCreation: Long? = null,
+    val propertyAgent: String? = null,
 
     )

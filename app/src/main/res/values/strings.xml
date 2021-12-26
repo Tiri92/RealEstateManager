@@ -45,6 +45,12 @@
     <string name="choose_a_surface_area_range_in_m">Choose a surface area range in m²</string>
     <string name="choose_the_minimum_number_of_media">Choose the minimum number of media</string>
     <string name="filter">Filter</string>
+    <string name="agent_in_charge_of_this_property">Agent in charge of this property</string>
+    <string-array name="PropertiesAgents">
+        <item>Mike</item>
+        <item>Alex</item>
+        <item>Eric</item>
+    </string-array>
     <string-array name="Countries">
         <item>France</item>
         <item>United States</item>

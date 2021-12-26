@@ -39,6 +39,7 @@ abstract class PropertyDatabase : RoomDatabase() {
                     numberOfBathrooms = 2,
                     surface = 435,
                     dateOfCreation = Utils.getTodayDate(),
+                    propertyAgent = "Eric",
                     description = "1How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."))
                 dao.insertProperty(Property(price = 8430000,
                     address = Address(street = "70 rue de l'égalité",
@@ -50,6 +51,7 @@ abstract class PropertyDatabase : RoomDatabase() {
                     numberOfBathrooms = 3,
                     surface = 665,
                     dateOfCreation = Utils.getTodayDate(),
+                    propertyAgent = "Mike",
                     description = "2How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."))
                 dao.insertProperty(Property(price = 41650000,
                     address = Address(street = "15 rue le marois",
@@ -61,6 +63,7 @@ abstract class PropertyDatabase : RoomDatabase() {
                     numberOfBathrooms = 3,
                     surface = 480,
                     dateOfCreation = Utils.getTodayDate(),
+                    propertyAgent = "Alex",
                     description = "3How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."))
                 dao.insertPropertyPointsOfInterest(PointsOfInterest(school = true,
                     university = true,
