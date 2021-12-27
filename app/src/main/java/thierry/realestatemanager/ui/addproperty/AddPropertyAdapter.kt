@@ -1,22 +1,24 @@
 package thierry.realestatemanager.ui.addproperty
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.VideoView
-import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import thierry.realestatemanager.R
 import thierry.realestatemanager.model.Media
+import thierry.realestatemanager.ui.propertydetail.MediaDialogFragment
 
 class AddPropertyAdapter(
 
     private val listOfPropertyMedia: List<Media>,
-    callback: PhotoDescriptionChanged
+    callback: PhotoDescriptionChanged,
+    var supportFragmentManager: FragmentManager,
 ) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -29,14 +31,14 @@ class AddPropertyAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 0) {
+        return if (viewType == 0) {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_add_update_photo, parent, false)
-            return PhotoViewHolder(view)
+            PhotoViewHolder(view)
         } else {
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.item_add_update_video, parent, false)
-            return VideoViewHolder(view)
+            VideoViewHolder(view)
         }
     }
 
@@ -47,6 +49,13 @@ class AddPropertyAdapter(
     inner class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(mediaModel: Media) {
             val propertyPhoto: ImageView = itemView.findViewById(R.id.property_photo)
+            itemView.setOnClickListener {
+                val mediaDialogFragment = MediaDialogFragment()
+                val args = Bundle()
+                args.putString("key", mediaModel.uri)
+                mediaDialogFragment.arguments = args
+                mediaDialogFragment.show(supportFragmentManager, "MediaDialogFragment")
+            }
             Glide.with(propertyPhoto)
                 .load(mediaModel.uri)
                 .centerCrop()
@@ -63,36 +72,27 @@ class AddPropertyAdapter(
             photoDescription.setText(mediaModel.description)
 
             val deletePhotoButton: ImageView = itemView.findViewById(R.id.delete_property_photo)
-            deletePhotoButton.setOnClickListener(View.OnClickListener {
+            deletePhotoButton.setOnClickListener {
                 callback?.onDeleteMedia(mediaModel)
-            })
+            }
         }
 
     }
 
     inner class VideoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bind(mediaModel: Media) {
-            val propertyVideo: VideoView = itemView.findViewById(R.id.property_video)
-            propertyVideo.setVideoURI(mediaModel.uri.toUri())
-            propertyVideo.setOnClickListener(View.OnClickListener {
-                propertyVideo.start()
-            })
-
-            propertyVideo.setOnCompletionListener {
-                propertyVideo.start()
-                propertyVideo.pause()
+            val propertyVideo: ImageView = itemView.findViewById(R.id.property_video)
+            itemView.setOnClickListener {
+                val mediaDialogFragment = MediaDialogFragment()
+                val args = Bundle()
+                args.putString("key", mediaModel.uri)
+                mediaDialogFragment.arguments = args
+                mediaDialogFragment.show(supportFragmentManager, "MediaDialogFragment")
             }
-
-            propertyVideo.setOnFocusChangeListener { view, b ->
-                propertyVideo.start()
-                propertyVideo.pause()
-            }
-
-            propertyVideo.setOnPreparedListener {
-                propertyVideo.start()
-                propertyVideo.pause()
-            }
-
+            Glide.with(propertyVideo)
+                .load(mediaModel.uri)
+                .centerCrop()
+                .into(propertyVideo)
             val videoDescription: TextInputEditText =
                 itemView.findViewById(R.id.video_description_edit_text)
             videoDescription.addTextChangedListener {
@@ -104,15 +104,15 @@ class AddPropertyAdapter(
             videoDescription.setText(mediaModel.description)
 
             val deleteVideoButton: ImageView = itemView.findViewById(R.id.delete_property_video)
-            deleteVideoButton.setOnClickListener(View.OnClickListener {
+            deleteVideoButton.setOnClickListener {
                 callback?.onDeleteMedia(mediaModel)
-            })
+            }
         }
 
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (listOfPropertyMedia[position].uri.contains("/data/user/")) {
+        return if (listOfPropertyMedia[position].uri.contains("Photo")) {
             0
         } else {
             1

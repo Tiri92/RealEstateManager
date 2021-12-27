@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.PopupMenu
 import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatButton
@@ -19,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -217,7 +217,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
 
                 val isSoldButton: SwitchMaterial = binding.isSoldSwitch
-                isSoldButton.setOnClickListener(View.OnClickListener {
+                isSoldButton.setOnClickListener {
                     if (isSoldButton.isChecked) {
                         dateOfSale = Utils.getTodayDate()
                         isSold = true
@@ -225,13 +225,13 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                         isSold = false
                         dateOfSale = null
                     }
-                })
+                }
                 isSoldButton.isChecked = currentFullProperty.property.isSold == true
             }
         }
 
         val saveChangeButton: AppCompatButton = binding.saveButton
-        saveChangeButton.setOnClickListener(View.OnClickListener {
+        saveChangeButton.setOnClickListener {
 
             viewModel.updateProperty(Property(price = binding.priceEditText.text.toString()
                 .toInt(),
@@ -315,7 +315,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
             navController = navHostFragment.navController
             navController.navigateUp()
 
-        })
+        }
 
         fun updateSaveChangeButtonState() {
             RegexUtils.updateButtonState(saveChangeButton,
@@ -333,30 +333,29 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
 
         //PHOTO FROM GALLERY
         val getImageFromGalleryLauncher = registerForActivityResult(
-            ActivityResultContracts.GetContent(),
-            ActivityResultCallback { uri ->
-                val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
-                val fileName = "Photo"
-                val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
-                if (uri != null) {
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                        context?.applicationContext?.contentResolver,
-                        uri
+            ActivityResultContracts.GetContent()
+        ) { uri ->
+            val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
+            val fileName = "Photo"
+            val uriPhoto: String = context?.filesDir.toString() + "/" + "$fileName$fileDate.jpg"
+            if (uri != null) {
+                val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
+                    context?.applicationContext?.contentResolver,
+                    uri
+                )
+                if (MediaUtils.savePhotoToInternalMemory(
+                        fileName,
+                        fileDate,
+                        bitmap,
+                        requireContext()
                     )
-                    if (MediaUtils.savePhotoToInternalMemory(
-                            fileName,
-                            fileDate,
-                            bitmap,
-                            requireContext()
-                        )
-                    ) {
-                        viewModel.addMedia(Media(propertyId = currentFullProperty.property.id,
-                            uri = uriPhoto,
-                            description = ""))
-                    }
+                ) {
+                    viewModel.addMedia(Media(propertyId = currentFullProperty.property.id,
+                        uri = uriPhoto,
+                        description = ""))
                 }
             }
-        )
+        }
 
         //PHOTO FROM CAMERA
         activityResultLauncher =
@@ -407,37 +406,37 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
 
         //VIDEO FROM GALlERY
         val getVideoFromGalleryLauncher =
-            registerForActivityResult(ActivityResultContracts.GetContent(),
-                ActivityResultCallback { uri ->
-                    if (uri != null) {
-                        val fileName = "Video"
-                        val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
-                        val uriVideo =
-                            context?.filesDir.toString() + "/" + "$fileName$fileDate.mp4"
-                        if (
-                            MediaUtils.saveVideoToInternalMemory(fileName,
-                                fileDate,
-                                uri,
-                                requireContext())
-                        ) {
-                            viewModel.addMedia(
-                                Media(
-                                    uri = uriVideo,
-                                    description = "",
-                                    propertyId = currentFullProperty.property.id
-                                )
+            registerForActivityResult(ActivityResultContracts.GetContent()
+            ) { uri ->
+                if (uri != null) {
+                    val fileName = "Video"
+                    val fileDate: String = Utils.getTodayFormattedDateForMediaUri()
+                    val uriVideo =
+                        context?.filesDir.toString() + "/" + "$fileName$fileDate.mp4"
+                    if (
+                        MediaUtils.saveVideoToInternalMemory(fileName,
+                            fileDate,
+                            uri,
+                            requireContext())
+                    ) {
+                        viewModel.addMedia(
+                            Media(
+                                uri = uriVideo,
+                                description = "",
+                                propertyId = currentFullProperty.property.id
                             )
-                        }
+                        )
                     }
-                })
+                }
+            }
 
-        binding.mediaButton.setOnClickListener(View.OnClickListener {
+        binding.mediaButton.setOnClickListener {
             popupMenu(binding.mediaButton,
                 getImageFromGalleryLauncher,
                 activityResultLauncher,
                 activityResultLauncherForVideo,
                 getVideoFromGalleryLauncher)
-        })
+        }
 
         viewModel.getListOfMedia().observe(viewLifecycleOwner, { mediaList ->
             var numberOfMediaWithNullPosition = 0
@@ -447,9 +446,13 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
             }
             if (numberOfMediaWithNullPosition != 0) {
-                setUpRecyclerView(recyclerView, mediaList.sortedByDescending { it.position })
+                setUpRecyclerView(recyclerView, mediaList.sortedByDescending {
+                    it.position
+                }, childFragmentManager)
             } else {
-                setUpRecyclerView(recyclerView, mediaList.sortedBy { it.position })
+                setUpRecyclerView(recyclerView, mediaList.sortedBy {
+                    it.position
+                }, childFragmentManager)
             }
 
             val simpleCallback = object :
@@ -612,11 +615,15 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         return 0
     }
 
-    private fun setUpRecyclerView(recyclerView: RecyclerView, mediaList: List<Media>) {
+    private fun setUpRecyclerView(
+        recyclerView: RecyclerView,
+        mediaList: List<Media>,
+        supportFragmentManager: FragmentManager,
+    ) {
         val myLayoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = myLayoutManager
-        recyclerView.adapter = UpdatePropertyAdapter(mediaList, this)
+        recyclerView.adapter = UpdatePropertyAdapter(mediaList, this, supportFragmentManager)
     }
 
     override fun onDestroyView() {

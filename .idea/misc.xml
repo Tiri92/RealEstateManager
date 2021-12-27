@@ -36,6 +36,7 @@
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_google_map.xml" value="0.2" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_item_detail.xml" value="0.16" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_item_list.xml" value="0.1" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_media.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_media_dialog.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_properties_filter.xml" value="0.152" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/fragment_property_detail.xml" value="0.176" />
@@ -47,6 +48,7 @@
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_add_update_photo.xml" value="0.2" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_add_update_video.xml" value="0.176" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_list_content.xml" value="0.2" />
+        <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_media.xml" value="0.15462962962962962" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_photo.xml" value="0.2" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_property_list_content.xml" value="0.14074074074074075" />
         <entry key="..\:/Users/thier/Documents/Application Projet OC/RealEstateManager/app/src/main/res/layout/item_video.xml" value="0.25416666666666665" />
