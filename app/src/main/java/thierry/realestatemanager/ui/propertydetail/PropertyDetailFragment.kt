@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
 import androidx.core.graphics.drawable.toBitmap
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -98,7 +99,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                                 Utils.epochMilliToLocalDate(currentFullProperty.property.dateOfCreation)
                                     .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
                             }"
-                        binding.agentAndDateOfCreationTextview?.text = agentAndDateOfCreation
+                        binding.agentAndDateOfCreationTextview.text = agentAndDateOfCreation
 
                         staticMap = binding.staticMap
                         val currentPropertyAddress: String =
@@ -236,6 +237,18 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                             childFragmentManager)
                     }
                 }
+        } else {
+            binding.numberOfRooms.isVisible = false
+            binding.numberOfBedrooms.isVisible = false
+            binding.numberOfBathrooms.isVisible = false
+            binding.propertySurface.isVisible = false
+            binding.propertyAddress.isVisible = false
+            binding.parksPoi.isVisible = false
+            binding.universityPoi.isVisible = false
+            binding.sportsClubsPoi.isVisible = false
+            binding.schoolPoi.isVisible = false
+            binding.stationsPoi.isVisible = false
+            binding.shoppingCentrePoi.isVisible = false
         }
 
         return rootView
