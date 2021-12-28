@@ -25,6 +25,9 @@ class PropertiesFilterViewModel @Inject constructor(
     var minSurface: Int? = null
     var maxSurface: Int? = null
     var minMedia: Int? = null
+    var formattedPriceRange: String? = null
+    var formattedSurfaceRange: String? = null
+    var formattedMinMedia: String? = null
 
     fun getFilteredFullPropertyList(query: SupportSQLiteQuery) =
         localDatabaseRepository.getFilteredFullPropertyList(query).asLiveData()

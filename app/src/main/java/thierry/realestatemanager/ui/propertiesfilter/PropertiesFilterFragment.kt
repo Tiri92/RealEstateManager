@@ -49,6 +49,10 @@ class PropertiesFilterFragment : Fragment() {
             override fun onStopTrackingTouch(slider: RangeSlider) {
                 viewModel.minPrice = slider.values[0].toInt()
                 viewModel.maxPrice = slider.values[1].toInt()
+                viewModel.formattedPriceRange =
+                    Utils.formatThePrice(viewModel.minPrice!!) + " - " + Utils.formatThePrice(
+                        viewModel.maxPrice!!)
+                binding.priceSliderTitle.text = viewModel.formattedPriceRange
             }
         }
         binding.priceSlider.addOnSliderTouchListener(priceTouchListener)
@@ -57,6 +61,9 @@ class PropertiesFilterFragment : Fragment() {
             format.maximumFractionDigits = 0
             format.currency = Currency.getInstance("USD")
             format.format(value.toDouble())
+        }
+        if (viewModel.minPrice != null && viewModel.maxPrice != null) {
+            binding.priceSliderTitle.text = viewModel.formattedPriceRange
         }
 
         //SURFACE
@@ -68,11 +75,17 @@ class PropertiesFilterFragment : Fragment() {
             override fun onStopTrackingTouch(slider: RangeSlider) {
                 viewModel.minSurface = slider.values[0].toInt()
                 viewModel.maxSurface = slider.values[1].toInt()
+                viewModel.formattedSurfaceRange =
+                    viewModel.minSurface.toString() + "m²" + " - " + viewModel.maxSurface.toString() + "m²"
+                binding.surfaceSliderTitle.text = viewModel.formattedSurfaceRange
             }
         }
         binding.surfaceSlider.addOnSliderTouchListener(surfaceTouchListener)
         binding.surfaceSlider.setLabelFormatter { value: Float ->
             value.toString() + "m²"
+        }
+        if (viewModel.minSurface != null && viewModel.maxSurface != null) {
+            binding.surfaceSliderTitle.text = viewModel.formattedSurfaceRange
         }
 
         //MEDIA
@@ -83,11 +96,16 @@ class PropertiesFilterFragment : Fragment() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.minMedia = slider.value.toInt()
+                viewModel.formattedMinMedia = viewModel.minMedia.toString() + " " + "media minimum"
+                binding.mediaSliderTitle.text = viewModel.formattedMinMedia
             }
         }
         binding.mediaSlider.addOnSliderTouchListener(mediaTouchListener)
         binding.mediaSlider.setLabelFormatter { value: Float ->
             "$value media minimum"
+        }
+        if (viewModel.minMedia != null) {
+            binding.mediaSliderTitle.text = viewModel.formattedMinMedia
         }
 
         //DATE PICKER CREATE
