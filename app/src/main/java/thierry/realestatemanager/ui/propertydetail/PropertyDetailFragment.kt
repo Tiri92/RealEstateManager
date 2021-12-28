@@ -18,6 +18,7 @@ import thierry.realestatemanager.databinding.FragmentPropertyDetailBinding
 import thierry.realestatemanager.model.Media
 import thierry.realestatemanager.utils.MediaUtils
 import thierry.realestatemanager.utils.Utils
+import java.time.format.DateTimeFormatter
 
 @AndroidEntryPoint
 class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
@@ -92,6 +93,12 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                             "${currentFullProperty.property.address?.street} \n ${currentFullProperty.property.address?.city} \n ${currentFullProperty.property.address?.postcode} \n " +
                                     "${currentFullProperty.property.address?.country}"
                         binding.propertyAddressValue.text = propertyAddress
+                        val agentAndDateOfCreation =
+                            "Created by ${currentFullProperty.property.propertyAgent} on ${
+                                Utils.epochMilliToLocalDate(currentFullProperty.property.dateOfCreation)
+                                    .format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+                            }"
+                        binding.agentAndDateOfCreationTextview?.text = agentAndDateOfCreation
 
                         staticMap = binding.staticMap
                         val currentPropertyAddress: String =
