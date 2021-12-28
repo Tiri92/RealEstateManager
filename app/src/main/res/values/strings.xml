@@ -46,6 +46,8 @@
     <string name="choose_the_minimum_number_of_media">Choose the minimum number of media</string>
     <string name="filter">Filter</string>
     <string name="agent_in_charge_of_this_property">Agent in charge of this property</string>
+    <string name="sports_n_clubs">Sports \n clubs</string>
+    <string name="shopping_n_centre">Shopping \n centre</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>

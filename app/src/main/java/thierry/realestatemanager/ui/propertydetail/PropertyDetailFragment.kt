@@ -87,11 +87,11 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                         binding.numberOfBedrooms.text = getString(R.string.number_bedrooms)
                         binding.numberOfBedroomsValue.text =
                             currentFullProperty.property.numberOfBedrooms.toString()
-                        binding.propertyAddress?.text = getString(R.string.location)
+                        binding.propertyAddress.text = getString(R.string.location)
                         val propertyAddress =
                             "${currentFullProperty.property.address?.street} \n ${currentFullProperty.property.address?.city} \n ${currentFullProperty.property.address?.postcode} \n " +
                                     "${currentFullProperty.property.address?.country}"
-                        binding.propertyAddressValue?.text = propertyAddress
+                        binding.propertyAddressValue.text = propertyAddress
 
                         staticMap = binding.staticMap
                         val currentPropertyAddress: String =
@@ -110,22 +110,22 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                         }
 
                         when (currentFullProperty.pointsOfInterestList.school) {
-                            true -> binding.schoolPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
+                            true -> binding.schoolPoi.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
                                 0,
                                 0,
                                 0)
-                            false -> binding.schoolPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24,
+                            false -> binding.schoolPoi.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24,
                                 0,
                                 0,
                                 0)
                         }
 
                         when (currentFullProperty.pointsOfInterestList.university) {
-                            true -> binding.universityPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
+                            true -> binding.universityPoi.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
                                 0,
                                 0,
                                 0)
-                            false -> binding.universityPoi?.setCompoundDrawablesWithIntrinsicBounds(
+                            false -> binding.universityPoi.setCompoundDrawablesWithIntrinsicBounds(
                                 R.drawable.baseline_unpublished_24,
                                 0,
                                 0,
@@ -133,51 +133,94 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                         }
 
                         when (currentFullProperty.pointsOfInterestList.parks) {
-                            true -> binding.parksPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
+                            true -> binding.parksPoi.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_check_circle_24,
                                 0,
                                 0,
                                 0)
-                            false -> binding.parksPoi?.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24,
+                            false -> binding.parksPoi.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_unpublished_24,
                                 0,
                                 0,
-                                0)
-                        }
-
-                        when (currentFullProperty.pointsOfInterestList.sportsClubs) {
-                            true -> binding.sportsClubsPoi?.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.baseline_check_circle_24,
-                                0)
-                            false -> binding.sportsClubsPoi?.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.baseline_unpublished_24,
                                 0)
                         }
 
-                        when (currentFullProperty.pointsOfInterestList.stations) {
-                            true -> binding.stationsPoi?.setCompoundDrawablesWithIntrinsicBounds(0,
-                                0,
-                                R.drawable.baseline_check_circle_24,
-                                0)
-                            false -> binding.stationsPoi?.setCompoundDrawablesWithIntrinsicBounds(0,
-                                0,
-                                R.drawable.baseline_unpublished_24,
-                                0)
-                        }
+                        if (!Utils.isTablet(requireContext())) {
+                            when (currentFullProperty.pointsOfInterestList.sportsClubs) {
+                                true -> binding.sportsClubsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_check_circle_24,
+                                    0)
+                                false -> binding.sportsClubsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_unpublished_24,
+                                    0)
+                            }
 
-                        when (currentFullProperty.pointsOfInterestList.shoppingCenter) {
-                            true -> binding.shoppingCentrePoi?.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.baseline_check_circle_24,
-                                0)
-                            false -> binding.shoppingCentrePoi?.setCompoundDrawablesWithIntrinsicBounds(
-                                0,
-                                0,
-                                R.drawable.baseline_unpublished_24,
-                                0)
+                            when (currentFullProperty.pointsOfInterestList.stations) {
+                                true -> binding.stationsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_check_circle_24,
+                                    0)
+                                false -> binding.stationsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_unpublished_24,
+                                    0)
+                            }
+
+                            when (currentFullProperty.pointsOfInterestList.shoppingCenter) {
+                                true -> binding.shoppingCentrePoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_check_circle_24,
+                                    0)
+                                false -> binding.shoppingCentrePoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    0,
+                                    0,
+                                    R.drawable.baseline_unpublished_24,
+                                    0)
+                            }
+                        } else {
+                            when (currentFullProperty.pointsOfInterestList.sportsClubs) {
+                                true -> binding.sportsClubsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_check_circle_24,
+                                    0,
+                                    0,
+                                    0)
+                                false -> binding.sportsClubsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_unpublished_24,
+                                    0,
+                                    0,
+                                    0)
+                            }
+
+                            when (currentFullProperty.pointsOfInterestList.stations) {
+                                true -> binding.stationsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_check_circle_24,
+                                    0,
+                                    0,
+                                    0)
+                                false -> binding.stationsPoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_unpublished_24,
+                                    0,
+                                    0,
+                                    0)
+                            }
+
+                            when (currentFullProperty.pointsOfInterestList.shoppingCenter) {
+                                true -> binding.shoppingCentrePoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_check_circle_24,
+                                    0,
+                                    0,
+                                    0)
+                                false -> binding.shoppingCentrePoi.setCompoundDrawablesWithIntrinsicBounds(
+                                    R.drawable.baseline_unpublished_24,
+                                    0,
+                                    0,
+                                    0)
+                            }
                         }
 
                         viewModel.currentProperty = currentFullProperty.property

@@ -1,140 +1,243 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_detail_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/media_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="16dp"
-        android:textIsSelectable="true"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toTopOf="@id/recyclerview_fragment_detail"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview_fragment_detail"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.100000024" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/property_description_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:textIsSelectable="true"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_detail" />
+        <TextView
+            android:id="@+id/media_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="16dp"
+            android:textIsSelectable="true"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/recyclerview_fragment_detail"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/property_description"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:ellipsize="end"
-        android:lines="6"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/property_description_title" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview_fragment_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.100000024" />
 
-    <TextView
-        android:id="@+id/property_surface"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:drawablePadding="16dp"
-        app:drawableStartCompat="@drawable/ic_baseline_aspect_ratio_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/property_description" />
+        <TextView
+            android:id="@+id/property_description_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="32dp"
+            android:textIsSelectable="true"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/recyclerview_fragment_detail" />
 
-    <TextView
-        android:id="@+id/property_surface_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/property_surface" />
+        <TextView
+            android:id="@+id/property_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:ellipsize="end"
+            android:lines="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_description_title" />
 
-    <TextView
-        android:id="@+id/number_of_rooms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:drawablePadding="16dp"
-        app:drawableStartCompat="@drawable/ic_baseline_number_of_rooms_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/property_surface_value" />
+        <TextView
+            android:id="@+id/number_of_rooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            app:drawableStartCompat="@drawable/ic_baseline_number_of_rooms_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_description" />
 
-    <TextView
-        android:id="@+id/number_of_rooms_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_rooms" />
+        <TextView
+            android:id="@+id/number_of_rooms_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_of_rooms" />
 
-    <TextView
-        android:id="@+id/number_of_bathrooms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:drawablePadding="16dp"
-        app:drawableStartCompat="@drawable/ic_baseline_bathrooms_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_rooms_value" />
+        <TextView
+            android:id="@+id/number_of_bedrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:drawablePadding="16dp"
+            app:drawableStartCompat="@drawable/ic_baseline_bedrooms_24"
+            app:layout_constraintStart_toEndOf="@id/number_of_rooms"
+            app:layout_constraintTop_toTopOf="@id/number_of_rooms" />
 
-    <TextView
-        android:id="@+id/number_of_bathrooms_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms" />
+        <TextView
+            android:id="@+id/number_of_bedrooms_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            app:layout_constraintStart_toEndOf="@id/number_of_rooms_value"
+            app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms" />
 
-    <TextView
-        android:id="@+id/number_of_bedrooms"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:drawablePadding="16dp"
-        app:drawableStartCompat="@drawable/ic_baseline_bedrooms_24"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms_value" />
+        <TextView
+            android:id="@+id/number_of_bathrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            app:drawableStartCompat="@drawable/ic_baseline_bathrooms_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_of_rooms_value" />
 
-    <TextView
-        android:id="@+id/number_of_bedrooms_value"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="80dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms" />
+        <TextView
+            android:id="@+id/number_of_bathrooms_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="80dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/number_of_bathrooms" />
 
-    <ImageView
-        android:id="@+id/static_map"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/number_of_bedrooms_value" />
+        <TextView
+            android:id="@+id/property_surface"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:drawablePadding="16dp"
+            app:drawableStartCompat="@drawable/ic_baseline_aspect_ratio_24"
+            app:layout_constraintStart_toEndOf="@id/number_of_bathrooms"
+            app:layout_constraintTop_toTopOf="@id/number_of_bathrooms" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/property_surface_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="200dp"
+            app:layout_constraintStart_toEndOf="@id/number_of_bathrooms_value"
+            app:layout_constraintTop_toBottomOf="@id/property_surface" />
+
+        <TextView
+            android:id="@+id/property_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            app:drawableStartCompat="@drawable/ic_baseline_location_on_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_surface_value" />
+
+        <TextView
+            android:id="@+id/property_address_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="56dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_address" />
+
+        <ImageView
+            android:id="@+id/static_map"
+            android:layout_width="320dp"
+            android:layout_height="320dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="32dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_address_value" />
+
+        <TextView
+            android:id="@+id/school_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:drawablePadding="16dp"
+            android:text="@string/school"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toTopOf="@id/static_map" />
+
+        <TextView
+            android:id="@+id/university_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            android:text="@string/university"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toBottomOf="@id/school_poi" />
+
+        <TextView
+            android:id="@+id/parks_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            android:text="@string/parks"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toBottomOf="@id/university_poi" />
+
+        <TextView
+            android:id="@+id/sports_clubs_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            android:text="@string/sports_n_clubs"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toBottomOf="@id/parks_poi" />
+
+        <TextView
+            android:id="@+id/stations_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            android:text="@string/stations"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toBottomOf="@id/sports_clubs_poi" />
+
+        <TextView
+            android:id="@+id/shopping_centre_poi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:drawablePadding="16dp"
+            android:text="@string/shopping_n_centre"
+            android:textSize="16sp"
+            android:textStyle="italic"
+            app:layout_constraintStart_toEndOf="@id/static_map"
+            app:layout_constraintTop_toBottomOf="@id/stations_poi" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
