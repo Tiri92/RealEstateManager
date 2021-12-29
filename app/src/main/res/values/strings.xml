@@ -48,6 +48,10 @@
     <string name="agent_in_charge_of_this_property">Agent in charge of this property</string>
     <string name="sports_n_clubs">Sports \n clubs</string>
     <string name="shopping_n_centre">Shopping \n centre</string>
+    <string name="description_of_the_photo">Description of the Photo</string>
+    <string name="description_of_the_video">Description of the Video</string>
+    <string name="map">map</string>
+    <string name="filter_properties">Filter properties</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>
