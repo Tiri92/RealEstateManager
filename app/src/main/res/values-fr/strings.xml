@@ -53,6 +53,7 @@
     <string name="description_of_the_video">Description de la vidéo</string>
     <string name="map">carte</string>
     <string name="filter_properties">Filtrer les propriétés</string>
+    <string name="field_empty">Le champ ne peut pas être vide</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>

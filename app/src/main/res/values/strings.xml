@@ -54,6 +54,7 @@
     <string name="filter_properties">Filter properties</string>
     <string name="maison" translatable="false">Maison</string>
     <string name="logement" translatable="false">Logement</string>
+    <string name="field_empty">Field can\'t be empty</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>
