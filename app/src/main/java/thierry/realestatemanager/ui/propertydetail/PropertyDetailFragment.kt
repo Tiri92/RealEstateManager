@@ -113,7 +113,7 @@ class PropertyDetailFragment : StaticMapRequestListener.Callback, Fragment() {
                                 .into(staticMap)
                         } else {
                             Glide.with(this).load(staticMapUri).centerCrop()
-                                .listener(StaticMapRequestListener(this))/*.error(R.drawable.ERRORPHOTO)*/
+                                .listener(StaticMapRequestListener(this))
                                 .into(staticMap)
                         }
 
