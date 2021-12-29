@@ -4,15 +4,23 @@ import android.text.Editable
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.content.ContextCompat
 import thierry.realestatemanager.R
+import java.util.*
 
 class RegexUtils {
 
     companion object {
 
         fun emptyTextVerification(textEditText: Editable?): String? {
-            return when (textEditText.toString()) {
-                "" -> "Field can't be empty"
-                else -> return null
+            if (Locale.getDefault().displayLanguage.equals("français")) {
+                return when (textEditText.toString()) {
+                    "" -> "Le champ ne peut pas être vide"
+                    else -> return null
+                }
+            } else {
+                return when (textEditText.toString()) {
+                    "" -> "Field can't be empty"
+                    else -> return null
+                }
             }
         }
 

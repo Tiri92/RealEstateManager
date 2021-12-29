@@ -73,6 +73,28 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
         binding.isSoldSwitch.isVisible = false
         setHasOptionsMenu(true)
 
+        if (Locale.getDefault().displayLanguage.equals("français")) {
+            binding.price.helperText = "Le champ ne peut pas être vide"
+            binding.rooms.helperText = "Le champ ne peut pas être vide"
+            binding.bedrooms.helperText = "Le champ ne peut pas être vide"
+            binding.bathrooms.helperText = "Le champ ne peut pas être vide"
+            binding.surface.helperText = "Le champ ne peut pas être vide"
+            binding.description.helperText = "Le champ ne peut pas être vide"
+            binding.city.helperText = "Le champ ne peut pas être vide"
+            binding.postcode.helperText = "Le champ ne peut pas être vide"
+            binding.street.helperText = "Le champ ne peut pas être vide"
+        } else {
+            binding.price.helperText = "Field can't be empty"
+            binding.rooms.helperText = "Field can't be empty"
+            binding.bedrooms.helperText = "Field can't be empty"
+            binding.bathrooms.helperText = "Field can't be empty"
+            binding.surface.helperText = "Field can't be empty"
+            binding.description.helperText = "Field can't be empty"
+            binding.city.helperText = "Field can't be empty"
+            binding.postcode.helperText = "Field can't be empty"
+            binding.street.helperText = "Field can't be empty"
+        }
+
         val propertyAgentSpinner: AppCompatSpinner = binding.propertyAgentSpinner
         val propertyAgentAdapter = ArrayAdapter.createFromResource(
             requireContext(),
