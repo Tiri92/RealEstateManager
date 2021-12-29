@@ -17,6 +17,9 @@ interface PropertyDao {
     @Query("SELECT * FROM property_table WHERE id = :id")
     fun getCurrentFullProperty(id: Int): Flow<FullProperty>
 
+    @RawQuery
+    fun getFilteredFullPropertyList(query: SupportSQLiteQuery): Flow<List<FullProperty>>
+
     @Query("SELECT * FROM property_table")
     fun getProperty(): Flow<List<Property>>
 
@@ -43,8 +46,5 @@ interface PropertyDao {
 
     @Delete
     suspend fun deletePropertyMedia(media: Media)
-
-    @RawQuery
-    fun getFilteredFullPropertyList(query: SupportSQLiteQuery): Flow<List<FullProperty>>
 
 }

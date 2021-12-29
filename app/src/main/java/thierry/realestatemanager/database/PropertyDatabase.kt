@@ -82,18 +82,18 @@ abstract class PropertyDatabase : RoomDatabase() {
                     description = "4How do you know exactly what you're buying when it comes to land? A legal description is a written record of a piece of land containing information that clearly identifies it. This description can be written in a few different forms depending on where the property is located in the United States. However, when dealing with one geographic area, the descriptions will tend to follow the same wording and language.A legal description provides legal evidence of the boundaries and allows a surveyor to accurately determine property lines at a later time. This is incredibly useful and necessary during real estate transactions or disputes. The description will typically appear on sales contracts and the property deed."))
 
                 dao.insertPropertyPointsOfInterest(PointsOfInterest(school = true,
-                    university = true,
+                    university = false,
                     propertyId = 1,
-                    parks = true,
+                    parks = false,
                     sportsClubs = false,
                     stations = true,
-                    shoppingCenter = false))
-                dao.insertPropertyPointsOfInterest(PointsOfInterest(school = true,
-                    university = true,
+                    shoppingCenter = true))
+                dao.insertPropertyPointsOfInterest(PointsOfInterest(school = false,
+                    university = false,
                     propertyId = 2,
                     parks = true,
-                    sportsClubs = false,
-                    stations = true,
+                    sportsClubs = true,
+                    stations = false,
                     shoppingCenter = false))
                 dao.insertPropertyPointsOfInterest(PointsOfInterest(school = true,
                     university = true,
@@ -102,13 +102,13 @@ abstract class PropertyDatabase : RoomDatabase() {
                     sportsClubs = false,
                     stations = true,
                     shoppingCenter = false))
-                dao.insertPropertyPointsOfInterest(PointsOfInterest(school = true,
+                dao.insertPropertyPointsOfInterest(PointsOfInterest(school = false,
                     university = true,
                     propertyId = 4,
-                    parks = true,
-                    sportsClubs = false,
-                    stations = true,
-                    shoppingCenter = false))
+                    parks = false,
+                    sportsClubs = true,
+                    stations = false,
+                    shoppingCenter = true))
 
                 dao.insertPropertyMedia(Media(propertyId = 1, uri = "/data/user/0/thierry.realestatemanager/files/1Photo1.jpg", description = "Living Room"))
                 dao.insertPropertyMedia(Media(propertyId = 1, uri = "/data/user/0/thierry.realestatemanager/files/1Photo2.jpg", description = "Living Room 2"))
