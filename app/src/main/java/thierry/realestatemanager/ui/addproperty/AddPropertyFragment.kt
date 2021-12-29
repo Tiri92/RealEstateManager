@@ -243,8 +243,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
 
                 viewModel.propertySuccessfullyInserted()
                     .observe(viewLifecycleOwner) { isSuccessfullyInserted ->
-                        val title = "Property successfully added"
-                        val message = "Good luck with the sale !"
+                        val title = getString(R.string.property_successfully_added)
+                        val message = getString(R.string.good_luck)
                         displayNotification(title, message)
                         if (isSuccessfullyInserted.toInt() == lastIndexValue) {
                             val navHostFragment =
@@ -255,7 +255,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     }
 
             } else {
-                Snackbar.make(requireView(), "Add at least one media", Snackbar.LENGTH_LONG).show()
+                Snackbar.make(requireView(), getString(R.string.add_at_least_one_media), Snackbar.LENGTH_LONG).show()
             }
 
         }

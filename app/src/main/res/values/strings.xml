@@ -55,6 +55,12 @@
     <string name="maison" translatable="false">Maison</string>
     <string name="logement" translatable="false">Logement</string>
     <string name="field_empty">Field can\'t be empty</string>
+    <string name="no_result_change_filters">No results, change filters</string>
+    <string name="select_a_date">Select a date</string>
+    <string name="minimum_media">minimum media</string>
+    <string name="property_successfully_added">Property successfully added</string>
+    <string name="good_luck">Good luck with the sale !</string>
+    <string name="add_at_least_one_media">Add at least one media</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>

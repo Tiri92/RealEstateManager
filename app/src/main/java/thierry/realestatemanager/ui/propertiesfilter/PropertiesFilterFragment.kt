@@ -59,7 +59,7 @@ class PropertiesFilterFragment : Fragment() {
         binding.priceSlider.setLabelFormatter { value: Float ->
             val format = NumberFormat.getCurrencyInstance()
             format.maximumFractionDigits = 0
-            format.currency = Currency.getInstance("USD")
+            format.currency = Currency.getInstance(Locale.getDefault())
             format.format(value.toDouble())
         }
         if (viewModel.minPrice != null && viewModel.maxPrice != null) {
@@ -96,13 +96,14 @@ class PropertiesFilterFragment : Fragment() {
 
             override fun onStopTrackingTouch(slider: Slider) {
                 viewModel.minMedia = slider.value.toInt()
-                viewModel.formattedMinMedia = viewModel.minMedia.toString() + " " + "media minimum"
+                viewModel.formattedMinMedia =
+                    viewModel.minMedia.toString() + " " + getString(R.string.minimum_media)
                 binding.mediaSliderTitle.text = viewModel.formattedMinMedia
             }
         }
         binding.mediaSlider.addOnSliderTouchListener(mediaTouchListener)
         binding.mediaSlider.setLabelFormatter { value: Float ->
-            "$value media minimum"
+            "$value" + " " + getString(R.string.minimum_media)
         }
         if (viewModel.minMedia != null) {
             binding.mediaSliderTitle.text = viewModel.formattedMinMedia
@@ -155,13 +156,24 @@ class PropertiesFilterFragment : Fragment() {
                     binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
                 val chipState =
                     binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
-                when (chipText) {
-                    "School" -> schoolState = chipState
-                    "University" -> universityState = chipState
-                    "Parks" -> parksState = chipState
-                    "Sports clubs" -> sportsClubsState = chipState
-                    "Stations" -> stationsState = chipState
-                    "Shopping centre" -> shoppingCentreState = chipState
+                if (!Locale.getDefault().displayLanguage.equals("français")) {
+                    when (chipText) {
+                        "School" -> schoolState = chipState
+                        "University" -> universityState = chipState
+                        "Parks" -> parksState = chipState
+                        "Sports clubs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Shopping centre" -> shoppingCentreState = chipState
+                    }
+                } else {
+                    when (chipText) {
+                        "École" -> schoolState = chipState
+                        "Université" -> universityState = chipState
+                        "Parcs" -> parksState = chipState
+                        "Clubs sportifs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Centre commercial" -> shoppingCentreState = chipState
+                    }
                 }
             }
 
@@ -233,7 +245,7 @@ class PropertiesFilterFragment : Fragment() {
                         navController.navigateUp()
                     } else {
                         Snackbar.make(requireView(),
-                            "No results, change filters",
+                            getString(R.string.no_result_change_filters),
                             Snackbar.LENGTH_SHORT).show()
                     }
                 }
@@ -263,7 +275,7 @@ class PropertiesFilterFragment : Fragment() {
 
     private fun createDatePicker(view: TextView) {
         datePicker = MaterialDatePicker.Builder.datePicker()
-            .setTitleText("Select a date")
+            .setTitleText(getString(R.string.select_a_date))
             .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
             .build()
         datePicker!!.addOnPositiveButtonClickListener { selection ->
