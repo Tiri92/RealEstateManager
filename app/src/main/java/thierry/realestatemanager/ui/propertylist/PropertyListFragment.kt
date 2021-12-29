@@ -1,5 +1,6 @@
 package thierry.realestatemanager.ui.propertylist
 
+import android.content.Context
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -87,7 +88,7 @@ class PropertyListFragment : Fragment() {
                 isFilter = true
                 setupRecyclerView(recyclerView,
                     onClickListener,
-                    onContextClickListener, it)
+                    onContextClickListener, it, requireContext())
                 binding.cancelFilterButton.show()
             }
         }
@@ -99,7 +100,7 @@ class PropertyListFragment : Fragment() {
                     recyclerView,
                     onClickListener,
                     onContextClickListener,
-                    fullPropertyList
+                    fullPropertyList, requireContext()
                 )
             }
         }
@@ -112,7 +113,7 @@ class PropertyListFragment : Fragment() {
                 recyclerView,
                 onClickListener,
                 onContextClickListener,
-                fullPropertyList
+                fullPropertyList, requireContext()
             )
         }
 
@@ -122,12 +123,12 @@ class PropertyListFragment : Fragment() {
         recyclerView: RecyclerView,
         onClickListener: View.OnClickListener,
         onContextClickListener: View.OnContextClickListener,
-        listOfProperty: List<FullProperty>,
+        listOfProperty: List<FullProperty>, context: Context,
     ) {
         recyclerView.adapter = PropertyListAdapter(
             listOfProperty,
             onClickListener,
-            onContextClickListener
+            onContextClickListener, context
         )
     }
 

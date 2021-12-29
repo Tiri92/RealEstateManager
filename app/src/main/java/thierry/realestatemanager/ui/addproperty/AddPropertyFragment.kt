@@ -166,13 +166,24 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
                     val chipState =
                         binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
-                    when (chipText) {
-                        "School" -> schoolState = chipState
-                        "University" -> universityState = chipState
-                        "Parks" -> parksState = chipState
-                        "Sports clubs" -> sportsClubsState = chipState
-                        "Stations" -> stationsState = chipState
-                        "Shopping centre" -> shoppingCentreState = chipState
+                    if (Locale.getDefault().displayLanguage.equals("français")) {
+                        when (chipText) {
+                            "École" -> schoolState = chipState
+                            "Université" -> universityState = chipState
+                            "Parcs" -> parksState = chipState
+                            "Clubs sportifs" -> sportsClubsState = chipState
+                            "Stations" -> stationsState = chipState
+                            "Centre commercial" -> shoppingCentreState = chipState
+                        }
+                    } else {
+                        when (chipText) {
+                            "School" -> schoolState = chipState
+                            "University" -> universityState = chipState
+                            "Parks" -> parksState = chipState
+                            "Sports clubs" -> sportsClubsState = chipState
+                            "Stations" -> stationsState = chipState
+                            "Shopping centre" -> shoppingCentreState = chipState
+                        }
                     }
                 }
                 viewModel.insertPointsOfInterest(
@@ -202,7 +213,8 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         numberOfBathrooms = binding.bathroomsEditText.text.toString().toInt(),
                         surface = binding.surfaceEditText.text.toString().toInt(),
                         description = binding.descriptionEditText.text.toString(),
-                        propertyAgent = resultPropertyAgentSpinner
+                        propertyAgent = resultPropertyAgentSpinner,
+                        dateOfCreation = Utils.getTodayDate()
                     )
                 )
 

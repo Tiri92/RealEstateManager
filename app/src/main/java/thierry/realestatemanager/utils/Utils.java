@@ -26,7 +26,7 @@ public class Utils {
     public static String formatThePrice(int price) {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
-        format.setCurrency(Currency.getInstance(Locale.FRANCE));
+        format.setCurrency(Currency.getInstance(Locale.getDefault()));
         return format.format(price);
     }
 

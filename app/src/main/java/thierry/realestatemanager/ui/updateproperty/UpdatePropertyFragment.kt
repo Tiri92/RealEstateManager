@@ -263,13 +263,24 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).text.toString()
                 val chipState =
                     binding.pointsOfInterestChipGroup.findViewById<Chip>(chipItem).isChecked
-                when (chipText) {
-                    "School" -> schoolState = chipState
-                    "University" -> universityState = chipState
-                    "Parks" -> parksState = chipState
-                    "Sports clubs" -> sportsClubsState = chipState
-                    "Stations" -> stationsState = chipState
-                    "Shopping centre" -> shoppingCentreState = chipState
+                if (Locale.getDefault().displayLanguage.equals("français")) {
+                    when (chipText) {
+                        "École" -> schoolState = chipState
+                        "Université" -> universityState = chipState
+                        "Parcs" -> parksState = chipState
+                        "Clubs sportifs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Centre commercial" -> shoppingCentreState = chipState
+                    }
+                } else {
+                    when (chipText) {
+                        "School" -> schoolState = chipState
+                        "University" -> universityState = chipState
+                        "Parks" -> parksState = chipState
+                        "Sports clubs" -> sportsClubsState = chipState
+                        "Stations" -> stationsState = chipState
+                        "Shopping centre" -> shoppingCentreState = chipState
+                    }
                 }
             }
             viewModel.updatePropertyPointOfInterest(
@@ -610,6 +621,12 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         for (i in 0..spinner.count) {
             if (spinner.getItemAtPosition(i).toString().contentEquals(s)) {
                 return i
+            } else {
+                if (currentFullProperty.property.type == "House") {
+                    return 0
+                } else if (currentFullProperty.property.type == "Flat") {
+                    return 2
+                }
             }
         }
         return 0

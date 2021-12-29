@@ -37,7 +37,7 @@
     <string name="number_bedrooms">Number of bedrooms</string>
     <string name="add_media">Add Media</string>
     <string name="sold">Sold</string>
-    <string name="add_media_guide">Add media and only after change their order as you like</string>
+    <string name="add_media_guide">Add media first and then change their orders as you like</string>
     <string name="location">Location</string>
     <string name="property_sold_since_the_selected_date">Property sold since the selected date</string>
     <string name="property_put_up_for_sale_from_the_selected_date">Property put up for sale from the selected date</string>
@@ -52,6 +52,8 @@
     <string name="description_of_the_video">Description of the Video</string>
     <string name="map">map</string>
     <string name="filter_properties">Filter properties</string>
+    <string name="maison" translatable="false">Maison</string>
+    <string name="logement" translatable="false">Logement</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>

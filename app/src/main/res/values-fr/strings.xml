@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">RealEstateManager</string>
+    <string name="title_item_detail">Item Detail</string>
+    <string name="app_title">Real Estate Manager</string>
+    <string name="add_a_new_property">Ajouter une nouvelle propriété</string>
+    <string name="photo_from_gallery">Photo de la galerie</string>
+    <string name="photo_from_camera">Photo de la Camera</string>
+    <string name="video_from_gallery">Video de la Galerie</string>
+    <string name="video_from_camera">Vidéo de la Camera</string>
+    <string name="type_of_property">Type de propriété</string>
+    <string name="price">Prix</string>
+    <string name="number_of_rooms">Nombre de chambres</string>
+    <string name="number_of_bedrooms">Nombre de chambres à coucher</string>
+    <string name="number_of_bathrooms">Nombre de salles de bains</string>
+    <string name="surface_of_property_in_m">Surface de la propriété en m²</string>
+    <string name="description_of_the_property">Description de la propriété</string>
+    <string name="country">Pays</string>
+    <string name="city">Ville</string>
+    <string name="postcode">Code postale</string>
+    <string name="name_and_number_of_street">Nom et numéro de rue</string>
+    <string name="points_of_interest">Points d’intérêt</string>
+    <string name="school">École</string>
+    <string name="university">Université</string>
+    <string name="parks">Parcs</string>
+    <string name="sports_clubs">Clubs sportifs</string>
+    <string name="stations">Stations</string>
+    <string name="shopping_centre">Centre commercial</string>
+    <string name="save">Sauvegarder</string>
+    <string name="is_sold">Est vendu</string>
+    <string name="update_property">Mettre à jour une propriété</string>
+    <string name="save_change">Enregistrer les modifications</string>
+    <string name="media">Média</string>
+    <string name="description">Description</string>
+    <string name="surface">Surface</string>
+    <string name="number_rooms">Nombre de pièces</string>
+    <string name="number_bathrooms">Nombre de salles de bains</string>
+    <string name="number_bedrooms">Nombre de chambres</string>
+    <string name="add_media">Médias</string>
+    <string name="sold">Vendu</string>
+    <string name="add_media_guide">Ajoutez des médias d\'abord puis modifiez leur ordres</string>
+    <string name="location">Adresse</string>
+    <string name="property_sold_since_the_selected_date">Propriété vendue depuis la date sélectionnée</string>
+    <string name="property_put_up_for_sale_from_the_selected_date">Propriété mise en vente à partir de la date sélectionnée</string>
+    <string name="choose_a_price_range">Choisissez une fourchette de prix</string>
+    <string name="choose_a_surface_area_range_in_m">Choisissez une plage de surface en m²</string>
+    <string name="choose_the_minimum_number_of_media">Choisissez le nombre minimum de médias</string>
+    <string name="filter">Filtrer</string>
+    <string name="agent_in_charge_of_this_property">Agent en charge de cette propriété</string>
+    <string name="sports_n_clubs">Clubs \n sportifs</string>
+    <string name="shopping_n_centre">Centre \n commercial</string>
+    <string name="description_of_the_photo">Description de la photo</string>
+    <string name="description_of_the_video">Description de la vidéo</string>
+    <string name="map">carte</string>
+    <string name="filter_properties">Filtrer les propriétés</string>
+    <string-array name="PropertiesAgents">
+        <item>Mike</item>
+        <item>Alex</item>
+        <item>Eric</item>
+    </string-array>
+    <string-array name="Countries">
+        <item>France</item>
+        <item>États-Unis</item>
+        <item>Angleterre</item>
+    </string-array>
+    <string-array name="PropertiesTypes">
+        <item>Maison</item>
+        <item>Duplex</item>
+        <item>Logement</item>
+        <item>Penthouse</item>
+    </string-array>
+    <string-array name="initial_price_slider_values">
+        <item>20000000</item>
+        <item>80000000</item>
+    </string-array>
+    <string-array name="initial_surface_slider_values">
+        <item>500</item>
+        <item>1800</item>
+    </string-array>
+</resources>

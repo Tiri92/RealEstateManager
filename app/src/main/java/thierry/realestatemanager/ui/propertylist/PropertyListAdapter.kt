@@ -1,5 +1,6 @@
 package thierry.realestatemanager.ui.propertylist
 
+import android.content.Context
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
@@ -13,11 +14,13 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.model.FullProperty
 import thierry.realestatemanager.utils.Utils
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 class PropertyListAdapter(
     private val properties: List<FullProperty>,
     private val onClickListener: View.OnClickListener,
     private val onContextClickListener: View.OnContextClickListener,
+    private val context: Context,
 ) :
     RecyclerView.Adapter<PropertyListAdapter.ViewHolder>() {
 
@@ -32,7 +35,15 @@ class PropertyListAdapter(
         val item = properties[position]
         val formattedPrice: String? = Utils.formatThePrice(item.property.price!!)
         holder.propertyPrice.text = formattedPrice.toString()
-        holder.propertyType.text = item.property.type
+        if (Locale.getDefault().displayLanguage.equals("français")) {
+            when (item.property.type) {
+                "House" -> holder.propertyType.text = context.getString(R.string.maison)
+                "Flat" -> holder.propertyType.text = context.getString(R.string.logement)
+                else -> holder.propertyType.text = item.property.type
+            }
+        } else {
+            holder.propertyType.text = item.property.type
+        }
         holder.propertyTown.text = item.property.address!!.city
 
         item.mediaList.forEachIndexed { index, media ->
