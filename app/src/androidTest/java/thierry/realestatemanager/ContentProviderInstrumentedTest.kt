@@ -39,7 +39,7 @@ class ContentProviderInstrumentedTest {
             null
         )
         assertThat(cursor, Matchers.notNullValue())
-        assertThat(cursor!!.count, Matchers.`is`(3))
+        assertThat(cursor!!.count, Matchers.`is`(4))
         cursor.close()
     }
 
