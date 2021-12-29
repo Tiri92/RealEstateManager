@@ -20,7 +20,7 @@ class PropertyListFragment : Fragment() {
     private var _binding: FragmentPropertyListBinding? = null
     private val binding get() = _binding!!
     private lateinit var fullPropertyList: List<FullProperty>
-    var isFilter: Boolean = false
+    private var isFilter: Boolean = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -88,7 +88,7 @@ class PropertyListFragment : Fragment() {
                 setupRecyclerView(recyclerView,
                     onClickListener,
                     onContextClickListener, it)
-                binding.cancelFilterButton!!.show()
+                binding.cancelFilterButton.show()
             }
         }
 
@@ -104,9 +104,9 @@ class PropertyListFragment : Fragment() {
             }
         }
 
-        binding.cancelFilterButton!!.setOnClickListener(View.OnClickListener {
+        binding.cancelFilterButton.setOnClickListener {
             isFilter = false
-            binding.cancelFilterButton!!.hide()
+            binding.cancelFilterButton.hide()
             viewModel.clearFilteredFullPropertyList()
             setupRecyclerView(
                 recyclerView,
@@ -114,7 +114,7 @@ class PropertyListFragment : Fragment() {
                 onContextClickListener,
                 fullPropertyList
             )
-        })
+        }
 
     }
 

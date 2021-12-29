@@ -28,22 +28,22 @@ class PropertyDetailAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         holder.playVideoImage.isVisible = listOfPropertyMedia[position].uri.contains("Video")
-        holder.playVideoImage.setOnClickListener(View.OnClickListener {
+        holder.playVideoImage.setOnClickListener {
             val mediaDialogFragment = MediaDialogFragment()
             val args = Bundle()
             args.putString("key", listOfPropertyMedia[position].uri)
             mediaDialogFragment.arguments = args
             mediaDialogFragment.show(supportFragmentManager, "MediaDialogFragment")
-        })
+        }
 
         if (listOfPropertyMedia[position].uri.contains("Photo")) {
-            holder.itemView.setOnClickListener(View.OnClickListener {
+            holder.itemView.setOnClickListener {
                 val mediaDialogFragment = MediaDialogFragment()
                 val args = Bundle()
                 args.putString("key", listOfPropertyMedia[position].uri)
                 mediaDialogFragment.arguments = args
                 mediaDialogFragment.show(supportFragmentManager, "MediaDialogFragment")
-            })
+            }
         }
 
         Glide.with(holder.propertyPictures)

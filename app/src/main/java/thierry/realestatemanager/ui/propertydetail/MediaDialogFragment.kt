@@ -43,16 +43,16 @@ class MediaDialogFragment : DialogFragment() {
             imageview.isVisible = false
             pauseButton.show()
             videoview.setVideoURI(mediaUri?.toUri())
-            pauseButton.setOnClickListener(View.OnClickListener {
+            pauseButton.setOnClickListener {
                 pauseButton.hide()
                 startButton.show()
                 videoview.pause()
-            })
-            startButton.setOnClickListener(View.OnClickListener {
+            }
+            startButton.setOnClickListener {
                 startButton.hide()
                 pauseButton.show()
                 videoview.start()
-            })
+            }
             videoview.setOnPreparedListener {
                 videoview.start()
             }
