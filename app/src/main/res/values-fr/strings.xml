@@ -60,6 +60,8 @@
     <string name="property_successfully_added">Propriété ajoutée avec succès</string>
     <string name="good_luck">Bonne chance pour la vente !</string>
     <string name="add_at_least_one_media">Ajouter au moins un média</string>
+    <string name="valid_connection">Connexion Internet valide</string>
+    <string name="no_connection">Pas de connexion Internet</string>
     <string-array name="PropertiesAgents">
         <item>Mike</item>
         <item>Alex</item>

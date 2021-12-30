@@ -5,7 +5,8 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-
+import android.view.View;
+import com.google.android.material.snackbar.Snackbar;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
@@ -87,6 +88,17 @@ public class Utils {
 
     public static boolean isTablet(Context ctx) {
         return (ctx.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    /**
+     * Displaying a custom SnackBar where we need in the App
+     */
+
+    public static void displayCustomSnackbar(View view, String message, int colorRes) {
+        Snackbar snackbar = Snackbar.make(view, message, Snackbar.LENGTH_LONG);
+        View sbView = snackbar.getView();
+        sbView.setBackgroundColor(colorRes);
+        snackbar.show();
     }
 
 }
