@@ -52,8 +52,6 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
     private lateinit var currentFullProperty: FullProperty
     private lateinit var navController: NavController
     private var dateOfSale: Long? = null
-    private var isSold: Boolean = false
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -151,6 +149,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                 }
             }
 
+        val isSoldButton: SwitchMaterial = binding.isSoldSwitch
         viewModel.getCurrentFullProperty().observe(viewLifecycleOwner) { currentFullProperty ->
             this.currentFullProperty = currentFullProperty
             if (currentFullProperty != null) {
@@ -216,13 +215,10 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     viewModel.initListOfMedia()
                 }
 
-                val isSoldButton: SwitchMaterial = binding.isSoldSwitch
                 isSoldButton.setOnClickListener {
                     if (isSoldButton.isChecked) {
                         dateOfSale = Utils.getTodayDate()
-                        isSold = true
                     } else {
-                        isSold = false
                         dateOfSale = null
                     }
                 }
@@ -233,6 +229,9 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
         val saveChangeButton: AppCompatButton = binding.saveButton
         saveChangeButton.setOnClickListener {
 
+            if (dateOfSale == null && isSoldButton.isChecked) {
+                dateOfSale = currentFullProperty.property.dateOfSale
+            }
             viewModel.updateProperty(Property(price = binding.priceEditText.text.toString()
                 .toInt(),
                 id = currentFullProperty.property.id,
@@ -246,7 +245,7 @@ class UpdatePropertyFragment : UpdatePropertyAdapter.PhotoDescriptionChanged, Fr
                     city = binding.cityEditText.text.toString(),
                     postcode = binding.postcodeEditText.text.toString().toInt(),
                     country = resultPropertyCountrySpinner),
-                isSold = isSold,
+                isSold = isSoldButton.isChecked,
                 dateOfSale = dateOfSale,
                 dateOfCreation = currentFullProperty.property.dateOfCreation,
                 propertyAgent = resultPropertyAgentSpinner))
