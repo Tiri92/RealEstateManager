@@ -5,7 +5,6 @@ import android.content.IntentSender
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.location.LocationManager
-import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import com.google.android.gms.common.api.ApiException
@@ -17,7 +16,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
 import thierry.realestatemanager.R
 
 private const val REQUEST_CHECK_SETTINGS = 111
@@ -78,12 +76,10 @@ class UiUtils {
         }
 
         /**https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient**/
-        fun checkGpsState(view: View, fragmentActivity: FragmentActivity) {
+        fun checkGpsState(fragmentActivity: FragmentActivity) {
             val locationManager = ContextCompat.getSystemService(fragmentActivity,
                 LocationManager::class.java)
-            if (isGpsEnabled(locationManager!!)) {
-                Snackbar.make(view, "GPS is already enabled", Snackbar.LENGTH_SHORT).show()
-            } else {
+            if (!isGpsEnabled(locationManager!!)) {
                 val locationRequest = LocationRequest.create()
                 locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
                 val settingsBuilder = LocationSettingsRequest.Builder()

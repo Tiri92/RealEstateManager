@@ -34,7 +34,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentAddUpdatePropertyBinding
@@ -255,12 +254,9 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     }
 
             } else {
-                val snackbar = Snackbar.make(requireView(),
+                Utils.displayCustomSnackbar(requireView(),
                     getString(R.string.add_at_least_one_media),
-                    Snackbar.LENGTH_LONG)
-                val sbView = snackbar.view
-                sbView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
-                snackbar.show()
+                    ContextCompat.getColor(requireContext(), R.color.red))
             }
 
         }

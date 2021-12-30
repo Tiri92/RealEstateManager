@@ -4,8 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.view.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -21,6 +21,7 @@ import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentGoogleMapBinding
 import thierry.realestatemanager.ui.propertydetail.PropertyDetailFragment
 import thierry.realestatemanager.utils.UiUtils
+import thierry.realestatemanager.utils.Utils
 
 private const val LOCATION_REQUEST_INTERVAL_MS = 10000
 private const val SMALLEST_DISPLACEMENT_THRESHOLD_METER = 25f
@@ -111,12 +112,17 @@ class GoogleMapFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray,
     ) {
-        if (requestCode == 0 && grantResults[0] != -1) {
-            UiUtils.checkGpsState(binding.root, requireActivity())
+        if (requestCode == 0 && grantResults[0] != -1 && Utils.isConnectedToInternet(requireContext())) {
+            Utils.displayCustomSnackbar(requireView(),
+                getString(R.string.valid_connection),
+                ContextCompat.getColor(requireContext(), R.color.green))
+            UiUtils.checkGpsState(requireActivity())
             launchGeolocationRequest()
             map!!.isMyLocationEnabled = true
         } else {
-            Log.i("", "")
+            Utils.displayCustomSnackbar(requireView(),
+                getString(R.string.no_connection),
+                ContextCompat.getColor(requireContext(), R.color.red))
         }
     }
 
