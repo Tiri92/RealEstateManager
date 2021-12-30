@@ -32,7 +32,7 @@ class RoomDbInstrumentedTest {
 
     @Test
     @Throws(Exception::class)
-    fun insertProperty() = runBlocking {
+    fun insertPropertiesAndGetThem() = runBlocking {
         val property1 = Property(numberOfRooms = 1)
         val property2 = Property(numberOfRooms = 2)
         val property3 = Property(numberOfRooms = 3)
