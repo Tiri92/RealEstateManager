@@ -255,7 +255,12 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                     }
 
             } else {
-                Snackbar.make(requireView(), getString(R.string.add_at_least_one_media), Snackbar.LENGTH_LONG).show()
+                val snackbar = Snackbar.make(requireView(),
+                    getString(R.string.add_at_least_one_media),
+                    Snackbar.LENGTH_LONG)
+                val sbView = snackbar.view
+                sbView.setBackgroundColor(ContextCompat.getColor(requireContext(), R.color.red))
+                snackbar.show()
             }
 
         }
