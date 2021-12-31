@@ -7,6 +7,7 @@ import androidx.test.espresso.matcher.ViewMatchers.assertThat
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import org.hamcrest.Matchers
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -39,7 +40,7 @@ class ContentProviderInstrumentedTest {
             null
         )
         assertThat(cursor, Matchers.notNullValue())
-        assertThat(cursor!!.count, Matchers.`is`(4))
+        Assert.assertTrue(cursor!!.count >= 4)
         cursor.close()
     }
 
