@@ -222,15 +222,21 @@ class PropertiesFilterFragment : Fragment() {
                 queryString += " property_table.dateOfSale >= '${viewModel.selectedDateOfSale}'"
             }
 
+            val schoolStateToInt = Utils.convertBooleanToInt(schoolState)
+            val parksStateToInt = Utils.convertBooleanToInt(parksState)
+            val universityStateToInt = Utils.convertBooleanToInt(universityState)
+            val sportsClubsStateToInt = Utils.convertBooleanToInt(sportsClubsState)
+            val shoppingCentreStateToInt = Utils.convertBooleanToInt(shoppingCentreState)
+            val stationsStateToInt = Utils.convertBooleanToInt(stationsState)
             if (viewModel.minMedia != null) {
                 queryString += " GROUP BY media_table.propertyId,"
-                queryString += " points_of_interest_table.propertyId HAVING COUNT(media_table.propertyId) >= ${viewModel.minMedia} AND points_of_interest_table.parks >= $parksState " +
-                        "AND points_of_interest_table.school >= $schoolState AND points_of_interest_table.university >= $universityState AND points_of_interest_table.sportsClubs >= $sportsClubsState " +
-                        "AND points_of_interest_table.stations >= $stationsState AND points_of_interest_table.shoppingCenter >= $shoppingCentreState"
+                queryString += " points_of_interest_table.propertyId HAVING COUNT(media_table.propertyId) >= ${viewModel.minMedia} AND points_of_interest_table.parks >= $parksStateToInt " +
+                        "AND points_of_interest_table.school >= $schoolStateToInt AND points_of_interest_table.university >= $universityStateToInt AND points_of_interest_table.sportsClubs >= $sportsClubsStateToInt " +
+                        "AND points_of_interest_table.stations >= $stationsStateToInt AND points_of_interest_table.shoppingCenter >= $shoppingCentreStateToInt"
             } else {
-                queryString += " GROUP BY points_of_interest_table.propertyId HAVING points_of_interest_table.parks >= $parksState " +
-                        "AND points_of_interest_table.school >= $schoolState AND points_of_interest_table.university >= $universityState AND points_of_interest_table.sportsClubs >= $sportsClubsState " +
-                        "AND points_of_interest_table.stations >= $stationsState AND points_of_interest_table.shoppingCenter >= $shoppingCentreState"
+                queryString += " GROUP BY points_of_interest_table.propertyId HAVING points_of_interest_table.parks >= $parksStateToInt " +
+                        "AND points_of_interest_table.school >= $schoolStateToInt AND points_of_interest_table.university >= $universityStateToInt AND points_of_interest_table.sportsClubs >= $sportsClubsStateToInt " +
+                        "AND points_of_interest_table.stations >= $stationsStateToInt AND points_of_interest_table.shoppingCenter >= $shoppingCentreStateToInt"
             }
 
             queryString += ";"

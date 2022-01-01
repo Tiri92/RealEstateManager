@@ -101,4 +101,18 @@ public class Utils {
         snackbar.show();
     }
 
+    /**
+     * Convert boolean to int for the filter request of the PropertiesFilterFragment
+     */
+
+    public static int convertBooleanToInt(Boolean b) {
+        int i;
+        if (b) {
+            i = 1;
+        } else {
+            i = 0;
+        }
+        return i;
+    }
+
 }
