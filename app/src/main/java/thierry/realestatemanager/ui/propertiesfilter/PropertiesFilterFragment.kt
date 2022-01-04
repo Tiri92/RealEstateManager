@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.TextView
 import androidx.appcompat.widget.AppCompatButton
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -14,7 +15,6 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.slider.RangeSlider
 import com.google.android.material.slider.Slider
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import thierry.realestatemanager.R
 import thierry.realestatemanager.databinding.FragmentPropertiesFilterBinding
@@ -250,9 +250,10 @@ class PropertiesFilterFragment : Fragment() {
                         navController = navHostFragment.navController
                         navController.navigateUp()
                     } else {
-                        Snackbar.make(requireView(),
+                        Utils.displayCustomSnackbar(requireView(),
                             getString(R.string.no_result_change_filters),
-                            Snackbar.LENGTH_SHORT).show()
+                            ContextCompat.getColor(requireContext(), R.color.red)
+                        )
                     }
                 }
 
