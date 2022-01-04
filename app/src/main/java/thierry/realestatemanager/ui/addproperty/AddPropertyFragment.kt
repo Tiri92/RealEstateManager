@@ -212,7 +212,7 @@ class AddPropertyFragment : AddPropertyAdapter.PhotoDescriptionChanged, Fragment
                         price = binding.priceEditText.text.toString().toInt(),
                         type = resultPropertyTypeSpinner,
                         address = Address(
-                            city = resultPropertyCountrySpinner,
+                            city = binding.cityEditText.text.toString(),
                             street = binding.streetEditText.text.toString(),
                             postcode = binding.postcodeEditText.text.toString().toInt(),
                             country = resultPropertyCountrySpinner
