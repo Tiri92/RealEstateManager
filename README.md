@@ -6,6 +6,7 @@
 
 L’application RealEstateManager est une application destinée aux salariés d'une agence immobilière leur permettant de gérer plus facilement les biens immobiliers disponibles à la vente ou déjà vendu. L'application est également disponible sur tablette ce qui rend les présentations de biens immobiliers avec photos et vidéos plus ergonomique et plus professionnelle. L'agent immobilier peut ajouter et mettre à jour des biens immobiliers, il peut également trier la liste des biens immobiliers par prix, par nombre de chambres, par surface en m², par date de mise en vente etc.
 L'agent immobilier peut également se géolocaliser sur une carte et voir les biens immobiliers de l'agence a proximité de sa position.
+Application disponible en Français et en Anglais.
 
 ## Installation
 
